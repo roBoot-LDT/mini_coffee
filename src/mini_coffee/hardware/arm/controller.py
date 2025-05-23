@@ -75,7 +75,7 @@ class xArmRobot:
             self.arm.set_state(0)
 
         if hasattr(self.arm, 'release_count_changed_callback'):
-            self.arm.release_count_changed_callback(count_changed_callback)
+            self.arm.release_count_changed_callback(count_changed_callback) # type: ignore
         self.arm.release_error_warn_changed_callback(state_changed_callback)
         self.arm.release_state_changed_callback(state_changed_callback)
         self.arm.release_connect_changed_callback(error_warn_change_callback)
@@ -126,3 +126,34 @@ class xArmRobot:
                 self.errprint('set_servo_angle, code={}'.format(code))
                 
 
+class xArmRobot_test: 
+    """Mock class for xArmRobot to simulate arm movements for testing"""
+    def __init__(self):
+        pass
+
+    def errprint(self, *args, **kwargs):
+        try:
+            stack_tuple = traceback.extract_stack(limit=2)[0]
+            print('[{}][{}] {}'.format(time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(time.time())), stack_tuple[1], ' '.join(map(str, args))))
+        except:
+            print(*args, **kwargs)
+
+    def home_pose(self):
+        print("Moving to home position")
+
+    def grip_open(self):
+        print('gripper open')
+        time.sleep(1)
+
+    def grip_close(self):
+        print('gripper close')
+        time.sleep(1)
+
+    # Linear Motion
+    def move_linear(self, coords, set_speed=50,set_acc=50,set_wait=False,set_radius=5):
+        print("Moving linear into", coords, "with speed", set_speed, "and acceleration", set_acc)               
+
+    # Joint Motion
+    def move_joint(self, coords, ang_speed=25,ang_acc=25,set_wait=False, set_radius=5):
+        print("Moving joint into", coords, "with speed", ang_speed, "and acceleration", ang_acc)
+                
