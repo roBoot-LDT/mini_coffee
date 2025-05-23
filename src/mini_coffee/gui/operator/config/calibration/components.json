@@ -1,0 +1,13 @@
+{
+    "Arm Base": [0, 0, "home.png", 0.3, "#3498db"],
+    "Coffee Machine": [-185, -275, "coffee_machine.png", 0.45, "#e67e22"],
+    "Cup Dispenser S": [10, -185, "cup_S.png", 0.1, "#3e158b"],
+    "Cup Dispenser M": [10, -300, "cup_M.png", 0.25, "#5E422B"],
+    "Ice Cream Machine": [195, -270, "ice_cream.png", 0.45, "#9b59b6"],
+    "Delivery Area": [-200, 275, "money.png", 0.3, "#e74c3c"],
+    "Bin": [-50, 275, "bin.png", 0.3, "#e74c3c"],
+    "Sugar Syrup": [225, -100, "sugar_syrup.png", 1, "#32b489"],
+    "Salted Caramel": [220, 0, "salted_caramel.png", 1, "#32b489"],
+    "Blackberry": [210, 100, "blackberry.svg", 1, "#32b489"],
+    "Coconut": [210, 200, "coconut.svg", 1, "#32b489"]
+}
