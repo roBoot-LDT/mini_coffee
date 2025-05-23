@@ -1,0 +1,147 @@
+{
+  "nodes": [
+    {
+      "id": "Arm Base",
+      "x": 0.0,
+      "y": 0.0,
+      "arm_coords": {
+        "x": 0,
+        "y": 0,
+        "z": 0,
+        "pitch": 0,
+        "roll": 0,
+        "yaw": 0
+      }
+    },
+    {
+      "id": "Coffee Machine",
+      "x": -185.0,
+      "y": -275.0,
+      "arm_coords": {
+        "x": 0,
+        "y": 0,
+        "z": 0,
+        "pitch": 0,
+        "roll": 0,
+        "yaw": 0
+      }
+    },
+    {
+      "id": "Cup Dispenser S",
+      "x": 10.0,
+      "y": -185.0,
+      "arm_coords": {
+        "x": 0,
+        "y": 0,
+        "z": 0,
+        "pitch": 0,
+        "roll": 0,
+        "yaw": 0
+      }
+    },
+    {
+      "id": "Cup Dispenser M",
+      "x": 10.0,
+      "y": -300.0,
+      "arm_coords": {
+        "x": 0,
+        "y": 0,
+        "z": 0,
+        "pitch": 0,
+        "roll": 0,
+        "yaw": 0
+      }
+    },
+    {
+      "id": "Ice Cream Machine",
+      "x": 195.0,
+      "y": -270.0,
+      "arm_coords": {
+        "x": 0,
+        "y": 0,
+        "z": 0,
+        "pitch": 0,
+        "roll": 0,
+        "yaw": 0
+      }
+    },
+    {
+      "id": "Delivery Area",
+      "x": -200.0,
+      "y": 275.0,
+      "arm_coords": {
+        "x": 0,
+        "y": 0,
+        "z": 0,
+        "pitch": 0,
+        "roll": 0,
+        "yaw": 0
+      }
+    },
+    {
+      "id": "Bin",
+      "x": -50.0,
+      "y": 275.0,
+      "arm_coords": {
+        "x": 0,
+        "y": 0,
+        "z": 0,
+        "pitch": 0,
+        "roll": 0,
+        "yaw": 0
+      }
+    },
+    {
+      "id": "Sugar Syrup",
+      "x": 225.0,
+      "y": -100.0,
+      "arm_coords": {
+        "x": 0,
+        "y": 0,
+        "z": 0,
+        "pitch": 0,
+        "roll": 0,
+        "yaw": 0
+      }
+    },
+    {
+      "id": "Salted Caramel",
+      "x": 220.0,
+      "y": 0.0,
+      "arm_coords": {
+        "x": 0,
+        "y": 0,
+        "z": 0,
+        "pitch": 0,
+        "roll": 0,
+        "yaw": 0
+      }
+    },
+    {
+      "id": "Blackberry",
+      "x": 210.0,
+      "y": 100.0,
+      "arm_coords": {
+        "x": 0,
+        "y": 0,
+        "z": 0,
+        "pitch": 0,
+        "roll": 0,
+        "yaw": 0
+      }
+    },
+    {
+      "id": "Coconut",
+      "x": 210.0,
+      "y": 200.0,
+      "arm_coords": {
+        "x": 0,
+        "y": 0,
+        "z": 0,
+        "pitch": 0,
+        "roll": 0,
+        "yaw": 0
+      }
+    }
+  ]
+}

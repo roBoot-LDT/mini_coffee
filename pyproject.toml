@@ -1,0 +1,24 @@
+[project]
+name = "mini-coffee"
+version = "0.1.0"
+description = ""
+authors = [
+    {name = "nemkov",email = "mindrobots.nemkov@gmail.com"}
+]
+readme = "README.md"
+requires-python = ">=3.10,<3.14"
+dependencies = [
+    "pyside6 (>=6.9.0,<7.0.0)"
+]
+
+[tool.poetry]
+name = "mini_coffee"
+packages = [{include = "mini_coffee", from = "src"}]
+
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.scripts]
+mini-coffee = "mini_coffee.gui.operator.app:run"
