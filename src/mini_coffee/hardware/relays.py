@@ -1,10 +1,17 @@
-import time, socket
+import time, socket, os
+from dotenv import load_dotenv # type: ignore
+
+load_dotenv()
 
 class PLC:
     def __init__(self):
-        self.RELAY_IP = '192.168.1.130'
-        self.RELAY_UTP_PORT = 5005
-        self.BUFFER_SIZE = 1024
+        self.RELAY_IP = str(os.getenv("RELAY_IP", "192.168.1.130"))
+        self.RELAY_UTP_PORT = int(os.getenv("RELAY_UTP_PORT", 5005))
+        self.BUFFER_SIZE = int(os.getenv("BUFFER_SIZE", 1024))
+        self.DISM = str(os.getenv("DISPENSER_M", "all10000000"))
+        self.DISS = str(os.getenv("DISPENSER_S", "all00000100"))
+        self.BIN = str(os.getenv("BIN", "all00001000"))
+        self.SHIELD = str(os.getenv("SHIELD", "all00000001"))
         self.rel = [
             ["off1", "on1"],
             ["off2", "on2"],
@@ -21,20 +28,25 @@ class PLC:
         s.sendto(bytes(port_state, 'utf-8'),(self.RELAY_IP, self.RELAY_UTP_PORT))
 
     def dispenserS(self, sec) -> None:
-        self.relay("all00000100")
+        self.relay(self.DISS)
         time.sleep(sec)
         self.relay("all00000000")
 
     def dispenserM(self, sec) -> None:
-        self.relay("all10000000")
+        self.relay(self.DISM)
         time.sleep(sec)
         self.relay("all00000000")
     
     def shield(self, sec) -> None:
-        self.relay("all00000001")
+        self.relay(self.SHIELD)
         time.sleep(sec)
         self.relay("all00000000")
 
+    def bin(self, sec) -> None:
+        self.relay(self.BIN)
+        time.sleep(sec)
+        self.relay("all00000000")
+        
     def trigger_all(self) -> None:
         self.relay("all11111111")
         time.sleep(2)

@@ -1,99 +1,341 @@
 {
-    "tabs": [
-        {
-            "name": "All",
-            "nodes": [
-                "Arm Base", "Cup Dispenser M", "Cup Dispenser S",
-                "Coffee Machine", "Ice Cream Machine", "Delivery Area",
-                "Bin", "Sugar Syrup", "Salted Caramel", "Blackberry", "Coconut"
-            ],
-            "connections": [
-                ["Arm Base", "Cup Dispenser M"],
-                ["Arm Base", "Cup Dispenser S"],
-                ["Cup Dispenser M", "Coffee Machine"],
-                ["Cup Dispenser S", "Coffee Machine"],
-                ["Cup Dispenser M", "Ice Cream Machine"],
-                ["Cup Dispenser S", "Ice Cream Machine"],
-                ["Ice Cream Machine", "Delivery Area"],
-                ["Coffee Machine", "Delivery Area"],
-                ["Delivery Area", "Arm Base"],
-                ["Ice Cream Machine", "Sugar Syrup"],
-                ["Ice Cream Machine", "Salted Caramel"],
-                ["Ice Cream Machine", "Blackberry"],
-                ["Ice Cream Machine", "Coconut"],
-                ["Sugar Syrup", "Delivery Area"],
-                ["Salted Caramel", "Delivery Area"],
-                ["Blackberry", "Delivery Area"],
-                ["Coconut", "Delivery Area"],
-                ["Sugar Syrup", "Salted Caramel"],
-                ["Sugar Syrup", "Blackberry"],
-                ["Sugar Syrup", "Coconut"],
-                ["Salted Caramel", "Blackberry"],
-                ["Salted Caramel", "Coconut"],
-                ["Blackberry", "Coconut"],
-                ["Delivery Area", "Bin"],
-                ["Ice Cream Machine", "Delivery Area"]
-            ]
-        },
-        {
-            "name": "Coffee",
-            "nodes": [
-                "Arm Base", "Cup Dispenser M", "Cup Dispenser S",
-                "Coffee Machine", "Delivery Area", "Bin"
-            ],
-            "connections": [
-                ["Arm Base", "Cup Dispenser M"],
-                ["Arm Base", "Cup Dispenser S"],
-                ["Cup Dispenser M", "Coffee Machine"],
-                ["Cup Dispenser S", "Coffee Machine"],
-                ["Coffee Machine", "Delivery Area"],
-                ["Delivery Area", "Bin"]
-            ]
-        },
-        {
-            "name": "Ice Cream",
-            "nodes": [
-                "Arm Base", "Cup Dispenser M", "Cup Dispenser S",
-                "Ice Cream Machine", "Sugar Syrup", "Salted Caramel",
-                "Coconut", "Blackberry", "Delivery Area", "Bin"
-            ],
-            "connections": [
-                ["Arm Base", "Cup Dispenser M"],
-                ["Arm Base", "Cup Dispenser S"],
-                ["Cup Dispenser M", "Ice Cream Machine"],
-                ["Cup Dispenser S", "Ice Cream Machine"],
-                ["Ice Cream Machine", "Sugar Syrup"],
-                ["Ice Cream Machine", "Salted Caramel"],
-                ["Ice Cream Machine", "Blackberry"],
-                ["Ice Cream Machine", "Coconut"],
-                ["Sugar Syrup", "Delivery Area"],
-                ["Salted Caramel", "Delivery Area"],
-                ["Blackberry", "Delivery Area"],
-                ["Coconut", "Delivery Area"],
-                ["Delivery Area", "Bin"],
-                ["Ice Cream Machine", "Delivery Area"]
-            ]
-        },
-        {
-            "name": "Bin",
-            "nodes": ["Arm Base", "Delivery Area", "Bin"],
-            "connections": [
-                ["Arm Base", "Delivery Area"],
-                ["Delivery Area", "Bin"]
-            ]
-        }
-    ],
-    "positions": {
-        "Arm Base": {"x": 0, "y": 0, "z": 0, "pitch": 0, "roll": 0, "yaw": 0},
-        "Coffee Machine": {"x": 300, "y": -100, "z": 150, "pitch": -15, "roll": 0},
-        "Ice Cream Machine": {"x": 200, "y": 180, "z": 120, "pitch": -5, "roll": -10},
-        "Delivery Area": {"x": 0, "y": 250, "z": 80, "pitch": 0, "roll": 0},
-        "Bin": {"x": -300, "y": 200, "z": 100, "pitch": 0, "roll": 0},
-        "Sugar Syrup": {"x": 100, "y": -200, "z": 50, "pitch": 0, "roll": 0},
-        "Salted Caramel": {"x": 150, "y": -250, "z": 50, "pitch": 0, "roll": 0},
-        "Blackberry": {"x": 200, "y": -300, "z": 50, "pitch": 0, "roll": 0},
-        "Coconut": {"x": 250, "y": -350, "z": 50, "pitch": 0, "roll": 0},
-        "Cup Dispenser M": {"x": -200, "y": 100, "z": 100, "pitch": 0, "roll": 0},
-        "Cup Dispenser S": {"x": -150, "y": 50, "z": 100, "pitch": 0, "roll": 0}
+  "tabs": [
+    {
+      "name": "All",
+      "nodes": [
+        "Arm Base",
+        "Cup Dispenser M",
+        "Cup Dispenser S",
+        "Coffee Machine",
+        "Ice Cream Machine",
+        "Delivery Area",
+        "Bin",
+        "Sugar Syrup",
+        "Salted Caramel",
+        "Blackberry",
+        "Coconut"
+      ],
+      "connections": [
+        [
+          "Arm Base",
+          "Cup Dispenser M"
+        ],
+        [
+          "Arm Base",
+          "Cup Dispenser S"
+        ],
+        [
+          "Cup Dispenser M",
+          "Coffee Machine"
+        ],
+        [
+          "Cup Dispenser S",
+          "Coffee Machine"
+        ],
+        [
+          "Cup Dispenser M",
+          "Ice Cream Machine"
+        ],
+        [
+          "Cup Dispenser S",
+          "Ice Cream Machine"
+        ],
+        [
+          "Ice Cream Machine",
+          "Delivery Area"
+        ],
+        [
+          "Coffee Machine",
+          "Delivery Area"
+        ],
+        [
+          "Delivery Area",
+          "Arm Base"
+        ],
+        [
+          "Ice Cream Machine",
+          "Sugar Syrup"
+        ],
+        [
+          "Ice Cream Machine",
+          "Salted Caramel"
+        ],
+        [
+          "Ice Cream Machine",
+          "Blackberry"
+        ],
+        [
+          "Ice Cream Machine",
+          "Coconut"
+        ],
+        [
+          "Sugar Syrup",
+          "Delivery Area"
+        ],
+        [
+          "Salted Caramel",
+          "Delivery Area"
+        ],
+        [
+          "Blackberry",
+          "Delivery Area"
+        ],
+        [
+          "Coconut",
+          "Delivery Area"
+        ],
+        [
+          "Sugar Syrup",
+          "Salted Caramel"
+        ],
+        [
+          "Sugar Syrup",
+          "Blackberry"
+        ],
+        [
+          "Sugar Syrup",
+          "Coconut"
+        ],
+        [
+          "Salted Caramel",
+          "Blackberry"
+        ],
+        [
+          "Salted Caramel",
+          "Coconut"
+        ],
+        [
+          "Blackberry",
+          "Coconut"
+        ],
+        [
+          "Delivery Area",
+          "Bin"
+        ],
+        [
+          "Ice Cream Machine",
+          "Delivery Area"
+        ]
+      ]
+    },
+    {
+      "name": "Coffee",
+      "nodes": [
+        "Arm Base",
+        "Cup Dispenser M",
+        "Cup Dispenser S",
+        "Coffee Machine",
+        "Delivery Area",
+        "Bin"
+      ],
+      "connections": [
+        [
+          "Arm Base",
+          "Cup Dispenser M"
+        ],
+        [
+          "Arm Base",
+          "Cup Dispenser S"
+        ],
+        [
+          "Cup Dispenser M",
+          "Coffee Machine"
+        ],
+        [
+          "Cup Dispenser S",
+          "Coffee Machine"
+        ],
+        [
+          "Coffee Machine",
+          "Delivery Area"
+        ],
+        [
+          "Delivery Area",
+          "Bin"
+        ]
+      ]
+    },
+    {
+      "name": "Ice Cream",
+      "nodes": [
+        "Arm Base",
+        "Cup Dispenser M",
+        "Cup Dispenser S",
+        "Ice Cream Machine",
+        "Sugar Syrup",
+        "Salted Caramel",
+        "Coconut",
+        "Blackberry",
+        "Delivery Area",
+        "Bin"
+      ],
+      "connections": [
+        [
+          "Arm Base",
+          "Cup Dispenser M"
+        ],
+        [
+          "Arm Base",
+          "Cup Dispenser S"
+        ],
+        [
+          "Cup Dispenser M",
+          "Ice Cream Machine"
+        ],
+        [
+          "Cup Dispenser S",
+          "Ice Cream Machine"
+        ],
+        [
+          "Ice Cream Machine",
+          "Sugar Syrup"
+        ],
+        [
+          "Ice Cream Machine",
+          "Salted Caramel"
+        ],
+        [
+          "Ice Cream Machine",
+          "Blackberry"
+        ],
+        [
+          "Ice Cream Machine",
+          "Coconut"
+        ],
+        [
+          "Sugar Syrup",
+          "Delivery Area"
+        ],
+        [
+          "Salted Caramel",
+          "Delivery Area"
+        ],
+        [
+          "Blackberry",
+          "Delivery Area"
+        ],
+        [
+          "Coconut",
+          "Delivery Area"
+        ],
+        [
+          "Delivery Area",
+          "Bin"
+        ],
+        [
+          "Ice Cream Machine",
+          "Delivery Area"
+        ]
+      ]
+    },
+    {
+      "name": "Bin",
+      "nodes": [
+        "Arm Base",
+        "Delivery Area",
+        "Bin"
+      ],
+      "connections": [
+        [
+          "Arm Base",
+          "Delivery Area"
+        ],
+        [
+          "Delivery Area",
+          "Bin"
+        ]
+      ]
     }
+  ],
+  "positions": {
+    "Arm Base": {
+      "x": 0,
+      "y": 0,
+      "z": 0,
+      "pitch": 0,
+      "roll": 0,
+      "yaw": 0
+    },
+    "Coffee Machine": {
+      "x": 300,
+      "y": -100,
+      "z": 150,
+      "pitch": -15,
+      "roll": 0
+    },
+    "Ice Cream Machine": {
+      "x": 200,
+      "y": 180,
+      "z": 120,
+      "pitch": -5,
+      "roll": -10
+    },
+    "Delivery Area": {
+      "x": 0,
+      "y": 250,
+      "z": 80,
+      "pitch": 0,
+      "roll": 0
+    },
+    "Bin": {
+      "x": -300,
+      "y": 200,
+      "z": 100,
+      "pitch": 0,
+      "roll": 0
+    },
+    "Sugar Syrup": {
+      "x": 100,
+      "y": -200,
+      "z": 50,
+      "pitch": 0,
+      "roll": 0
+    },
+    "Salted Caramel": {
+      "x": 150,
+      "y": -250,
+      "z": 50,
+      "pitch": 0,
+      "roll": 0
+    },
+    "Blackberry": {
+      "x": 200,
+      "y": -300,
+      "z": 50,
+      "pitch": 0,
+      "roll": 0
+    },
+    "Coconut": {
+      "x": 250,
+      "y": -350,
+      "z": 50,
+      "pitch": 0,
+      "roll": 0
+    },
+    "Cup Dispenser M": {
+      "x": -200,
+      "y": 100,
+      "z": 100,
+      "pitch": 0,
+      "roll": 0
+    },
+    "Cup Dispenser S": {
+      "x": -150,
+      "y": 50,
+      "z": 100,
+      "pitch": 0,
+      "roll": 0
+    }
+  },
+  "Ice Cream Machine": {
+    "position": {
+      "x": 0,
+      "y": 0,
+      "z": 0,
+      "pitch": 0,
+      "roll": 0,
+      "yaw": 0
+    },
+    "icon": "ice_cream.png"
+  }
 }

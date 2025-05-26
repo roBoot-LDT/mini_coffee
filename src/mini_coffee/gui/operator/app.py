@@ -1,6 +1,6 @@
 # src/mini_coffee/gui/operator/app.py
 import sys
-from PySide6.QtWidgets import QApplication, QMainWindow, QStackedWidget
+from PySide6.QtWidgets import QApplication, QMainWindow, QStackedWidget, QMessageBox
 from mini_coffee.gui.operator.status_check import StatusCheckWindow
 from mini_coffee.gui.operator.calibration import CalibrationWindow
 from mini_coffee.hardware.arm.controller import MockArmController
@@ -9,6 +9,9 @@ from PySide6.QtCore import Qt
 from mini_coffee.gui.operator.settings import SettingsWindow
 from dotenv import load_dotenv
 from mini_coffee.hardware.relays import PLC
+from mini_coffee.utils.logger import setup_logger
+
+logger = setup_logger()
 
 class MainWindow(QMainWindow):
     def __init__(self) -> None:
@@ -16,8 +19,8 @@ class MainWindow(QMainWindow):
         self.arm_controller = MockArmController()
         self.init_ui()
         self.setWindowTitle("RoboCafe Control System")
-        self.resize(1200, 800)
-        self.show_settings()
+        self.resize(1350, 800)
+        self.show_status()
 
     def init_ui(self) -> None:
         self.stacked_widget = QStackedWidget()
@@ -37,9 +40,9 @@ class MainWindow(QMainWindow):
         self.stacked_widget.addWidget(self.status_window)
         self.stacked_widget.addWidget(self.calibration_window)
 
-    def show_settings(self) -> None:
-        self.stacked_widget.setCurrentIndex(0)
-        self.setWindowTitle("Settings - RoboCafe")
+    def show_status(self) -> None:
+        self.stacked_widget.setCurrentIndex(1)
+        self.setWindowTitle("Status Check - RoboCafe")
 
     def load_environment(self) -> None:
         # Reload environment variables after save
@@ -48,8 +51,20 @@ class MainWindow(QMainWindow):
         self.settings_window.plc = PLC()
     
     def show_calibration(self) -> None:
-        self.stacked_widget.setCurrentIndex(1)
+        self.stacked_widget.setCurrentIndex(2)
         self.setWindowTitle("Calibration Mode - RoboCafe")
+
+    def closeEvent(self, event):
+        """Handle window closure safely."""
+        reply = QMessageBox.question(
+            self, "Exit", "Exit application?",
+            QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No, QMessageBox.StandardButton.No
+        )
+        if reply == QMessageBox.StandardButton.Yes:
+            logger.info("Application closed")
+            event.accept()
+        else:
+            event.ignore()
 
 def run():
     app = QApplication(sys.argv)

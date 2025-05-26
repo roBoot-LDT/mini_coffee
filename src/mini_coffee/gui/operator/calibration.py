@@ -2,8 +2,8 @@
 import json
 from pathlib import Path
 from PySide6.QtWidgets import (
-    QWidget, QHBoxLayout, QGraphicsView, QGraphicsScene, QGraphicsItem, QGraphicsPixmapItem,
-    QGraphicsEllipseItem, QGraphicsSimpleTextItem, QGraphicsPathItem, QMenu, QTabWidget
+    QWidget, QHBoxLayout, QGraphicsView, QGraphicsScene, QGraphicsItem, QGraphicsPixmapItem, QGroupBox, QComboBox,
+    QGraphicsEllipseItem, QGraphicsSimpleTextItem, QGraphicsPathItem, QMenu, QTabWidget, QDialog, QPushButton, QVBoxLayout, QLabel
 )
 from PySide6.QtCore import Qt, Signal, QObject
 from PySide6.QtGui import (
@@ -11,6 +11,9 @@ from PySide6.QtGui import (
 )
 from mini_coffee.hardware.arm.controller import MockArmController
 from typing import Dict, Optional
+from mini_coffee.utils.logger import setup_logger
+
+logger = setup_logger()
 
 class Data:
     FILES = {
@@ -204,14 +207,14 @@ class NodeEditor(QGraphicsView):
     def __init__(self, arm_controller, components, colors, connections=None, icons=None) -> None:
         super().__init__()
         self.arm = arm_controller
-        self.data = Data(mode=2)  # Use mode=2 for nodes.json
+        self.data = Data(mode=2)  # nodes.json
         self._scene = QGraphicsScene()
         self.setScene(self._scene)
         self.setRenderHint(QPainter.RenderHint.Antialiasing)
         self.nodes = {}
         self.edges = []
         self.connections = connections or []
-        self.icons = icons if icons is not None else self.load_icons(components)
+        self.icons = self.load_icons(components)
 
         for name, (x, y, _, scale, _) in components.items():
             self.add_node(
@@ -225,23 +228,32 @@ class NodeEditor(QGraphicsView):
 
         # Draw edges after all nodes are added
         self.create_edges_from_connections()
-
         self.setSceneRect(-300, -200, 600, 400)
 
     def load_icons(self, components) -> Dict[str, Optional[QPixmap]]:
-        """Load SVG icons for components that need them"""
+        """Load icons with '_r' suffix removed from filenames"""
         icon_dir = Path(__file__).parent.parent.parent.parent.parent / "resources" / "icons"
         icons = {}
+        
         for name, (_, _, icon, _, _) in components.items():
-            if icon != "none":
-                icon_path = icon_dir / icon
-                if icon_path.exists():
-                    icons[name] = QPixmap(str(icon_path))
-                else:
-                    print(f"Warning: Icon not found for {name} at {icon_path}")
-                    icons[name] = None
-            else:
+            if icon == "none":
                 icons[name] = None
+                continue
+                
+            # Remove '_r' suffix if present
+            clean_name = icon.replace('_r', '')
+            icon_path = icon_dir / clean_name
+            
+            # Fallback to original name if cleaned doesn't exist
+            if not icon_path.exists():
+                icon_path = icon_dir / icon
+                
+            if icon_path.exists():
+                icons[name] = QPixmap(str(icon_path))
+            else:
+                logger.warning(f"Icon not found: {clean_name} or {icon}")
+                icons[name] = None
+                
         return icons
 
     def add_node(self, name, x, y, color, arm_coords) -> None:
@@ -319,6 +331,311 @@ class NodeEditor(QGraphicsView):
         )
         menu.exec(event.globalPos())
 
+class CheckDialog(QDialog):
+    def __init__(self, component, parent=None):
+        super().__init__(parent)
+        self.setWindowTitle(f"Check {component}")
+        self.check_result = None
+        self.setStyleSheet(self._get_stylesheet())
+        
+        layout = QVBoxLayout(self)
+        layout.setContentsMargins(20, 15, 20, 15)
+        layout.setSpacing(15)
+        
+        question = QLabel(f"⚠️ Confirm component position\nfor '{component}'")
+        question.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        question.setStyleSheet("font-size: 16px; font-weight: 500;")
+        layout.addWidget(question)
+        
+        btn_layout = QHBoxLayout()
+        btn_layout.setSpacing(15)
+        self.edit_btn = QPushButton("✏️ Edit Position")
+        self.good_btn = QPushButton("✅ Confirm Position")
+        # Make the confirm button round and green
+        self.good_btn.setStyleSheet("""
+            QPushButton {
+            background-color: #4CAF50;
+            color: white;
+            border-radius: 12px;
+            min-width: 48px;
+            max-width: 250px;
+            max-height: 35px;
+            font-size: 18px;
+            }
+            QPushButton:hover {
+            background-color: #45a049;
+            }
+        """)
+        self.edit_btn.setStyleSheet("""
+            QPushButton {
+            background-color: #4CAF50;
+            color: white;
+            border-radius: 12px;
+            min-width: 48px;
+            max-width: 250px;
+            max-height: 35px;
+            font-size: 18px;
+            }
+            QPushButton:hover {
+            background-color: #45a049;
+            }
+        """)
+        
+        self.good_btn.clicked.connect(self.good)
+        self.edit_btn.clicked.connect(self.edit)
+        
+        btn_layout.addWidget(self.edit_btn)
+        btn_layout.addWidget(self.good_btn)
+        layout.addLayout(btn_layout)
+        
+        self.setMinimumWidth(400)
+
+    def good(self):
+        self.check_result = "good"
+        self.accept()
+
+    def edit(self):
+        self.check_result = "edit"
+        self.accept()
+
+    def _get_stylesheet(self):
+        return """
+            QDialog {
+                background-color: #2d2d2d;
+                color: #e0e0e0;
+                border-radius: 8px;
+            }
+            QPushButton {
+                padding: 10px 15px;
+                border-radius: 6px;
+                font-size: 14px;
+                font-weight: 500;
+                min-width: 120px;
+            }
+            QPushButton:hover {
+                opacity: 0.9;
+            }
+            QPushButton#edit_btn {
+                background-color: #3498db;
+                color: white;
+            }
+            QPushButton#good_btn {
+                background-color: #4CAF50;
+                color: white;
+            }
+        """
+        
+class CalibrationControls(QWidget):
+    def __init__(self, arm, component, parent=None):
+        super().__init__(parent)
+        self.arm = arm
+        self.component = component
+        self.parent_widget = parent
+        self.step_size = 1
+        self.setStyleSheet(self._get_stylesheet())
+        
+        layout = QVBoxLayout(self)
+        layout.setContentsMargins(20, 15, 20, 15)
+        layout.setSpacing(20)
+        
+        header = QLabel(f"🔧 Calibrating: {component}")
+        header.setStyleSheet("font-size: 18px; font-weight: 600; color: #88c0d0;")
+        layout.addWidget(header)
+        
+        # Current coordinates display
+        self.coords_label = QLabel()
+        self.coords_label.setStyleSheet("""
+            background-color: #3b4252;
+            border-radius: 6px;
+            padding: 10px;
+            font-family: 'Consolas', monospace;
+        """)
+        self.update_coordinates_display()
+        layout.addWidget(self.coords_label)
+        
+        # Step size controls
+        step_group = QGroupBox("Step Size Adjustment")
+        step_group.setStyleSheet("QGroupBox { font-size: 14px; }")
+        step_layout = QVBoxLayout(step_group)
+        step_controls = self._create_step_controls()
+        step_layout.addWidget(step_controls)
+        layout.addWidget(step_group)
+        
+        # Movement controls
+        movement_group = QGroupBox("Axis Controls")
+        movement_group.setStyleSheet("QGroupBox { font-size: 14px; }")
+        movement_layout = QVBoxLayout(movement_group)
+        movement_layout.setSpacing(12)
+        
+        axes = ["x", "y", "z", "yaw", "pitch", "roll"]
+        for axis in axes:
+            axis_control = self._create_axis_control(axis)
+            movement_layout.addWidget(axis_control)
+        
+        layout.addWidget(movement_group)
+        
+        # Save button
+        self.save_btn = QPushButton("💾 Save Calibration")
+        self.save_btn.clicked.connect(self.save)
+        layout.addWidget(self.save_btn)
+
+    def _create_step_controls(self):
+        widget = QWidget()
+        layout = QHBoxLayout(widget)
+        layout.setContentsMargins(0, 0, 0, 0)
+        
+        btn_minus = QPushButton("-")
+        btn_plus = QPushButton("+")
+        self.step_label = QLabel("1")
+        
+        # Styling to match axis controls
+        for btn in [btn_minus, btn_plus]:
+            btn.setFixedSize(40, 30)
+            btn.setStyleSheet("""
+                QPushButton {
+                    background-color: #3b4252;
+                    color: #e0e0e0;
+                    border-radius: 4px;
+                }
+                QPushButton:hover {
+                    background-color: #434c5e;
+                }
+                QPushButton:disabled {
+                    background-color: #2d2d2d;
+                    color: #6b6b6b;
+                }
+            """)
+        
+        self.step_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        self.step_label.setStyleSheet("""
+            font-weight: 500; 
+            min-width: 60px;
+            color: #88c0d0;
+            font-size: 16px;
+        """)
+        
+        # Connections
+        btn_minus.clicked.connect(self._decrease_step)
+        btn_plus.clicked.connect(self._increase_step)
+        
+        layout.addWidget(btn_minus)
+        layout.addWidget(self.step_label)
+        layout.addWidget(btn_plus)
+        
+        return widget
+    
+    def _increase_step(self):
+        new_step = min(100, int(self.step_label.text()) + 1)
+        self.step_label.setText(str(new_step))
+        self.step_size = new_step
+
+    def _decrease_step(self):
+        new_step = max(1, int(self.step_label.text()) - 1)
+        self.step_label.setText(str(new_step))
+        self.step_size = new_step
+        
+    def move_axis(self, axis, direction):
+        """Move specified axis by current step size"""
+        try:
+            # Calculate movement amount
+            amount = direction * self.step_size
+            getattr(self.arm, f"move_{axis}")(amount)
+            logger.info(f"Moved {axis} by {amount}")
+            
+            # Update coordinates display
+            self.update_coordinates_display()
+            
+        except Exception as e:
+            logger.error(f"Movement error: {str(e)}")
+
+    def save(self):
+        # Save calibration, update icon, and return to node editor
+        self.parent_widget.update_icon(self.component) # type: ignore
+        self.parent_widget.layout().removeWidget(self) # type: ignore
+        self.deleteLater()
+        self.parent_widget.layout().itemAt(1).widget().show()  # type: ignore # Show node editor tabs
+    
+    def _create_axis_control(self, axis):
+        widget = QWidget()
+        layout = QHBoxLayout(widget)
+        layout.setContentsMargins(0, 0, 0, 0)
+        
+        btn_minus = QPushButton("-")
+        btn_plus = QPushButton("+")
+        label = QLabel(axis.upper())
+        
+        # Styling
+        for btn in [btn_minus, btn_plus]:
+            btn.setFixedSize(40, 30)
+            btn.setStyleSheet("""
+                QPushButton {
+                    background-color: #3b4252;
+                    color: #e0e0e0;
+                    border-radius: 4px;
+                }
+                QPushButton:hover {
+                    background-color: #434c5e;
+                }
+            """)
+            
+        label.setStyleSheet("font-weight: 500; min-width: 40px;")
+        label.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        
+        # Connections
+        btn_minus.clicked.connect(lambda _, a=axis: self.move_axis(a, -1))
+        btn_plus.clicked.connect(lambda _, a=axis: self.move_axis(a, 1))
+        
+        layout.addWidget(btn_minus)
+        layout.addWidget(label)
+        layout.addWidget(btn_plus)
+        
+        return widget
+    
+    def update_coordinates_display(self):
+        """Update displayed coordinates with current arm position"""
+        pos = self.arm.get_position()
+        coords = [
+            f"🏗️  X: {pos.get('x', 0):.2f} mm",
+            f"🏗️  Y: {pos.get('y', 0):.2f} mm",
+            f"🏗️  Z: {pos.get('z', 0):.2f} mm",
+            f"🎚️  Yaw: {pos.get('yaw', 0):.2f}°",
+            f"🎚️  Pitch: {pos.get('pitch', 0):.2f}°",
+            f"🎚️  Roll: {pos.get('roll', 0):.2f}°"
+        ]
+        self.coords_label.setText("\n".join(coords))
+        
+    def _update_step_size(self, size):
+        self.step_size = int(size)
+
+    def _get_stylesheet(self):
+        return """
+            QWidget {
+                background-color: #2d2d2d;
+                color: #e0e0e0;
+            }
+            QGroupBox {
+                border: 1px solid #3c3c3c;
+                border-radius: 6px;
+                padding: 15px 10px;
+                margin-top: 10px;
+            }
+            QGroupBox::title {
+                color: #88c0d0;
+                subcontrol-origin: margin;
+                left: 10px;
+            }
+            QPushButton {
+                background-color: #4CAF50;
+                color: white;
+                padding: 12px;
+                border-radius: 6px;
+                font-size: 14px;
+            }
+            QPushButton:hover {
+                background-color: #45a049;
+            }
+        """         
+
 class CalibrationWindow(QWidget):
     def __init__(self, arm_controller: MockArmController) -> None:
         super().__init__()
@@ -351,23 +668,19 @@ class CalibrationWindow(QWidget):
             NodeEditor(self.arm,
                        filter_dict(self.schematic.components, all_nodes),
                        filter_dict(self.schematic.colors, all_nodes),
-                       connections=all_connections,
-                       icons=filter_dict(self.schematic.icons, all_nodes)),
+                       connections=all_connections),
             NodeEditor(self.arm,
                        filter_dict(self.schematic.components, coffee_nodes),
                        filter_dict(self.schematic.colors, coffee_nodes),
-                       connections=coffee_connections,
-                       icons=filter_dict(self.schematic.icons, coffee_nodes)),
+                       connections=coffee_connections),
             NodeEditor(self.arm,
                        filter_dict(self.schematic.components, ice_cream_nodes),
                        filter_dict(self.schematic.colors, ice_cream_nodes),
-                       connections=ice_cream_connections,
-                       icons=filter_dict(self.schematic.icons, ice_cream_nodes)),
+                       connections=ice_cream_connections),
             NodeEditor(self.arm,
                        filter_dict(self.schematic.components, bin_nodes),
                        filter_dict(self.schematic.colors, bin_nodes),
-                       connections=bin_connections,
-                       icons=filter_dict(self.schematic.icons, bin_nodes)),
+                       connections=bin_connections),
         ]
         
         self.init_ui()
@@ -386,32 +699,59 @@ class CalibrationWindow(QWidget):
         self.setLayout(layout)
         self.schematic.component_clicked.connect(self.handle_component_click)
     
+    def enter_calibration_mode(self, component):
+        layout = self.layout()
+        if layout is None:
+            return
+        # Safely remove and delete previous calibration widget if it exists and is valid
+        if hasattr(self, 'calib_widget') and self.calib_widget is not None:
+            try:
+                layout.removeWidget(self.calib_widget)
+                self.calib_widget.deleteLater()
+            except RuntimeError:
+                pass  # Already deleted
+            self.calib_widget = None
+        self.calib_widget = CalibrationControls(self.arm, component, self)
+        # Hide node editor tabs if present
+        item = layout.itemAt(1)
+        if item is not None and item.widget() is not None:
+            item.widget().hide()
+        layout.addWidget(self.calib_widget)
+        
+    def update_icon(self, component):
+        # Remove '_r' from icon name and reload
+        icon_name = self.schematic.components[component][2]
+        if icon_name.endswith('_r.png'):
+            new_icon = icon_name.replace('_r.png', '.png')
+        elif icon_name.endswith('_r.svg'):
+            new_icon = icon_name.replace('_r.svg', '.svg')
+        else:
+            return  # Already updated
+
+        # Update component data
+        comp = list(self.schematic.components[component])
+        comp[2] = new_icon
+        self.schematic.components[component] = comp
+        self.schematic.icons[component] = QPixmap(str(
+            Path(__file__).parent.parent.parent.parent.parent / "resources" / "icons" / new_icon
+        ))
+        self.schematic._scene.clear()
+        self.schematic.draw_schematic()
+
     def handle_component_click(self, component) -> None:
         positions = self.data.data.get("positions", {})
-        
         if component in positions:
-            # Move arm to component position
+            logger.info(f"Moving arm to component: {component} at {positions[component]}")
             self.arm.move_to(**positions[component])
+        if component != 'Arm Base':
+            dlg = CheckDialog(component, self)
+            if dlg.exec() == QDialog.DialogCode.Accepted:
+                if dlg.check_result == "good":
+                    self.update_icon(component)
+                elif dlg.check_result == "edit":
+                    self.enter_calibration_mode(component)
             
-            # Get component visual parameters
-            # size = self.schematic.components[component][2]  # Radius from schematic
-            # color = self.schematic.colors[component]
-            # arm_coords = positions[component]
             
-            # Get position in node editor view
-            # comp_x, comp_y, _, _, _ = self.schematic.components[component]
-            # scene_point = self.schematic.mapToScene(comp_x, comp_y)
-            # view_point = self.node_editor.mapFromScene(scene_point)
-            
-            # Add node with all required parameters
-            # self.node_editor.add_node(
-            #     name=component,
-            #     x=view_point.x(),
-            #     y=view_point.y(),
-            #     size=size,
-            #     color=color,
-            #     arm_coords=arm_coords
-            # )
 
 class NodeSignals(QObject):
     moved = Signal()

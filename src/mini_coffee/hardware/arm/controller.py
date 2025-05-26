@@ -1,4 +1,4 @@
-import sys, time, datetime, random 
+import sys, time, datetime, random, os
 import traceback, threading, math
 try:
     from mini_coffee.hardware.arm.xarm.tools import utils
@@ -6,6 +6,9 @@ except:
     pass
 from mini_coffee.hardware.arm.xarm import version
 from mini_coffee.hardware.arm.xarm.wrapper import XArmAPI
+from dotenv import load_dotenv # type: ignore
+
+load_dotenv()
 
 class MockArmController:
     """Simulates arm movements for testing"""
@@ -26,7 +29,7 @@ class xArmRobot:
 
         pprint('xArm-Python-SDK Version:{}'.format(version.__version__))
 
-        self.arm = XArmAPI('192.168.1.191')
+        self.arm = XArmAPI(os.getenv("XARMAPI", "192.168.1.191"))
         self.arm.clean_warn()
         self.arm.clean_error()
         self.arm.motion_enable(True)

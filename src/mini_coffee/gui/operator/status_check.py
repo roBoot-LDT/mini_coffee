@@ -2,7 +2,7 @@
 import sys, time, random, logging
 from PySide6.QtWidgets import (
     QWidget, QHBoxLayout, QVBoxLayout, QTextEdit, QPushButton,
-    QScrollArea, QLabel, QSizePolicy
+    QScrollArea, QLabel, QSizePolicy, QTabWidget
 )
 from PySide6.QtCore import Qt, Signal, QThread, QObject
 from PySide6.QtGui import QColor, QPainter, QBrush, QPalette, QPen
@@ -10,7 +10,13 @@ from mini_coffee.hardware.arm.controller import xArmRobot_test, xArmRobot
 from mini_coffee.hardware.relays import PLC
 from dataclasses import dataclass
 from typing import Optional
+from .settings import SettingsWindow 
 
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s [%(levelname)s] %(name)s: %(message)s",
+    handlers=[logging.StreamHandler()]
+)
 logger = logging.getLogger(__name__)
 
 @dataclass
@@ -63,6 +69,7 @@ class ComponentButton(QPushButton):
                 padding: 8px;
                 border: 1px solid #cccccc;
                 border-radius: 4px;
+                font-size: 25px;
             }
             QPushButton:hover {
                 background: #f5f5f5;
@@ -169,31 +176,33 @@ class StatusCheckWindow(QWidget):
         self.active_workers = []
         self.checks_completed = 0
         self.init_ui()
+        
     
     def init_ui(self) -> None:
         main_layout = QHBoxLayout()
         main_layout.setContentsMargins(16, 16, 16, 16)
         main_layout.setSpacing(20)
         
-        # Left Column - Terminal Output
+        # Left Column - Terminal Output (unchanged)
         self.terminal = QTextEdit()
         self.terminal.setReadOnly(True)
+        self.terminal.setMaximumWidth(700)
         self.terminal.setStyleSheet("""
             QTextEdit {
                 background-color: #1e1e1e;
                 color: #d4d4d4;
                 font-family: 'Consolas', monospace;
-                font-size: 25px;
+                font-size: 20px;
                 border: 1px solid #3c3c3c;
                 border-radius: 4px;
                 padding: 8px;
             }
         """)
         
-        # Right Column - Component List
-        scroll_area = QScrollArea()
-        scroll_area.setWidgetResizable(True)
+        # Right Column - Tab Widget (modified)
+        tab_widget = QTabWidget()
         
+        # Tab 1: Status Checks
         content_widget = QWidget()
         content_layout = QVBoxLayout(content_widget)
         content_layout.setSpacing(8)
@@ -224,10 +233,17 @@ class StatusCheckWindow(QWidget):
         content_layout.addStretch()
         content_layout.addWidget(self.next_button)
         
+        scroll_area = QScrollArea()
+        scroll_area.setWidgetResizable(True)
         scroll_area.setWidget(content_widget)
+        tab_widget.addTab(scroll_area, "Status Checks")
+        
+        # Tab 2: Settings
+        settings_tab = SettingsWindow(self)
+        tab_widget.addTab(settings_tab, "Settings")
         
         main_layout.addWidget(self.terminal, 2)
-        main_layout.addWidget(scroll_area, 1)
+        main_layout.addWidget(tab_widget, 1)
         self.setLayout(main_layout)
     
     def start_component_check(self) -> None:
@@ -242,6 +258,7 @@ class StatusCheckWindow(QWidget):
 
         button.status.color = QColor("yellow")
         self.terminal.append(f"🚦 Starting check: {component_name}...")
+        logger.info(f"Starting check: {component_name}")
         
         # Create and start worker thread
         worker = CheckWorker(component_name)

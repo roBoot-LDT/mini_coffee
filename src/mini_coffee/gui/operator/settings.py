@@ -1,13 +1,17 @@
 # src/mini_coffee/gui/operator/settings.py
+# src/mini_coffee/gui/operator/settings.py
 import os
 from pathlib import Path
-from dotenv import load_dotenv, dotenv_values
+from dotenv import load_dotenv, dotenv_values # type: ignore
 from PySide6.QtWidgets import (
     QWidget, QVBoxLayout, QHBoxLayout, QLineEdit, QPushButton, 
-    QLabel, QMessageBox, QInputDialog
+    QLabel, QMessageBox, QInputDialog, QGroupBox, QScrollArea, QDialog, QComboBox
 )
 from PySide6.QtCore import Qt
 from mini_coffee.hardware.relays import PLC
+from mini_coffee.utils.logger import setup_logger
+
+logger = setup_logger()
 
 class SettingsWindow(QWidget):
     def __init__(self, parent=None):
@@ -16,12 +20,24 @@ class SettingsWindow(QWidget):
         self.env_path = Path(__file__).parent.parent.parent.parent.parent / ".env"
         self.init_ui()
         self.load_settings()
+        self.setStyleSheet(self._get_stylesheet())
+        self.setMinimumWidth(350)
+        self.setMaximumWidth(700)
 
     def init_ui(self) -> None:
-        layout = QVBoxLayout()
+        main_layout = QVBoxLayout()
+        main_layout.setContentsMargins(16, 16, 16, 16)
+        
+        # Scroll area for settings
+        scroll = QScrollArea()
+        scroll.setWidgetResizable(True)
+        content = QWidget()
+        layout = QVBoxLayout(content)
+        layout.setSpacing(20)
+        scroll.setMaximumWidth(700)
+        content.setMaximumWidth(700)
 
-        # Network Settings
-        layout.addWidget(QLabel("Relay Settings:"))
+        # Titles
         self.ip_input = QLineEdit()
         self.port_input = QLineEdit()
         self.buffer_input = QLineEdit()
@@ -30,40 +46,113 @@ class SettingsWindow(QWidget):
         self.disM = QLineEdit()
         self.shield = QLineEdit()
         self.bin = QLineEdit()
+        
+        # Network Configuration Group
+        network_group = QGroupBox("Network Configuration")
+        network_layout = QVBoxLayout()
+        network_layout.setSpacing(12)
+        
+        self._create_input_field(network_layout, "Relay IP:", self.ip_input)
+        self._create_input_field(network_layout, "Relay UDP Port:", self.port_input)
+        self._create_input_field(network_layout, "Buffer Size:", self.buffer_input)
+        self._create_input_field(network_layout, "XArm API:", self.xarm_input)
+        network_group.setLayout(network_layout)
+        layout.addWidget(network_group)
 
-        layout.addWidget(QLabel("Relay IP:"))
-        layout.addWidget(self.ip_input)
-        layout.addWidget(QLabel("Relay UDP Port:"))
-        layout.addWidget(self.port_input)
-        layout.addWidget(QLabel("Buffer Size:"))
-        layout.addWidget(self.buffer_input)
-        layout.addWidget(QLabel("XArm API:"))
-        layout.addWidget(self.xarm_input)
-        layout.addWidget(QLabel("Dispenser S:"))
-        layout.addWidget(self.disS)
-        layout.addWidget(QLabel("Dispenser M:"))
-        layout.addWidget(self.disM)
-        layout.addWidget(QLabel("Shield:"))
-        layout.addWidget(self.shield)
-        layout.addWidget(QLabel("Bin:"))
-        layout.addWidget(self.bin)
+        # Device Mapping Group
+        device_group = QGroupBox("Device Mapping")
+        device_layout = QVBoxLayout()
+        device_layout.setSpacing(12)
+        
+        self._create_input_field(device_layout, "Dispenser S:", self.disS)
+        self._create_input_field(device_layout, "Dispenser M:", self.disM)
+        self._create_input_field(device_layout, "Shield:", self.shield)
+        self._create_input_field(device_layout, "Bin:", self.bin)
+        device_group.setLayout(device_layout)
+        layout.addWidget(device_group)
 
         # Control Buttons
         btn_layout = QHBoxLayout()
-        self.trigger_btn = QPushButton("Trigger All Relays")
-        self.detect_btn = QPushButton("Check Ports")
-        self.save_btn = QPushButton("Save Settings")
+        btn_layout.setSpacing(12)
+        self.trigger_btn = QPushButton("🔌 Trigger All Relays")
+        self.detect_btn = QPushButton("🔎 Detect Ports")
+        self.save_btn = QPushButton("💾 Save Settings")
 
         self.trigger_btn.clicked.connect(self.plc.trigger_all)
         self.detect_btn.clicked.connect(self.detect_ports)
         self.save_btn.clicked.connect(self.save_settings)
 
+        for btn in [self.trigger_btn, self.detect_btn, self.save_btn]:
+            btn.setMinimumHeight(40)
+        
         btn_layout.addWidget(self.trigger_btn)
         btn_layout.addWidget(self.detect_btn)
         btn_layout.addWidget(self.save_btn)
-        
         layout.addLayout(btn_layout)
-        self.setLayout(layout)
+
+        scroll.setWidget(content)
+        main_layout.addWidget(scroll)
+        self.setLayout(main_layout)
+
+    def _create_input_field(self, layout, label, widget):
+        row = QHBoxLayout()
+        row.setContentsMargins(0, 0, 0, 0)
+        lbl = QLabel(label)
+        lbl.setFixedWidth(120)
+        widget.setMinimumHeight(35)
+        widget.setMaximumWidth(250)
+        row.addWidget(lbl)
+        row.addWidget(widget)
+        layout.addLayout(row)
+
+    def _get_stylesheet(self):
+        return """
+            QWidget {
+                background-color: #2d2d2d;
+                color: #e0e0e0;
+                font-size: 14px;
+            }
+            QGroupBox {
+                border: 1px solid #3c3c3c;
+                border-radius: 5px;
+                margin-top: 10px;
+                padding-top: 15px;
+            }
+            QGroupBox::title {
+                subcontrol-origin: margin;
+                left: 10px;
+                padding: 0 5px;
+                color: #88c0d0;
+            }
+            QLineEdit {
+                background-color: #383838;
+                border: 1px solid #3c3c3c;
+                border-radius: 4px;
+                padding: 8px;
+                font-family: 'Consolas', monospace;
+            }
+            QLineEdit:focus {
+                border-color: #88c0d0;
+            }
+            QPushButton {
+                background-color: #4CAF50;
+                color: white;
+                border: none;
+                border-radius: 4px;
+                padding: 8px 16px;
+                font-weight: 500;
+                min-width: 120px;
+            }
+            QPushButton:hover {
+                background-color: #45a049;
+            }
+            QPushButton:pressed {
+                background-color: #3d8b40;
+            }
+            QScrollArea {
+                border: none;
+            }
+        """
 
     def load_settings(self) -> None:
         if self.env_path.exists():
@@ -79,36 +168,33 @@ class SettingsWindow(QWidget):
 
     def save_settings(self) -> None:
         env_content = f"""RELAY_IP={self.ip_input.text()}
-RELAY_UTP_PORT={self.port_input.text()}
-BUFFER_SIZE={self.buffer_input.text()}
-XARMAPI={self.xarm_input.text()}
-DISPENSER_S={self.disS.text()}
-DISPENSER_M={self.disM.text()}
-BIN={self.bin.text()}
-SHIELD={self.shield.text()}"""
+                        RELAY_UTP_PORT={self.port_input.text()}
+                        BUFFER_SIZE={self.buffer_input.text()}
+                        XARMAPI={self.xarm_input.text()}
+                        DISPENSER_S={self.disS.text()}
+                        DISPENSER_M={self.disM.text()}
+                        BIN={self.bin.text()}
+                        SHIELD={self.shield.text()}"""
         
         try:
             with open(self.env_path, 'w') as f:
                 f.write(env_content)
             QMessageBox.information(self, "Success", "Settings saved successfully!")
+            logger.info("Settings saved successfully.")
         except Exception as e:
             QMessageBox.critical(self, "Error", f"Failed to save settings: {str(e)}")
+            logger.error(f"Failed to save settings: {str(e)}")
 
     def detect_ports(self) -> None:
-        options = ["dispenserS", "dispenserM", "shield", "bin", "skip"]
+        options = ["dispenserS", "dispenserM", "shield", "bin"]
         for i in range(8):
             state = f"all{format(1 << i, '08b')}"
             self.plc.relay(state)
-            choice, ok = QInputDialog.getItem(
-                self,
-                "Port Configuration",
-                f"Select device for port {i+1}:",
-                options,
-                0,
-                False
-            )
-            
-            if ok and choice != "skip":
+            dialog = PortConfigDialog(i+1, options, self)
+            result = dialog.exec()
+            choice = dialog.combo.currentText() if dialog.selected is None else dialog.selected
+
+            if result == 1 and choice != "skip":
                 mapping = {
                     "dispenserS": self.disS,
                     "dispenserM": self.disM,
@@ -117,6 +203,39 @@ SHIELD={self.shield.text()}"""
                 }
                 if choice in mapping:
                     mapping[choice].setText(state)
-                print(f"Configuring port {i+1} as {choice}")
-            elif not ok:
+                logger.info(f"Port {i+1} configured for {choice} with state {state}")
+            elif result == 2 or choice == "skip":
+                continue
+            else:
                 break
+
+class PortConfigDialog(QDialog):
+    def __init__(self, port_number, options, parent=None):
+        super().__init__(parent)
+        self.setWindowTitle("Port Configuration")
+        self.selected = None
+
+        layout = QVBoxLayout(self)
+        layout.addWidget(QLabel(f"Select device for port {port_number}:"))
+
+        self.combo = QComboBox()
+        self.combo.addItems(options)
+        layout.addWidget(self.combo)
+
+        btn_layout = QHBoxLayout()
+        ok_btn = QPushButton("OK")
+        cancel_btn = QPushButton("Cancel")
+        skip_btn = QPushButton("Skip")
+
+        ok_btn.clicked.connect(self.accept)
+        cancel_btn.clicked.connect(self.reject)
+        skip_btn.clicked.connect(self.skip)
+
+        btn_layout.addWidget(ok_btn)
+        btn_layout.addWidget(cancel_btn)
+        btn_layout.addWidget(skip_btn)
+        layout.addLayout(btn_layout)
+
+    def skip(self):
+        self.selected = "skip"
+        self.done(2)  # Custom code for skip
