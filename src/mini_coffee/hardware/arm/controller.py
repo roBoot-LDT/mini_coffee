@@ -129,7 +129,7 @@ class xArmRobot:
 class xArmRobot_test: 
     """Mock class for xArmRobot to simulate arm movements for testing"""
     def __init__(self):
-        pass
+        self.arm = True
 
     def errprint(self, *args, **kwargs):
         try:

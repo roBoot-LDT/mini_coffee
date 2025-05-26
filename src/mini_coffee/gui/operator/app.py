@@ -6,6 +6,9 @@ from mini_coffee.gui.operator.calibration import CalibrationWindow
 from mini_coffee.hardware.arm.controller import MockArmController
 from PySide6.QtGui import QColor, QPalette
 from PySide6.QtCore import Qt
+from mini_coffee.gui.operator.settings import SettingsWindow
+from dotenv import load_dotenv
+from mini_coffee.hardware.relays import PLC
 
 class MainWindow(QMainWindow):
     def __init__(self) -> None:
@@ -14,22 +17,36 @@ class MainWindow(QMainWindow):
         self.init_ui()
         self.setWindowTitle("RoboCafe Control System")
         self.resize(1200, 800)
+        self.show_settings()
 
     def init_ui(self) -> None:
         self.stacked_widget = QStackedWidget()
         self.setCentralWidget(self.stacked_widget)
 
         # Initialize windows
+        self.settings_window = SettingsWindow()
         self.status_window = StatusCheckWindow()
         self.calibration_window = CalibrationWindow(self.arm_controller)
 
         # Connect signals
+        self.settings_window.save_btn.clicked.connect(self.load_environment)
         self.status_window.all_checks_passed.connect(self.show_calibration)
 
         # Add to stack
+        self.stacked_widget.addWidget(self.settings_window)
         self.stacked_widget.addWidget(self.status_window)
         self.stacked_widget.addWidget(self.calibration_window)
 
+    def show_settings(self) -> None:
+        self.stacked_widget.setCurrentIndex(0)
+        self.setWindowTitle("Settings - RoboCafe")
+
+    def load_environment(self) -> None:
+        # Reload environment variables after save
+        load_dotenv(override=True)
+        # Update other components with new settings
+        self.settings_window.plc = PLC()
+    
     def show_calibration(self) -> None:
         self.stacked_widget.setCurrentIndex(1)
         self.setWindowTitle("Calibration Mode - RoboCafe")

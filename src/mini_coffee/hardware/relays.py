@@ -5,25 +5,51 @@ class PLC:
         self.RELAY_IP = '192.168.1.130'
         self.RELAY_UTP_PORT = 5005
         self.BUFFER_SIZE = 1024
-        self.rel = [["off1","on1"],["off2","on2"],["off3","on3"],["off4","on4"],["off5","on5"],["off6","on6"],["off7","on7"],["off8","on8"]]
+        self.rel = [
+            ["off1", "on1"],
+            ["off2", "on2"],
+            ["off3", "on3"],
+            ["off4", "on4"],
+            ["off5", "on5"],
+            ["off6", "on6"],
+            ["off7", "on7"],
+            ["off8", "on8"]
+        ]
 
-    def relay(self, port_state):
+    def relay(self, port_state) -> None:
         s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
         s.sendto(bytes(port_state, 'utf-8'),(self.RELAY_IP, self.RELAY_UTP_PORT))
 
-    def group_1(self, sec):
+    def dispenserS(self, sec) -> None:
         self.relay("all00000100")
         time.sleep(sec)
         self.relay("all00000000")
-        pass
 
-    def group_2(self, sec):
+    def dispenserM(self, sec) -> None:
         self.relay("all10000000")
         time.sleep(sec)
         self.relay("all00000000")
-        pass
     
+    def shield(self, sec) -> None:
+        self.relay("all00000001")
+        time.sleep(sec)
+        self.relay("all00000000")
+
+    def trigger_all(self) -> None:
+        self.relay("all11111111")
+        time.sleep(2)
+        self.relay("all00000000")
+
+    def detect(self) -> None:
+        # Generate port states with only one '1' in each (8 relays)
+        for i in range(8):
+            state = f"all{format(1 << i, '08b')}"
+            self.relay(state)
+            time.sleep(2)
+        
 if __name__ == "__main__":
     plc = PLC()
-    plc.group_1(1)
+    plc.relay("all11111111")  # Turn on all relays
+    time.sleep(2)
+    plc.relay("all00000000")  # Turn off all relays
     

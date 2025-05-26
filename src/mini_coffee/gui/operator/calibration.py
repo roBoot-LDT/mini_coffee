@@ -13,20 +13,28 @@ from mini_coffee.hardware.arm.controller import MockArmController
 from typing import Dict, Optional
 
 class Data:
-    def __init__(self, path="/home/dev/projects/mini_coffee/src/mini_coffee/gui/operator/config/calibration/components.json"):
-        self.path = Path(path)
-        self.components = self.load_components()
+    FILES = {
+        0: "calibration.json",
+        1: "components.json",
+        2: "nodes.json"
+    }
 
-    def save_components(self, components: dict) -> None:
-        """Save components dict to a JSON file."""
-        serializable = {k: list(v) for k, v in components.items()}
+    def __init__(self, mode: int = 1):
+        # Default mode is 1 (components.json) for backward compatibility
+        self.mode = mode
+        self.path = Path(__file__).parent / "config" / "calibration" / self.FILES[self.mode]
+        self.data = self.load_data()
+
+    def save_data(self, data: dict) -> None:
+        """Save data dict to the selected JSON file."""
+        serializable = {k: list(v) if isinstance(v, (list, tuple)) else v for k, v in data.items()}
         self.path.parent.mkdir(parents=True, exist_ok=True)
         with open(self.path, "w") as f:
             json.dump(serializable, f, indent=2)
-        self.components = components
+        self.data = data
 
-    def load_components(self) -> dict:
-        """Load components dict from a JSON file."""
+    def load_data(self) -> dict:
+        """Load data dict from the selected JSON file."""
         if not self.path.exists():
             return {}
         try:
@@ -36,30 +44,29 @@ class Data:
         except (json.JSONDecodeError, OSError):
             return {}
 
-    def edit_component(self, name: str, new_value: list) -> None:
-        """Edit a component and save changes."""
-        self.components[name] = new_value
-        self.save_components(self.components)
+    def edit_entry(self, name: str, new_value) -> None:
+        """Edit an entry and save changes."""
+        self.data[name] = new_value
+        self.save_data(self.data)
 
-    def remove_component(self, name: str) -> None:
-        """Remove a component and save changes."""
-        if name in self.components:
-            del self.components[name]
-            self.save_components(self.components)
-        
+    def remove_entry(self, name: str) -> None:
+        """Remove an entry and save changes."""
+        if name in self.data:
+            del self.data[name]
+            self.save_data(self.data)
         
 class SchematicView(QGraphicsView):
     component_clicked = Signal(str)
     
     def __init__(self):
         super().__init__()
-        self.data = Data()
+        self.data = Data(1)  # Load components.json by default
         self._scene = QGraphicsScene()
         self.setScene(self._scene)
         self.setRenderHint(QPainter.RenderHint.Antialiasing)
         
         # Component format: (x, y, icon|'none', scale, color_if_no_icon)
-        self.components: dict[str, list] = self.data.load_components()
+        self.components: dict[str, list] = self.data.load_data()
         self.colors: dict[str, str] = {name: color for name, (_, _, _, _, color) in self.components.items()}
         self.icons: dict[str, QPixmap | None] = self.load_icons()
         self.draw_schematic()
@@ -70,8 +77,9 @@ class SchematicView(QGraphicsView):
         """Load SVG icons for components that need them"""
         icon_dir = Path(__file__).parent.parent.parent.parent.parent / "resources" / "icons"
         icons = {}
+
         # Use self.data.components to ensure icons match loaded data
-        for name, (_, _, icon, _, _) in self.data.components.items():
+        for name, (_, _, icon, _, _) in self.components.items():
             if icon != "none":
                 icon_path = icon_dir / icon
                 if icon_path.exists():
@@ -121,39 +129,38 @@ class SchematicView(QGraphicsView):
                 break
         super().mousePressEvent(event)
 
-class Node(QGraphicsEllipseItem):
-    def __init__(self, name, x, y, size, color, arm_coords, icon=None, icon_scale=1.0):
-        super().__init__(-size/2, -size/2, size, size)
+class Node(QGraphicsItem):
+    def __init__(self, name, x, y, size, color, arm_coords, icon=None):
+        super().__init__()
         self.signals = NodeSignals()
         self.name = name
         self.arm_coords = arm_coords
+        self.size = size
+        
+        # Create child items
+        self.background = QGraphicsEllipseItem(-size/2, -size/2, size, size, self)
+        self.label = QGraphicsSimpleTextItem(name, self)
+        
+        if icon:
+            self.pixmap = QGraphicsPixmapItem(icon, self)
+            self.pixmap.setOffset(-icon.width()/2, -icon.height()/2)
+            self.background.hide()
+        else:
+            self.background.setBrush(QBrush(QColor(color)))
+            self.background.setPen(QPen(QColor("black"), 2))
 
+        # Position label
+        self.label.setPos(-self.label.boundingRect().width()/2, size/2 + 10)
+        self.label.setBrush(QBrush(QColor("white")))
         self.setPos(x, y)
         self.setFlag(QGraphicsItem.GraphicsItemFlag.ItemIsMovable)
         self.setFlag(QGraphicsItem.GraphicsItemFlag.ItemSendsScenePositionChanges)
 
-        # Add icon if available
-        if icon:
-            # Scale icon to fit node size while maintaining aspect ratio
-            scaled_pixmap = icon.scaled(
-                size, size, 
-                Qt.AspectRatioMode.KeepAspectRatio, 
-                Qt.TransformationMode.SmoothTransformation
-            )
-            self.pixmap_item = QGraphicsPixmapItem(scaled_pixmap, self)
-            self.pixmap_item.setOffset(-scaled_pixmap.width()/2, -scaled_pixmap.height()/2)
-            self.setBrush(Qt.BrushStyle.NoBrush)
-            self.setPen(QPen(Qt.PenStyle.NoPen))  # Remove ellipse outline
-        else:
-            # Fallback to colored circle
-            self.setBrush(QBrush(QColor(color)))
-            self.setPen(QPen(QColor("black"), 2))
-            self.pixmap_item = None
+    def boundingRect(self):
+        return self.childrenBoundingRect()
 
-        # Add name label
-        self.label = QGraphicsSimpleTextItem(name, self)
-        self.label.setPos(-self.label.boundingRect().width()/2, size/2 + 10)
-        self.label.setBrush(QBrush(QColor("white")))
+    def paint(self, painter, option, widget=None):
+        pass  # Painting handled by child items
 
     def mouseMoveEvent(self, event):
         super().mouseMoveEvent(event)
@@ -179,6 +186,17 @@ class Edge(QGraphicsPathItem):
         path.moveTo(self.source.pos())
         path.lineTo(self.dest.pos())
         self.setPath(path)
+    
+    def remove(self):
+        # Disconnect signals to avoid double-free on shutdown
+        try:
+            self.source.signals.moved.disconnect(self.update_path)
+        except (TypeError, RuntimeError):
+            pass
+        try:
+            self.dest.signals.moved.disconnect(self.update_path)
+        except (TypeError, RuntimeError):
+            pass
         
 class NodeEditor(QGraphicsView):
     NODE_SIZE = 80  # Fixed size for all nodes
@@ -186,14 +204,14 @@ class NodeEditor(QGraphicsView):
     def __init__(self, arm_controller, components, colors, connections=None, icons=None) -> None:
         super().__init__()
         self.arm = arm_controller
-        self.data = Data()
+        self.data = Data(mode=2)  # Use mode=2 for nodes.json
         self._scene = QGraphicsScene()
         self.setScene(self._scene)
         self.setRenderHint(QPainter.RenderHint.Antialiasing)
         self.nodes = {}
         self.edges = []
         self.connections = connections or []
-        self.icons = self.load_icons() if icons is None else icons
+        self.icons = icons if icons is not None else self.load_icons(components)
 
         for name, (x, y, _, scale, _) in components.items():
             self.add_node(
@@ -202,8 +220,7 @@ class NodeEditor(QGraphicsView):
                 y=y,
                 color=colors[name],
                 arm_coords=self.arm.get_position(),
-                icon=self.icons.get(name),
-                icon_scale=scale
+                
             )
 
         # Draw edges after all nodes are added
@@ -211,12 +228,11 @@ class NodeEditor(QGraphicsView):
 
         self.setSceneRect(-300, -200, 600, 400)
 
-    def load_icons(self) -> Dict[str, Optional[QPixmap]]:
+    def load_icons(self, components) -> Dict[str, Optional[QPixmap]]:
         """Load SVG icons for components that need them"""
         icon_dir = Path(__file__).parent.parent.parent.parent.parent / "resources" / "icons"
         icons = {}
-        # Use self.data.components to ensure icons match loaded data
-        for name, (_, _, icon, _, _) in self.data.components.items():
+        for name, (_, _, icon, _, _) in components.items():
             if icon != "none":
                 icon_path = icon_dir / icon
                 if icon_path.exists():
@@ -228,7 +244,17 @@ class NodeEditor(QGraphicsView):
                 icons[name] = None
         return icons
 
-    def add_node(self, name, x, y, color, arm_coords, icon=None, icon_scale=1.0) -> None:
+    def add_node(self, name, x, y, color, arm_coords) -> None:
+        icon = None
+        if self.icons and name in self.icons:
+            icon = self.icons[name]
+        if icon is not None:
+            icon = icon.scaled(
+                self.NODE_SIZE, self.NODE_SIZE,
+                Qt.AspectRatioMode.KeepAspectRatio,
+                Qt.TransformationMode.SmoothTransformation
+            )
+
         node = Node(
             name=name,
             x=x,
@@ -236,17 +262,16 @@ class NodeEditor(QGraphicsView):
             size=self.NODE_SIZE,
             color=color,
             arm_coords=arm_coords,
-            icon=icon,
-            icon_scale=icon_scale
+            icon=icon
         )
         self.nodes[name] = node
-        self._scene.addItem(node)
-        # Redraw edges to ensure connections are visible when nodes are added dynamically
-        self.create_edges_from_connections()
+        self._scene.addItem(node)        
 
-    def create_edges_from_connections(self):
+
+    def create_edges_from_connections(self) -> None:
         # Remove existing edges
         for edge in self.edges:
+            edge.remove()  # <-- disconnect signals
             self._scene.removeItem(edge)
         self.edges.clear()
         # Add edges based on self.connections
@@ -255,41 +280,32 @@ class NodeEditor(QGraphicsView):
                 edge = Edge(self.nodes[src], self.nodes[dst])
                 self.edges.append(edge)
                 self._scene.addItem(edge)
+
+    def load_nodes(self) -> None:
+        # Loads nodes from the Data class (nodes.json)
+        data = self.data.load_data()
+        for name, node in data.items():
+            self.add_node(
+                name=name,
+                x=node.get("x", 0),
+                y=node.get("y", 0),
+                color="#3498db",  # You may want to replace this with the correct color
+                arm_coords=node.get("arm_coords", {}),
                 
+            )
 
-    def load_nodes(self):
-        config_path = Path("config/calibration/nodes.json")
-        if not config_path.exists():
-            return
+    def save_nodes(self) -> None:
+        # Saves nodes to the Data class (nodes.json)
+        nodes_data = {}
+        for node_id, node in self.nodes.items():
+            nodes_data[node_id] = {
+                "x": node.scenePos().x(),
+                "y": node.scenePos().y(),
+                "arm_coords": node.arm_coords
+            }
+        self.data.save_data(nodes_data)
 
-        with open(config_path, "r") as f:
-            data = json.load(f)
-            for node in data["nodes"]:
-                self.add_node(
-                    name=node["id"],
-                    x=node["x"],
-                    y=node["y"],
-                    color="#3498db",  # You may want to replace this with the correct color
-                    arm_coords=node["arm_coords"],
-                    icon=None,
-                    icon_scale=1.0
-                )
-
-    def save_nodes(self):
-        config_path = Path("config/calibration/nodes.json")
-        config_path.parent.mkdir(parents=True, exist_ok=True)
-
-        nodes_data = [{
-            "id": node_id,
-            "x": node.scenePos().x(),
-            "y": node.scenePos().y(),
-            "arm_coords": node.arm_coords
-        } for node_id, node in self.nodes.items()]
-
-        with open(config_path, "w") as f:
-            json.dump({"nodes": nodes_data}, f, indent=2)
-
-    def contextMenuEvent(self, event):
+    def contextMenuEvent(self, event) -> None:
         menu = QMenu()
         add_action = menu.addAction("Add Node")
         add_action.triggered.connect(
@@ -299,81 +315,33 @@ class NodeEditor(QGraphicsView):
                 y=event.pos().y(),
                 color="#3498db",
                 arm_coords=self.arm.get_position(),
-                icon=None,
-                icon_scale=1.0
             )
         )
         menu.exec(event.globalPos())
 
 class CalibrationWindow(QWidget):
-    def __init__(self, arm_controller: MockArmController):
+    def __init__(self, arm_controller: MockArmController) -> None:
         super().__init__()
         self.arm = arm_controller
         self.schematic = SchematicView()
-        
+        self.data = Data(0)  # Load calibration.json by default
         # Define node sets for each tab
         all_nodes = list(self.schematic.components.keys())
-        coffee_nodes = ["Arm Base", "Cup Dispenser M", "Cup Dispenser S", "Coffee Machine", "Delivery Area", "Bin"]
-        ice_cream_nodes = [
-            "Arm Base", "Cup Dispenser M", "Cup Dispenser S", "Ice Cream Machine",
-            "Sugar Syrup", "Salted Caramel", "Coconut", "Blackberry", "Delivery Area", "Bin"
-        ]
-        bin_nodes = ["Arm Base", "Delivery Area", "Bin"]
+        nodes = {
+            "All": 0,
+            "Coffee": 1,
+            "Ice Cream": 2,
+            "Bin": 3
+        }
+        # Load node sets and connections from self.data (calibration.json)
+        coffee_nodes = self.data.data["tabs"][nodes["Coffee"]].get("nodes", [])
+        ice_cream_nodes = self.data.data["tabs"][nodes["Ice Cream"]].get("nodes", [])
+        bin_nodes = self.data.data["tabs"][nodes["Bin"]].get("nodes", [])
 
-        # Define connections for each tab
-        all_connections = [
-        ("Arm Base", "Cup Dispenser M"),
-        ("Arm Base", "Cup Dispenser S"),
-        ("Cup Dispenser M", "Coffee Machine"),
-        ("Cup Dispenser S", "Coffee Machine"),
-        ("Cup Dispenser M", "Ice Cream Machine"),
-        ("Cup Dispenser S", "Ice Cream Machine"),
-        ("Ice Cream Machine", "Delivery Area"),
-        ("Coffee Machine", "Delivery Area"),
-        ("Delivery Area", "Arm Base"),
-        ("Ice Cream Machine", "Sugar Syrup"),
-        ("Ice Cream Machine", "Salted Caramel"),
-        ("Ice Cream Machine", "Blackberry"),
-        ("Ice Cream Machine", "Coconut"),
-        ("Sugar Syrup", "Delivery Area"),
-        ("Salted Caramel", "Delivery Area"),
-        ("Blackberry", "Delivery Area"),
-        ("Coconut", "Delivery Area"),
-        ("Sugar Syrup", "Salted Caramel"),
-        ("Sugar Syrup", "Blackberry"),
-        ("Sugar Syrup", "Coconut"),
-        ("Salted Caramel", "Blackberry"),
-        ("Salted Caramel", "Coconut"),
-        ("Blackberry", "Coconut"),
-        ("Delivery Area", "Bin"),
-        ]
-        coffee_connections = [
-            ("Arm Base", "Cup Dispenser M"),
-            ("Arm Base", "Cup Dispenser S"),
-            ("Cup Dispenser M", "Coffee Machine"),
-            ("Cup Dispenser S", "Coffee Machine"),
-            ("Coffee Machine", "Delivery Area"),
-            ("Delivery Area", "Bin"),
-        ]
-        ice_cream_connections = [
-            ("Arm Base", "Cup Dispenser M"),
-            ("Arm Base", "Cup Dispenser S"),
-            ("Cup Dispenser M", "Ice Cream Machine"),
-            ("Cup Dispenser S", "Ice Cream Machine"),
-            ("Ice Cream Machine", "Sugar Syrup"),
-            ("Ice Cream Machine", "Salted Caramel"),
-            ("Ice Cream Machine", "Blackberry"),
-            ("Ice Cream Machine", "Coconut"),
-            ("Sugar Syrup", "Delivery Area"),
-            ("Salted Caramel", "Delivery Area"),
-            ("Blackberry", "Delivery Area"),
-            ("Coconut", "Delivery Area"),
-            ("Delivery Area", "Bin"),
-        ]
-        bin_connections = [
-            ("Arm Base", "Delivery Area"),
-            ("Delivery Area", "Bin"),
-        ]
+        all_connections = self.data.data["tabs"][nodes["All"]].get("connections", [])
+        coffee_connections = self.data.data["tabs"][nodes["Coffee"]].get("connections", [])
+        ice_cream_connections = self.data.data["tabs"][nodes["Ice Cream"]].get("connections", [])
+        bin_connections = self.data.data["tabs"][nodes["Bin"]].get("connections", [])
         # Helper to filter components/colors/icons for each tab
         def filter_dict(d, keys):
             return {k: v for k, v in d.items() if k in keys}
@@ -404,7 +372,7 @@ class CalibrationWindow(QWidget):
         
         self.init_ui()
     
-    def init_ui(self):
+    def init_ui(self) -> None:
         layout = QHBoxLayout()
         layout.addWidget(self.schematic, 1)
 
@@ -418,20 +386,8 @@ class CalibrationWindow(QWidget):
         self.setLayout(layout)
         self.schematic.component_clicked.connect(self.handle_component_click)
     
-    def handle_component_click(self, component):
-        positions = {
-            "Arm Base": {"x": 0, "y": 0, "z": 0, "pitch": 0, "roll": 0, "yaw": 0},
-            "Coffee Machine": {"x": 300, "y": -100, "z": 150, "pitch": -15, "roll": 0},
-            "Ice Cream Machine": {"x": 200, "y": 180, "z": 120, "pitch": -5, "roll": -10},
-            "Delivery Area": {"x": 0, "y": 250, "z": 80, "pitch": 0, "roll": 0},
-            "Bin": {"x": -300, "y": 200, "z": 100, "pitch": 0, "roll": 0},
-            "Sugar Syrup": {"x": 100, "y": -200, "z": 50, "pitch": 0, "roll": 0},
-            "Salted Caramel": {"x": 150, "y": -250, "z": 50, "pitch": 0, "roll": 0},
-            "Blackberry": {"x": 200, "y": -300, "z": 50, "pitch": 0, "roll": 0},
-            "Coconut": {"x": 250, "y": -350, "z": 50, "pitch": 0, "roll": 0},
-            "Cup Dispenser M": {"x": -200, "y": 100, "z": 100, "pitch": 0, "roll": 0},
-            "Cup Dispenser S": {"x": -150, "y": 50, "z": 100, "pitch": 0, "roll": 0},
-        }
+    def handle_component_click(self, component) -> None:
+        positions = self.data.data.get("positions", {})
         
         if component in positions:
             # Move arm to component position

@@ -6,7 +6,7 @@ from PySide6.QtWidgets import (
 )
 from PySide6.QtCore import Qt, Signal, QThread, QObject
 from PySide6.QtGui import QColor, QPainter, QBrush, QPalette, QPen
-from mini_coffee.hardware.arm.controller import xArmRobot
+from mini_coffee.hardware.arm.controller import xArmRobot_test, xArmRobot
 from mini_coffee.hardware.relays import PLC
 from dataclasses import dataclass
 from typing import Optional
@@ -97,7 +97,7 @@ class CheckWorker(QThread):
         """Verify xArm connection and basic functionality"""
         return CheckResult(self.component_name, True, "Connection established")
         # try:
-        #     arm = xArmRobot()
+        #     arm = xArmRobot_test()
         #     if not hasattr(arm, 'arm') or not arm.arm.connected:
         #         return CheckResult(self.component_name, False, "Connection failed")
                 
@@ -125,7 +125,6 @@ class CheckWorker(QThread):
         """Generic check for PLC-controlled components"""
         try:
             plc = PLC()
-            # Test connection
             plc.relay("test00000000")  # Test command
             return CheckResult(component, True, "PLC responsive")
         except ConnectionRefusedError:
@@ -171,7 +170,7 @@ class StatusCheckWindow(QWidget):
         self.checks_completed = 0
         self.init_ui()
     
-    def init_ui(self):
+    def init_ui(self) -> None:
         main_layout = QHBoxLayout()
         main_layout.setContentsMargins(16, 16, 16, 16)
         main_layout.setSpacing(20)
@@ -184,7 +183,7 @@ class StatusCheckWindow(QWidget):
                 background-color: #1e1e1e;
                 color: #d4d4d4;
                 font-family: 'Consolas', monospace;
-                font-size: 12px;
+                font-size: 25px;
                 border: 1px solid #3c3c3c;
                 border-radius: 4px;
                 padding: 8px;
@@ -231,14 +230,14 @@ class StatusCheckWindow(QWidget):
         main_layout.addWidget(scroll_area, 1)
         self.setLayout(main_layout)
     
-    def start_component_check(self):
+    def start_component_check(self) -> None:
         """Initiate hardware check for clicked component"""
         button = self.sender()
         if not isinstance(button, ComponentButton):
             return
         component_name = button.component_name
 
-        if button.status.color == QColor("#2ecc71"):
+        if button.status.color == QColor("#2ecc71") or button.status.color == QColor("yellow"):
             return
 
         button.status.color = QColor("yellow")
@@ -251,12 +250,12 @@ class StatusCheckWindow(QWidget):
         self.active_workers.append(worker) 
         worker.start()
     
-    def cleanup_worker(self, worker):
+    def cleanup_worker(self, worker) -> None:
         """Remove finished workers"""
         if worker in self.active_workers:
             self.active_workers.remove(worker)
             
-    def handle_check_result(self, result: CheckResult):
+    def handle_check_result(self, result: CheckResult) -> None:
         """Updated to handle CheckResult dataclass"""
         button = self.component_buttons[result.component]
         color = QColor("#2ecc71") if result.status else QColor("#e74c3c")
