@@ -193,7 +193,7 @@ class SettingsWindow(QWidget):
         for i in range(8):
             state = f"all{format(1 << i, '08b')}"
             self.plc.relay(state)
-            dialog = PortConfigDialog(i+1, options, self)
+            dialog = PortConfigDialog(state, options, self)
             result = dialog.exec()
             choice = dialog.combo.currentText() if dialog.selected is None else dialog.selected
 
@@ -206,7 +206,7 @@ class SettingsWindow(QWidget):
                 }
                 if choice in mapping:
                     mapping[choice].setText(state)
-                logger.info(f"Port {i+1} configured for {choice} with state {state}")
+                logger.info(f"Port {state} configured for {choice} with state {state}")
             elif result == 2 or choice == "skip":
                 continue
             else:
@@ -219,10 +219,28 @@ class PortConfigDialog(QDialog):
         self.selected = None
 
         layout = QVBoxLayout(self)
-        layout.addWidget(QLabel(f"Select device for port {port_number}:"))
+        label = QLabel(f"Select device for port {port_number}:")
+        label.setStyleSheet("font-size: 22px;")
+        layout.addWidget(label)
 
         self.combo = QComboBox()
         self.combo.addItems(options)
+        self.combo.setStyleSheet("""
+            QComboBox {
+            font-size: 25px;
+            padding: 6px 12px;
+            border-radius: 4px;
+            background-color: #383838;
+            color: #e0e0e0;
+            border: 1px solid #3c3c3c;
+            }
+            QComboBox QAbstractItemView {
+            background: #2d2d2d;
+            color: #e0e0e0;
+            selection-background-color: #88c0d0;
+            selection-color: #2d2d2d;
+            }
+        """)
         layout.addWidget(self.combo)
 
         btn_layout = QHBoxLayout()

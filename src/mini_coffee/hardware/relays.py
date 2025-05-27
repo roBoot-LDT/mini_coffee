@@ -1,6 +1,8 @@
 import time, socket, os
 from dotenv import load_dotenv # type: ignore
+from mini_coffee.utils.logger import setup_logger
 
+logger = setup_logger()
 load_dotenv()
 
 class PLC:
@@ -48,6 +50,7 @@ class PLC:
         self.relay("all00000000")
         
     def trigger_all(self) -> None:
+        logger.info("Triggering all relays")
         self.relay("all11111111")
         time.sleep(2)
         self.relay("all00000000")
@@ -56,6 +59,7 @@ class PLC:
         # Generate port states with only one '1' in each (8 relays)
         for i in range(8):
             state = f"all{format(1 << i, '08b')}"
+            logger.info(f"Detecting ports: {state}")
             self.relay(state)
             time.sleep(2)
         
