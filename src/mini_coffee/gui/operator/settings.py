@@ -72,8 +72,10 @@ class SettingsWindow(QWidget):
         layout.addWidget(device_group)
 
         # Control Buttons
-        btn_layout = QHBoxLayout()
-        btn_layout.setSpacing(12)
+        btn_layout_top = QHBoxLayout()
+        btn_layout_bottom = QHBoxLayout()
+        btn_layout_top.setSpacing(12)
+        btn_layout_bottom.setSpacing(12)
         self.trigger_btn = QPushButton("🔌 Trigger All Relays")
         self.detect_btn = QPushButton("🔎 Detect Ports")
         self.save_btn = QPushButton("💾 Save Settings")
@@ -84,11 +86,12 @@ class SettingsWindow(QWidget):
 
         for btn in [self.trigger_btn, self.detect_btn, self.save_btn]:
             btn.setMinimumHeight(40)
-        
-        btn_layout.addWidget(self.trigger_btn)
-        btn_layout.addWidget(self.detect_btn)
-        btn_layout.addWidget(self.save_btn)
-        layout.addLayout(btn_layout)
+
+        btn_layout_top.addWidget(self.trigger_btn)
+        btn_layout_top.addWidget(self.detect_btn)
+        btn_layout_bottom.addWidget(self.save_btn)
+        layout.addLayout(btn_layout_top)
+        layout.addLayout(btn_layout_bottom)
 
         scroll.setWidget(content)
         main_layout.addWidget(scroll)

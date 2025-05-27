@@ -7,7 +7,7 @@ from mini_coffee.hardware.arm.controller import MockArmController
 from PySide6.QtGui import QColor, QPalette
 from PySide6.QtCore import Qt
 from mini_coffee.gui.operator.settings import SettingsWindow
-from dotenv import load_dotenv
+from dotenv import load_dotenv # type: ignore
 from mini_coffee.hardware.relays import PLC
 from mini_coffee.utils.logger import setup_logger
 

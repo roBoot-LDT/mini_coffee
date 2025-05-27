@@ -11,12 +11,18 @@ from dotenv import load_dotenv # type: ignore
 load_dotenv()
 
 class MockArmController:
-    """Simulates arm movements for testing"""
-    def move_to(self, **coords):
-        print(f"[MOCK ARM] Moving to coordinates: {coords}")
-    
-    def get_position(self):
-        return {'x': 0, 'y': 0, 'z': 0, 'pitch': 0, 'roll': 0, 'yaw': 0}
+    def __init__(self):
+        self.current_position = "Arm Base"
+        
+    def move_to(self, **kwargs):
+        # Existing movement logic
+        print(f"Moving to {kwargs}")
+        
+    def get_position_name(self):
+        return self.current_position
+        
+    def set_position_name(self, name):
+        self.current_position = name
     
 class xArmRobot: 
     def __init__(self):

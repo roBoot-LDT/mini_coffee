@@ -9,7 +9,8 @@
       "pitch": 0,
       "roll": 0,
       "yaw": 0
-    }
+    },
+    "calibrated": true
   },
   "Coffee Machine": {
     "x": -185.0,
@@ -21,7 +22,8 @@
       "pitch": 0,
       "roll": 0,
       "yaw": 0
-    }
+    },
+    "calibrated": true
   },
   "Cup Dispenser S": {
     "x": 10.0,
@@ -33,7 +35,8 @@
       "pitch": 0,
       "roll": 0,
       "yaw": 0
-    }
+    },
+    "calibrated": true
   },
   "Cup Dispenser M": {
     "x": 10.0,
@@ -45,7 +48,8 @@
       "pitch": 0,
       "roll": 0,
       "yaw": 0
-    }
+    },
+    "calibrated": true
   },
   "Ice Cream Machine": {
     "x": 195.0,
@@ -57,7 +61,8 @@
       "pitch": 0,
       "roll": 0,
       "yaw": 0
-    }
+    },
+    "calibrated": true
   },
   "Delivery Area": {
     "x": -200.0,
@@ -69,7 +74,8 @@
       "pitch": 0,
       "roll": 0,
       "yaw": 0
-    }
+    },
+    "calibrated": false
   },
   "Bin": {
     "x": -50.0,
@@ -81,7 +87,8 @@
       "pitch": 0,
       "roll": 0,
       "yaw": 0
-    }
+    },
+    "calibrated": false
   },
   "Sugar Syrup": {
     "x": 225.0,
@@ -93,7 +100,8 @@
       "pitch": 0,
       "roll": 0,
       "yaw": 0
-    }
+    },
+    "calibrated": true
   },
   "Salted Caramel": {
     "x": 220.0,
@@ -105,7 +113,8 @@
       "pitch": 0,
       "roll": 0,
       "yaw": 0
-    }
+    },
+    "calibrated": true
   },
   "Blackberry": {
     "x": 210.0,
@@ -117,7 +126,8 @@
       "pitch": 0,
       "roll": 0,
       "yaw": 0
-    }
+    },
+    "calibrated": false
   },
   "Coconut": {
     "x": 210.0,
@@ -129,6 +139,7 @@
       "pitch": 0,
       "roll": 0,
       "yaw": 0
-    }
+    },
+    "calibrated": false
   }
 }

@@ -1,0 +1,537 @@
+2025-05-26 14:06:30 - INFO status_check - Starting check: Glass Slider
+2025-05-26 14:06:30 - INFO status_check - Starting check: Coffee Dumping
+2025-05-26 14:06:31 - INFO status_check - Starting check: Payment System
+2025-05-26 14:06:31 - INFO status_check - Starting check: Ice Cream Machine
+2025-05-26 14:06:31 - INFO status_check - Starting check: Cup Dispensers
+2025-05-26 14:06:32 - INFO status_check - Starting check: xArm
+2025-05-26 14:06:32 - INFO status_check - Starting check: Coffee Machine
+2025-05-26 14:06:37 - INFO settings - Settings saved successfully.
+2025-05-26 14:06:39 - INFO calibration - Moving arm to component: Coconut at {'x': 250, 'y': -350, 'z': 50, 'pitch': 0, 'roll': 0}
+2025-05-26 14:06:39 - INFO calibration - Component clicked: Coconut
+2025-05-26 14:06:40 - INFO calibration - Moving arm to component: Blackberry at {'x': 200, 'y': -300, 'z': 50, 'pitch': 0, 'roll': 0}
+2025-05-26 14:06:40 - INFO calibration - Component clicked: Blackberry
+2025-05-26 14:06:42 - INFO calibration - Moving arm to component: Bin at {'x': -300, 'y': 200, 'z': 100, 'pitch': 0, 'roll': 0}
+2025-05-26 14:06:42 - INFO calibration - Component clicked: Bin
+2025-05-26 14:06:42 - INFO calibration - Moving arm to component: Delivery Area at {'x': 0, 'y': 250, 'z': 80, 'pitch': 0, 'roll': 0}
+2025-05-26 14:06:42 - INFO calibration - Component clicked: Delivery Area
+2025-05-26 14:06:42 - INFO calibration - Moving arm to component: Arm Base at {'x': 0, 'y': 0, 'z': 0, 'pitch': 0, 'roll': 0, 'yaw': 0}
+2025-05-26 14:06:42 - INFO calibration - Component clicked: Arm Base
+2025-05-26 14:06:43 - INFO calibration - Moving arm to component: Salted Caramel at {'x': 150, 'y': -250, 'z': 50, 'pitch': 0, 'roll': 0}
+2025-05-26 14:06:43 - INFO calibration - Component clicked: Salted Caramel
+2025-05-26 14:06:43 - INFO calibration - Moving arm to component: Sugar Syrup at {'x': 100, 'y': -200, 'z': 50, 'pitch': 0, 'roll': 0}
+2025-05-26 14:06:43 - INFO calibration - Component clicked: Sugar Syrup
+2025-05-26 14:06:44 - INFO calibration - Moving arm to component: Ice Cream Machine at {'x': 200, 'y': 180, 'z': 120, 'pitch': -5, 'roll': -10}
+2025-05-26 14:06:44 - INFO calibration - Component clicked: Ice Cream Machine
+2025-05-26 14:06:44 - INFO calibration - Moving arm to component: Cup Dispenser S at {'x': -150, 'y': 50, 'z': 100, 'pitch': 0, 'roll': 0}
+2025-05-26 14:06:44 - INFO calibration - Component clicked: Cup Dispenser S
+2025-05-26 14:06:44 - INFO calibration - Moving arm to component: Cup Dispenser M at {'x': -200, 'y': 100, 'z': 100, 'pitch': 0, 'roll': 0}
+2025-05-26 14:06:44 - INFO calibration - Component clicked: Cup Dispenser M
+2025-05-26 14:06:45 - INFO calibration - Moving arm to component: Coffee Machine at {'x': 300, 'y': -100, 'z': 150, 'pitch': -15, 'roll': 0}
+2025-05-26 14:06:45 - INFO calibration - Component clicked: Coffee Machine
+2025-05-26 14:06:47 - INFO app - Application closed
+2025-05-26 14:13:21 - INFO app - Application closed
+2025-05-26 14:13:49 - INFO status_check - Starting check: Coffee Machine
+2025-05-26 14:13:50 - INFO status_check - Starting check: xArm
+2025-05-26 14:13:50 - INFO status_check - Starting check: Cup Dispensers
+2025-05-26 14:13:50 - INFO status_check - Starting check: Ice Cream Machine
+2025-05-26 14:13:50 - INFO status_check - Starting check: Payment System
+2025-05-26 14:13:51 - INFO status_check - Starting check: Coffee Dumping
+2025-05-26 14:13:51 - INFO status_check - Starting check: Glass Slider
+2025-05-26 14:14:00 - INFO app - Application closed
+2025-05-26 14:14:11 - INFO status_check - Starting check: Coffee Machine
+2025-05-26 14:14:11 - INFO status_check - Starting check: xArm
+2025-05-26 14:14:11 - INFO status_check - Starting check: Cup Dispensers
+2025-05-26 14:14:12 - INFO status_check - Starting check: Ice Cream Machine
+2025-05-26 14:14:12 - INFO status_check - Starting check: Payment System
+2025-05-26 14:14:12 - INFO status_check - Starting check: Coffee Dumping
+2025-05-26 14:14:13 - INFO status_check - Starting check: Glass Slider
+2025-05-26 14:14:17 - INFO app - Application closed
+2025-05-26 14:14:23 - INFO status_check - Starting check: Coffee Machine
+2025-05-26 14:14:23 - INFO status_check - Starting check: xArm
+2025-05-26 14:14:23 - INFO status_check - Starting check: Cup Dispensers
+2025-05-26 14:14:23 - INFO status_check - Starting check: Ice Cream Machine
+2025-05-26 14:14:24 - INFO status_check - Starting check: Coffee Dumping
+2025-05-26 14:14:24 - INFO status_check - Starting check: Payment System
+2025-05-26 14:14:25 - INFO status_check - Starting check: Glass Slider
+2025-05-26 14:14:31 - INFO calibration - Moving arm to component: Coconut at {'x': 250, 'y': -350, 'z': 50, 'pitch': 0, 'roll': 0}
+2025-05-26 14:14:31 - INFO calibration - Component clicked: Coconut
+2025-05-26 14:14:39 - INFO app - Application closed
+2025-05-26 14:15:17 - INFO status_check - Starting check: Coffee Machine
+2025-05-26 14:15:17 - INFO status_check - Starting check: xArm
+2025-05-26 14:15:18 - INFO status_check - Starting check: Cup Dispensers
+2025-05-26 14:15:18 - INFO status_check - Starting check: Ice Cream Machine
+2025-05-26 14:15:19 - INFO status_check - Starting check: Payment System
+2025-05-26 14:15:19 - INFO status_check - Starting check: Coffee Dumping
+2025-05-26 14:15:19 - INFO status_check - Starting check: Glass Slider
+2025-05-26 14:15:46 - INFO app - Application closed
+2025-05-26 14:18:18 - INFO status_check - Starting check: Coffee Machine
+2025-05-26 14:18:18 - INFO status_check - Starting check: Ice Cream Machine
+2025-05-26 14:18:19 - INFO status_check - Starting check: Payment System
+2025-05-26 14:18:19 - INFO status_check - Starting check: Glass Slider
+2025-05-26 14:18:20 - INFO status_check - Starting check: Coffee Dumping
+2025-05-26 14:18:20 - INFO status_check - Starting check: Cup Dispensers
+2025-05-26 14:18:20 - INFO status_check - Starting check: xArm
+2025-05-26 14:22:34 - INFO app - Application closed
+2025-05-26 14:22:49 - INFO status_check - Starting check: Coffee Machine
+2025-05-26 14:22:50 - INFO status_check - Starting check: Cup Dispensers
+2025-05-26 14:22:50 - INFO status_check - Starting check: xArm
+2025-05-26 14:22:50 - INFO status_check - Starting check: Ice Cream Machine
+2025-05-26 14:22:50 - INFO status_check - Starting check: Payment System
+2025-05-26 14:22:51 - INFO status_check - Starting check: Coffee Dumping
+2025-05-26 14:22:51 - INFO status_check - Starting check: Glass Slider
+2025-05-26 14:25:16 - INFO app - Application closed
+2025-05-26 14:36:27 - INFO status_check - Starting check: Coffee Machine
+2025-05-26 14:36:27 - INFO status_check - Starting check: xArm
+2025-05-26 14:36:28 - INFO status_check - Starting check: Cup Dispensers
+2025-05-26 14:36:28 - INFO status_check - Starting check: Ice Cream Machine
+2025-05-26 14:36:29 - INFO status_check - Starting check: Payment System
+2025-05-26 14:36:29 - INFO status_check - Starting check: Coffee Dumping
+2025-05-26 14:36:29 - INFO status_check - Starting check: Glass Slider
+2025-05-26 14:36:33 - INFO calibration - Moving arm to component: Coffee Machine at {'x': 300, 'y': -100, 'z': 150, 'pitch': -15, 'roll': 0}
+2025-05-26 14:36:38 - INFO calibration - Moving arm to component: Cup Dispenser S at {'x': -150, 'y': 50, 'z': 100, 'pitch': 0, 'roll': 0}
+2025-05-26 14:37:24 - INFO app - Application closed
+2025-05-26 14:38:13 - INFO status_check - Starting check: Coffee Machine
+2025-05-26 14:38:13 - INFO status_check - Starting check: xArm
+2025-05-26 14:38:13 - INFO status_check - Starting check: Cup Dispensers
+2025-05-26 14:38:14 - INFO status_check - Starting check: Ice Cream Machine
+2025-05-26 14:38:14 - INFO status_check - Starting check: Payment System
+2025-05-26 14:38:14 - INFO status_check - Starting check: Coffee Dumping
+2025-05-26 14:38:14 - INFO status_check - Starting check: Glass Slider
+2025-05-26 14:38:20 - INFO calibration - Moving arm to component: Bin at {'x': -300, 'y': 200, 'z': 100, 'pitch': 0, 'roll': 0}
+2025-05-26 14:38:22 - INFO calibration - Moving arm to component: Delivery Area at {'x': 0, 'y': 250, 'z': 80, 'pitch': 0, 'roll': 0}
+2025-05-26 14:38:24 - INFO calibration - Moving arm to component: Coffee Machine at {'x': 300, 'y': -100, 'z': 150, 'pitch': -15, 'roll': 0}
+2025-05-26 14:38:26 - INFO calibration - Moving arm to component: Cup Dispenser M at {'x': -200, 'y': 100, 'z': 100, 'pitch': 0, 'roll': 0}
+2025-05-26 14:38:27 - INFO calibration - Moving arm to component: Cup Dispenser S at {'x': -150, 'y': 50, 'z': 100, 'pitch': 0, 'roll': 0}
+2025-05-26 14:38:28 - INFO calibration - Moving arm to component: Ice Cream Machine at {'x': 200, 'y': 180, 'z': 120, 'pitch': -5, 'roll': -10}
+2025-05-26 14:38:29 - INFO calibration - Moving arm to component: Sugar Syrup at {'x': 100, 'y': -200, 'z': 50, 'pitch': 0, 'roll': 0}
+2025-05-26 14:38:31 - INFO calibration - Moving arm to component: Salted Caramel at {'x': 150, 'y': -250, 'z': 50, 'pitch': 0, 'roll': 0}
+2025-05-26 14:38:33 - INFO calibration - Moving arm to component: Blackberry at {'x': 200, 'y': -300, 'z': 50, 'pitch': 0, 'roll': 0}
+2025-05-26 14:38:34 - INFO calibration - Moving arm to component: Coconut at {'x': 250, 'y': -350, 'z': 50, 'pitch': 0, 'roll': 0}
+2025-05-26 14:38:49 - INFO calibration - Moving arm to component: Ice Cream Machine at {'x': 200, 'y': 180, 'z': 120, 'pitch': -5, 'roll': -10}
+2025-05-26 14:39:00 - INFO app - Application closed
+2025-05-26 14:41:16 - INFO status_check - Starting check: Coffee Machine
+2025-05-26 14:41:17 - INFO status_check - Starting check: Cup Dispensers
+2025-05-26 14:41:17 - INFO status_check - Starting check: xArm
+2025-05-26 14:41:17 - INFO status_check - Starting check: Ice Cream Machine
+2025-05-26 14:41:18 - INFO status_check - Starting check: Payment System
+2025-05-26 14:41:18 - INFO status_check - Starting check: Coffee Dumping
+2025-05-26 14:41:18 - INFO status_check - Starting check: Glass Slider
+2025-05-26 14:41:25 - INFO app - Application closed
+2025-05-26 14:41:50 - INFO status_check - Starting check: Coffee Machine
+2025-05-26 14:41:50 - INFO status_check - Starting check: xArm
+2025-05-26 14:41:50 - INFO status_check - Starting check: Payment System
+2025-05-26 14:41:51 - INFO status_check - Starting check: Ice Cream Machine
+2025-05-26 14:41:51 - INFO status_check - Starting check: Cup Dispensers
+2025-05-26 14:41:52 - INFO status_check - Starting check: Glass Slider
+2025-05-26 14:41:52 - INFO status_check - Starting check: Coffee Dumping
+2025-05-26 14:41:59 - INFO app - Application closed
+2025-05-26 14:42:54 - INFO status_check - Starting check: Coffee Machine
+2025-05-26 14:42:54 - INFO status_check - Starting check: xArm
+2025-05-26 14:42:55 - INFO status_check - Starting check: Cup Dispensers
+2025-05-26 14:42:55 - INFO status_check - Starting check: Ice Cream Machine
+2025-05-26 14:42:55 - INFO status_check - Starting check: Payment System
+2025-05-26 14:42:55 - INFO status_check - Starting check: Coffee Dumping
+2025-05-26 14:42:56 - INFO status_check - Starting check: Glass Slider
+2025-05-26 14:43:07 - INFO app - Application closed
+2025-05-26 14:43:51 - INFO status_check - Starting check: Coffee Machine
+2025-05-26 14:43:51 - INFO status_check - Starting check: xArm
+2025-05-26 14:43:52 - INFO status_check - Starting check: Cup Dispensers
+2025-05-26 14:43:52 - INFO status_check - Starting check: Ice Cream Machine
+2025-05-26 14:43:52 - INFO status_check - Starting check: Payment System
+2025-05-26 14:43:53 - INFO status_check - Starting check: Coffee Dumping
+2025-05-26 14:43:53 - INFO status_check - Starting check: Glass Slider
+2025-05-26 14:43:59 - INFO app - Application closed
+2025-05-26 14:44:16 - INFO status_check - Starting check: Coffee Machine
+2025-05-26 14:44:16 - INFO status_check - Starting check: xArm
+2025-05-26 14:44:17 - INFO status_check - Starting check: Cup Dispensers
+2025-05-26 14:44:17 - INFO status_check - Starting check: Ice Cream Machine
+2025-05-26 14:44:17 - INFO status_check - Starting check: Payment System
+2025-05-26 14:44:17 - INFO status_check - Starting check: Coffee Dumping
+2025-05-26 14:44:18 - INFO status_check - Starting check: Glass Slider
+2025-05-26 14:44:22 - INFO app - Application closed
+2025-05-26 14:44:49 - INFO app - Application closed
+2025-05-26 14:47:48 - INFO status_check - Starting check: Coffee Machine
+2025-05-26 14:47:48 - INFO status_check - Starting check: xArm
+2025-05-26 14:47:49 - INFO status_check - Starting check: Cup Dispensers
+2025-05-26 14:47:49 - INFO status_check - Starting check: Ice Cream Machine
+2025-05-26 14:47:49 - INFO status_check - Starting check: Payment System
+2025-05-26 14:47:49 - INFO status_check - Starting check: Coffee Dumping
+2025-05-26 14:47:50 - INFO status_check - Starting check: Glass Slider
+2025-05-26 14:47:58 - INFO app - Application closed
+2025-05-26 14:48:25 - INFO status_check - Starting check: Coffee Machine
+2025-05-26 14:48:25 - INFO status_check - Starting check: xArm
+2025-05-26 14:48:25 - INFO status_check - Starting check: Cup Dispensers
+2025-05-26 14:48:26 - INFO status_check - Starting check: Ice Cream Machine
+2025-05-26 14:48:26 - INFO status_check - Starting check: Payment System
+2025-05-26 14:48:26 - INFO status_check - Starting check: Coffee Dumping
+2025-05-26 14:48:26 - INFO status_check - Starting check: Glass Slider
+2025-05-26 14:48:54 - INFO app - Application closed
+2025-05-26 14:50:14 - INFO status_check - Starting check: Coffee Machine
+2025-05-26 14:50:14 - INFO status_check - Starting check: xArm
+2025-05-26 14:50:14 - INFO status_check - Starting check: Cup Dispensers
+2025-05-26 14:50:15 - INFO status_check - Starting check: Ice Cream Machine
+2025-05-26 14:50:15 - INFO status_check - Starting check: Payment System
+2025-05-26 14:50:15 - INFO status_check - Starting check: Coffee Dumping
+2025-05-26 14:50:15 - INFO status_check - Starting check: Glass Slider
+2025-05-26 14:50:18 - INFO calibration - Moving arm to component: Coffee Machine at {'x': 300, 'y': -100, 'z': 150, 'pitch': -15, 'roll': 0}
+2025-05-26 14:50:24 - INFO calibration - Moving arm to component: Coffee Machine at {'x': 300, 'y': -100, 'z': 150, 'pitch': -15, 'roll': 0}
+2025-05-26 14:50:30 - INFO app - Application closed
+2025-05-26 14:50:35 - INFO status_check - Starting check: Coffee Machine
+2025-05-26 14:50:35 - INFO status_check - Starting check: Cup Dispensers
+2025-05-26 14:50:35 - INFO status_check - Starting check: xArm
+2025-05-26 14:50:35 - INFO status_check - Starting check: Ice Cream Machine
+2025-05-26 14:50:36 - INFO status_check - Starting check: Payment System
+2025-05-26 14:50:36 - INFO status_check - Starting check: Coffee Dumping
+2025-05-26 14:50:36 - INFO status_check - Starting check: Glass Slider
+2025-05-26 14:50:39 - INFO calibration - Moving arm to component: Coffee Machine at {'x': 300, 'y': -100, 'z': 150, 'pitch': -15, 'roll': 0}
+2025-05-26 14:51:05 - INFO app - Application closed
+2025-05-26 14:51:55 - INFO status_check - Starting check: Coffee Machine
+2025-05-26 14:51:55 - INFO status_check - Starting check: xArm
+2025-05-26 14:51:56 - INFO status_check - Starting check: Cup Dispensers
+2025-05-26 14:51:56 - INFO status_check - Starting check: Ice Cream Machine
+2025-05-26 14:51:56 - INFO status_check - Starting check: Payment System
+2025-05-26 14:51:56 - INFO status_check - Starting check: Coffee Dumping
+2025-05-26 14:51:57 - INFO status_check - Starting check: Glass Slider
+2025-05-26 14:52:00 - INFO calibration - Moving arm to component: Cup Dispenser S at {'x': -150, 'y': 50, 'z': 100, 'pitch': 0, 'roll': 0}
+2025-05-26 14:52:04 - INFO app - Application closed
+2025-05-26 14:52:31 - INFO status_check - Starting check: Coffee Machine
+2025-05-26 14:52:32 - INFO status_check - Starting check: xArm
+2025-05-26 14:52:32 - INFO status_check - Starting check: Cup Dispensers
+2025-05-26 14:52:32 - INFO status_check - Starting check: Ice Cream Machine
+2025-05-26 14:52:32 - INFO status_check - Starting check: Payment System
+2025-05-26 14:52:33 - INFO status_check - Starting check: Coffee Dumping
+2025-05-26 14:52:33 - INFO status_check - Starting check: Glass Slider
+2025-05-26 14:52:36 - INFO calibration - Moving arm to component: Ice Cream Machine at {'x': 200, 'y': 180, 'z': 120, 'pitch': -5, 'roll': -10}
+2025-05-26 14:52:47 - INFO app - Application closed
+2025-05-26 14:53:45 - INFO status_check - Starting check: Coffee Machine
+2025-05-26 14:53:46 - INFO status_check - Starting check: xArm
+2025-05-26 14:53:46 - INFO status_check - Starting check: Cup Dispensers
+2025-05-26 14:53:47 - INFO status_check - Starting check: Payment System
+2025-05-26 14:53:47 - INFO status_check - Starting check: Coffee Dumping
+2025-05-26 14:53:47 - INFO status_check - Starting check: Glass Slider
+2025-05-26 14:53:47 - INFO status_check - Starting check: Ice Cream Machine
+2025-05-26 14:53:51 - INFO calibration - Moving arm to component: Cup Dispenser S at {'x': -150, 'y': 50, 'z': 100, 'pitch': 0, 'roll': 0}
+2025-05-26 14:53:54 - INFO calibration - Moving arm to component: Coffee Machine at {'x': 300, 'y': -100, 'z': 150, 'pitch': -15, 'roll': 0}
+2025-05-26 14:54:08 - INFO app - Application closed
+2025-05-26 14:55:38 - INFO status_check - Starting check: Coffee Machine
+2025-05-26 14:55:38 - INFO status_check - Starting check: xArm
+2025-05-26 14:55:39 - INFO status_check - Starting check: Cup Dispensers
+2025-05-26 14:55:39 - INFO status_check - Starting check: Ice Cream Machine
+2025-05-26 14:55:39 - INFO status_check - Starting check: Payment System
+2025-05-26 14:55:39 - INFO status_check - Starting check: Coffee Dumping
+2025-05-26 14:55:40 - INFO status_check - Starting check: Glass Slider
+2025-05-26 14:55:42 - INFO calibration - Moving arm to component: Ice Cream Machine at {'x': 200, 'y': 180, 'z': 120, 'pitch': -5, 'roll': -10}
+2025-05-26 14:55:52 - INFO app - Application closed
+2025-05-26 14:58:28 - INFO app - Application closed
+2025-05-26 14:59:47 - INFO status_check - Starting check: Coffee Machine
+2025-05-26 14:59:47 - INFO status_check - Starting check: xArm
+2025-05-26 14:59:47 - INFO status_check - Starting check: Cup Dispensers
+2025-05-26 14:59:47 - INFO status_check - Starting check: Ice Cream Machine
+2025-05-26 14:59:48 - INFO status_check - Starting check: Payment System
+2025-05-26 14:59:48 - INFO status_check - Starting check: Coffee Dumping
+2025-05-26 14:59:48 - INFO status_check - Starting check: Glass Slider
+2025-05-26 14:59:51 - INFO calibration - Moving arm to component: Ice Cream Machine at {'x': 200, 'y': 180, 'z': 120, 'pitch': -5, 'roll': -10}
+2025-05-26 14:59:53 - INFO calibration - Moving arm to component: Ice Cream Machine at {'x': 200, 'y': 180, 'z': 120, 'pitch': -5, 'roll': -10}
+2025-05-26 14:59:55 - INFO calibration - Saving position for Ice Cream Machine: {'x': 0, 'y': 0, 'z': 0, 'pitch': 0, 'roll': 0, 'yaw': 0}
+2025-05-26 14:59:59 - INFO app - Application closed
+2025-05-26 15:00:46 - INFO app - Application closed
+2025-05-26 15:06:13 - INFO status_check - Starting check: Coffee Machine
+2025-05-26 15:06:14 - INFO status_check - Starting check: xArm
+2025-05-26 15:06:14 - INFO status_check - Starting check: Cup Dispensers
+2025-05-26 15:06:14 - INFO status_check - Starting check: Ice Cream Machine
+2025-05-26 15:06:15 - INFO status_check - Starting check: Payment System
+2025-05-26 15:06:15 - INFO status_check - Starting check: Coffee Dumping
+2025-05-26 15:06:15 - INFO status_check - Starting check: Glass Slider
+2025-05-26 15:06:19 - INFO calibration - Moving arm to component: Ice Cream Machine at {'x': 200, 'y': 180, 'z': 120, 'pitch': -5, 'roll': -10}
+2025-05-26 15:06:21 - INFO app - Application closed
+2025-05-26 15:07:02 - INFO status_check - Starting check: Coffee Machine
+2025-05-26 15:07:03 - INFO status_check - Starting check: xArm
+2025-05-26 15:07:03 - INFO status_check - Starting check: Cup Dispensers
+2025-05-26 15:07:03 - INFO status_check - Starting check: Ice Cream Machine
+2025-05-26 15:07:03 - INFO status_check - Starting check: Payment System
+2025-05-26 15:07:03 - INFO status_check - Starting check: Coffee Dumping
+2025-05-26 15:07:04 - INFO status_check - Starting check: Glass Slider
+2025-05-26 15:07:08 - INFO calibration - Moving arm to component: Ice Cream Machine at {'x': 200, 'y': 180, 'z': 120, 'pitch': -5, 'roll': -10}
+2025-05-26 15:07:18 - INFO app - Application closed
+2025-05-26 15:09:41 - INFO status_check - Starting check: Coffee Machine
+2025-05-26 15:09:41 - INFO status_check - Starting check: xArm
+2025-05-26 15:09:41 - INFO status_check - Starting check: Cup Dispensers
+2025-05-26 15:09:42 - INFO status_check - Starting check: Ice Cream Machine
+2025-05-26 15:09:42 - INFO status_check - Starting check: Payment System
+2025-05-26 15:09:42 - INFO status_check - Starting check: Coffee Dumping
+2025-05-26 15:09:43 - INFO status_check - Starting check: Glass Slider
+2025-05-26 15:09:47 - INFO calibration - Moving arm to component: Ice Cream Machine at {'x': 200, 'y': 180, 'z': 120, 'pitch': -5, 'roll': -10}
+2025-05-26 15:09:50 - INFO app - Application closed
+2025-05-26 15:11:01 - INFO status_check - Starting check: Coffee Machine
+2025-05-26 15:11:01 - INFO status_check - Starting check: xArm
+2025-05-26 15:11:02 - INFO status_check - Starting check: Cup Dispensers
+2025-05-26 15:11:02 - INFO status_check - Starting check: Ice Cream Machine
+2025-05-26 15:11:02 - INFO status_check - Starting check: Payment System
+2025-05-26 15:11:03 - INFO status_check - Starting check: Coffee Dumping
+2025-05-26 15:11:03 - INFO status_check - Starting check: Glass Slider
+2025-05-26 15:11:14 - INFO app - Application closed
+2025-05-26 15:11:42 - INFO status_check - Starting check: Coffee Machine
+2025-05-26 15:11:43 - INFO status_check - Starting check: xArm
+2025-05-26 15:11:43 - INFO status_check - Starting check: Cup Dispensers
+2025-05-26 15:11:43 - INFO status_check - Starting check: Ice Cream Machine
+2025-05-26 15:11:44 - INFO status_check - Starting check: Payment System
+2025-05-26 15:11:44 - INFO status_check - Starting check: Coffee Dumping
+2025-05-26 15:11:45 - INFO status_check - Starting check: Glass Slider
+2025-05-26 15:11:49 - INFO app - Application closed
+2025-05-26 15:11:59 - INFO status_check - Starting check: Coffee Machine
+2025-05-26 15:11:59 - INFO status_check - Starting check: xArm
+2025-05-26 15:12:00 - INFO status_check - Starting check: Cup Dispensers
+2025-05-26 15:12:00 - INFO status_check - Starting check: Ice Cream Machine
+2025-05-26 15:12:00 - INFO status_check - Starting check: Payment System
+2025-05-26 15:12:00 - INFO status_check - Starting check: Coffee Dumping
+2025-05-26 15:12:01 - INFO status_check - Starting check: Glass Slider
+2025-05-26 15:12:06 - INFO app - Application closed
+2025-05-26 15:12:15 - INFO status_check - Starting check: Coffee Machine
+2025-05-26 15:12:15 - INFO status_check - Starting check: xArm
+2025-05-26 15:12:15 - INFO status_check - Starting check: Cup Dispensers
+2025-05-26 15:12:16 - INFO status_check - Starting check: Ice Cream Machine
+2025-05-26 15:12:16 - INFO status_check - Starting check: Payment System
+2025-05-26 15:12:16 - INFO status_check - Starting check: Coffee Dumping
+2025-05-26 15:12:16 - INFO status_check - Starting check: Glass Slider
+2025-05-26 15:12:21 - INFO app - Application closed
+2025-05-26 15:14:03 - INFO status_check - Starting check: Coffee Machine
+2025-05-26 15:14:03 - INFO status_check - Starting check: xArm
+2025-05-26 15:14:04 - INFO status_check - Starting check: Cup Dispensers
+2025-05-26 15:14:04 - INFO status_check - Starting check: Ice Cream Machine
+2025-05-26 15:14:04 - INFO status_check - Starting check: Payment System
+2025-05-26 15:14:04 - INFO status_check - Starting check: Coffee Dumping
+2025-05-26 15:14:05 - INFO status_check - Starting check: Glass Slider
+2025-05-26 15:14:08 - INFO calibration - Moving arm to component: Coffee Machine at {'x': 300, 'y': -100, 'z': 150, 'pitch': -15, 'roll': 0}
+2025-05-26 15:14:09 - INFO calibration - Moving arm to component: Coffee Machine at {'x': 300, 'y': -100, 'z': 150, 'pitch': -15, 'roll': 0}
+2025-05-26 15:14:13 - INFO app - Application closed
+2025-05-26 15:21:54 - INFO status_check - Starting check: Coffee Machine
+2025-05-26 15:21:54 - INFO status_check - Starting check: xArm
+2025-05-26 15:21:55 - INFO status_check - Starting check: Cup Dispensers
+2025-05-26 15:21:55 - INFO status_check - Starting check: Ice Cream Machine
+2025-05-26 15:21:55 - INFO status_check - Starting check: Payment System
+2025-05-26 15:21:55 - INFO status_check - Starting check: Coffee Dumping
+2025-05-26 15:21:56 - INFO status_check - Starting check: Glass Slider
+2025-05-26 15:21:59 - INFO calibration - Moving arm to component: Ice Cream Machine at {'x': 200, 'y': 180, 'z': 120, 'pitch': -5, 'roll': -10}
+2025-05-26 15:22:05 - INFO calibration - Moving arm to component: Coffee Machine at {'x': 300, 'y': -100, 'z': 150, 'pitch': -15, 'roll': 0}
+2025-05-26 15:22:07 - INFO calibration - Moving arm to component: Cup Dispenser M at {'x': -200, 'y': 100, 'z': 100, 'pitch': 0, 'roll': 0}
+2025-05-26 15:22:18 - INFO calibration - Moving arm to component: Cup Dispenser S at {'x': -150, 'y': 50, 'z': 100, 'pitch': 0, 'roll': 0}
+2025-05-26 15:22:29 - INFO app - Application closed
+2025-05-26 15:23:58 - INFO status_check - Starting check: Coffee Machine
+2025-05-26 15:23:58 - INFO status_check - Starting check: xArm
+2025-05-26 15:23:58 - INFO status_check - Starting check: Cup Dispensers
+2025-05-26 15:23:58 - INFO status_check - Starting check: Ice Cream Machine
+2025-05-26 15:23:59 - INFO status_check - Starting check: Payment System
+2025-05-26 15:23:59 - INFO status_check - Starting check: Coffee Dumping
+2025-05-26 15:23:59 - INFO status_check - Starting check: Glass Slider
+2025-05-26 15:24:02 - INFO calibration - Moving arm to component: Cup Dispenser S at {'x': -150, 'y': 50, 'z': 100, 'pitch': 0, 'roll': 0}
+2025-05-26 15:24:05 - INFO calibration - Moving arm to component: Cup Dispenser M at {'x': -200, 'y': 100, 'z': 100, 'pitch': 0, 'roll': 0}
+2025-05-26 15:24:05 - INFO calibration - Moving arm to component: Coffee Machine at {'x': 300, 'y': -100, 'z': 150, 'pitch': -15, 'roll': 0}
+2025-05-26 15:24:10 - INFO calibration - Moving arm to component: Ice Cream Machine at {'x': 200, 'y': 180, 'z': 120, 'pitch': -5, 'roll': -10}
+2025-05-26 15:24:16 - INFO calibration - Moving arm to component: Sugar Syrup at {'x': 100, 'y': -200, 'z': 50, 'pitch': 0, 'roll': 0}
+2025-05-26 15:24:31 - INFO app - Application closed
+2025-05-26 15:42:39 - INFO app - Application closed
+2025-05-26 15:42:56 - INFO settings - Settings saved successfully.
+2025-05-26 15:42:59 - INFO app - Application closed
+2025-05-26 15:43:06 - INFO settings - Settings saved successfully.
+2025-05-26 15:43:08 - INFO app - Application closed
+2025-05-26 15:49:33 - INFO status_check - Starting check: Coffee Machine
+2025-05-26 15:49:33 - INFO status_check - Starting check: Cup Dispensers
+2025-05-26 15:49:34 - INFO status_check - Starting check: xArm
+2025-05-26 15:49:34 - INFO status_check - Starting check: Ice Cream Machine
+2025-05-26 15:49:35 - INFO status_check - Starting check: Payment System
+2025-05-26 15:49:35 - INFO status_check - Starting check: Coffee Dumping
+2025-05-26 15:49:35 - INFO status_check - Starting check: Glass Slider
+2025-05-26 15:52:06 - INFO calibration - Moving arm to component: Cup Dispenser S at {'x': -150, 'y': 50, 'z': 100, 'pitch': 0, 'roll': 0}
+2025-05-26 15:52:10 - INFO calibration - Moving arm to component: Cup Dispenser M at {'x': -200, 'y': 100, 'z': 100, 'pitch': 0, 'roll': 0}
+2025-05-26 15:52:24 - INFO app - Application closed
+2025-05-26 15:54:16 - INFO status_check - Starting check: Coffee Machine
+2025-05-26 15:54:16 - INFO status_check - Starting check: xArm
+2025-05-26 15:54:16 - INFO status_check - Starting check: Cup Dispensers
+2025-05-26 15:54:17 - INFO status_check - Starting check: Ice Cream Machine
+2025-05-26 15:54:17 - INFO status_check - Starting check: Payment System
+2025-05-26 15:54:17 - INFO status_check - Starting check: Coffee Dumping
+2025-05-26 15:54:17 - INFO status_check - Starting check: Glass Slider
+2025-05-26 15:54:24 - INFO calibration - Moving arm to component: Cup Dispenser S at {'x': -150, 'y': 50, 'z': 100, 'pitch': 0, 'roll': 0}
+2025-05-26 15:54:31 - INFO calibration - Moving arm to component: Coffee Machine at {'x': 300, 'y': -100, 'z': 150, 'pitch': -15, 'roll': 0}
+2025-05-26 15:55:12 - INFO app - Application closed
+2025-05-26 15:56:24 - INFO status_check - Starting check: Coffee Machine
+2025-05-26 15:56:24 - INFO status_check - Starting check: xArm
+2025-05-26 15:56:25 - INFO status_check - Starting check: Cup Dispensers
+2025-05-26 15:56:25 - INFO status_check - Starting check: Ice Cream Machine
+2025-05-26 15:56:25 - INFO status_check - Starting check: Payment System
+2025-05-26 15:56:25 - INFO status_check - Starting check: Coffee Dumping
+2025-05-26 15:56:26 - INFO status_check - Starting check: Glass Slider
+2025-05-26 15:56:29 - INFO calibration - Moving arm to component: Ice Cream Machine at {'x': 200, 'y': 180, 'z': 120, 'pitch': -5, 'roll': -10}
+2025-05-26 15:56:35 - INFO app - Application closed
+2025-05-26 15:56:57 - INFO status_check - Starting check: Coffee Machine
+2025-05-26 15:56:57 - INFO status_check - Starting check: xArm
+2025-05-26 15:56:58 - INFO status_check - Starting check: Cup Dispensers
+2025-05-26 15:56:58 - INFO status_check - Starting check: Ice Cream Machine
+2025-05-26 15:56:58 - INFO status_check - Starting check: Payment System
+2025-05-26 15:56:58 - INFO status_check - Starting check: Coffee Dumping
+2025-05-26 15:56:58 - INFO status_check - Starting check: Glass Slider
+2025-05-26 15:57:02 - INFO calibration - Moving arm to component: Ice Cream Machine at {'x': 200, 'y': 180, 'z': 120, 'pitch': -5, 'roll': -10}
+2025-05-26 15:57:04 - INFO calibration - Moving arm to component: Cup Dispenser S at {'x': -150, 'y': 50, 'z': 100, 'pitch': 0, 'roll': 0}
+2025-05-26 15:57:07 - INFO calibration - Moving arm to component: Coffee Machine at {'x': 300, 'y': -100, 'z': 150, 'pitch': -15, 'roll': 0}
+2025-05-26 15:57:14 - INFO app - Application closed
+2025-05-26 15:58:00 - INFO status_check - Starting check: Coffee Machine
+2025-05-26 15:58:00 - INFO status_check - Starting check: xArm
+2025-05-26 15:58:00 - INFO status_check - Starting check: Cup Dispensers
+2025-05-26 15:58:01 - INFO status_check - Starting check: Ice Cream Machine
+2025-05-26 15:58:01 - INFO status_check - Starting check: Payment System
+2025-05-26 15:58:01 - INFO status_check - Starting check: Coffee Dumping
+2025-05-26 15:58:02 - INFO status_check - Starting check: Glass Slider
+2025-05-26 15:58:04 - INFO calibration - Moving arm to component: Ice Cream Machine at {'x': 200, 'y': 180, 'z': 120, 'pitch': -5, 'roll': -10}
+2025-05-26 15:58:07 - INFO calibration - Moving arm to component: Cup Dispenser S at {'x': -150, 'y': 50, 'z': 100, 'pitch': 0, 'roll': 0}
+2025-05-26 15:58:11 - INFO app - Application closed
+2025-05-26 15:59:52 - INFO status_check - Starting check: Coffee Machine
+2025-05-26 15:59:53 - INFO status_check - Starting check: xArm
+2025-05-26 15:59:53 - INFO status_check - Starting check: Ice Cream Machine
+2025-05-26 15:59:53 - INFO status_check - Starting check: Payment System
+2025-05-26 15:59:54 - INFO status_check - Starting check: Glass Slider
+2025-05-26 15:59:54 - INFO status_check - Starting check: Coffee Dumping
+2025-05-26 15:59:55 - INFO status_check - Starting check: Cup Dispensers
+2025-05-26 15:59:57 - INFO calibration - Moving arm to component: Ice Cream Machine at {'x': 200, 'y': 180, 'z': 120, 'pitch': -5, 'roll': -10}
+2025-05-26 16:00:04 - INFO app - Application closed
+2025-05-26 16:01:15 - INFO status_check - Starting check: Coffee Machine
+2025-05-26 16:01:15 - INFO status_check - Starting check: xArm
+2025-05-26 16:01:16 - INFO status_check - Starting check: Cup Dispensers
+2025-05-26 16:01:16 - INFO status_check - Starting check: Ice Cream Machine
+2025-05-26 16:01:16 - INFO status_check - Starting check: Payment System
+2025-05-26 16:01:17 - INFO status_check - Starting check: Coffee Dumping
+2025-05-26 16:01:17 - INFO status_check - Starting check: Glass Slider
+2025-05-26 16:01:20 - INFO calibration - Moving arm to component: Ice Cream Machine at {'x': 200, 'y': 180, 'z': 120, 'pitch': -5, 'roll': -10}
+2025-05-26 16:01:21 - INFO calibration - Moving arm to component: Cup Dispenser M at {'x': -200, 'y': 100, 'z': 100, 'pitch': 0, 'roll': 0}
+2025-05-26 16:01:30 - INFO app - Application closed
+2025-05-26 16:04:18 - INFO status_check - Starting check: Coffee Machine
+2025-05-26 16:04:18 - INFO status_check - Starting check: xArm
+2025-05-26 16:04:19 - INFO status_check - Starting check: Ice Cream Machine
+2025-05-26 16:04:19 - INFO status_check - Starting check: Payment System
+2025-05-26 16:04:19 - INFO status_check - Starting check: Coffee Dumping
+2025-05-26 16:04:19 - INFO status_check - Starting check: Glass Slider
+2025-05-26 16:04:20 - INFO status_check - Starting check: Cup Dispensers
+2025-05-26 16:04:23 - INFO calibration - Moving arm to component: Cup Dispenser S at {'x': -150, 'y': 50, 'z': 100, 'pitch': 0, 'roll': 0}
+2025-05-26 16:04:43 - INFO calibration - Moving arm to component: Coffee Machine at {'x': 300, 'y': -100, 'z': 150, 'pitch': -15, 'roll': 0}
+2025-05-26 16:06:17 - INFO app - Application closed
+2025-05-26 16:07:20 - INFO status_check - Starting check: Coffee Machine
+2025-05-26 16:07:21 - INFO status_check - Starting check: xArm
+2025-05-26 16:07:21 - INFO status_check - Starting check: Cup Dispensers
+2025-05-26 16:07:21 - INFO status_check - Starting check: Ice Cream Machine
+2025-05-26 16:07:21 - INFO status_check - Starting check: Payment System
+2025-05-26 16:07:22 - INFO status_check - Starting check: Coffee Dumping
+2025-05-26 16:07:22 - INFO status_check - Starting check: Glass Slider
+2025-05-26 16:07:25 - INFO calibration - Moving arm to component: Ice Cream Machine at {'x': 200, 'y': 180, 'z': 120, 'pitch': -5, 'roll': -10}
+2025-05-26 16:07:31 - INFO app - Application closed
+2025-05-26 16:07:58 - INFO status_check - Starting check: Coffee Machine
+2025-05-26 16:07:58 - INFO status_check - Starting check: xArm
+2025-05-26 16:07:58 - INFO status_check - Starting check: Cup Dispensers
+2025-05-26 16:07:59 - INFO status_check - Starting check: Ice Cream Machine
+2025-05-26 16:07:59 - INFO status_check - Starting check: Payment System
+2025-05-26 16:07:59 - INFO status_check - Starting check: Coffee Dumping
+2025-05-26 16:07:59 - INFO status_check - Starting check: Glass Slider
+2025-05-26 16:08:02 - INFO calibration - Moving arm to component: Ice Cream Machine at {'x': 200, 'y': 180, 'z': 120, 'pitch': -5, 'roll': -10}
+2025-05-26 16:08:08 - INFO app - Application closed
+2025-05-26 16:08:33 - INFO status_check - Starting check: Coffee Machine
+2025-05-26 16:08:34 - INFO status_check - Starting check: xArm
+2025-05-26 16:08:34 - INFO status_check - Starting check: Cup Dispensers
+2025-05-26 16:08:34 - INFO status_check - Starting check: Ice Cream Machine
+2025-05-26 16:08:34 - INFO status_check - Starting check: Payment System
+2025-05-26 16:08:34 - INFO status_check - Starting check: Coffee Dumping
+2025-05-26 16:08:35 - INFO status_check - Starting check: Glass Slider
+2025-05-26 16:08:37 - INFO calibration - Moving arm to component: Ice Cream Machine at {'x': 200, 'y': 180, 'z': 120, 'pitch': -5, 'roll': -10}
+2025-05-26 16:08:42 - INFO app - Application closed
+2025-05-26 16:08:50 - INFO status_check - Starting check: Coffee Machine
+2025-05-26 16:08:50 - INFO status_check - Starting check: xArm
+2025-05-26 16:08:51 - INFO status_check - Starting check: Cup Dispensers
+2025-05-26 16:08:51 - INFO status_check - Starting check: Ice Cream Machine
+2025-05-26 16:08:51 - INFO status_check - Starting check: Payment System
+2025-05-26 16:08:51 - INFO status_check - Starting check: Coffee Dumping
+2025-05-26 16:08:51 - INFO status_check - Starting check: Glass Slider
+2025-05-26 16:08:54 - INFO calibration - Moving arm to component: Ice Cream Machine at {'x': 200, 'y': 180, 'z': 120, 'pitch': -5, 'roll': -10}
+2025-05-26 16:09:01 - INFO app - Application closed
+2025-05-26 16:09:06 - INFO status_check - Starting check: Coffee Machine
+2025-05-26 16:09:06 - INFO status_check - Starting check: Cup Dispensers
+2025-05-26 16:09:07 - INFO status_check - Starting check: xArm
+2025-05-26 16:09:07 - INFO status_check - Starting check: Ice Cream Machine
+2025-05-26 16:09:07 - INFO status_check - Starting check: Payment System
+2025-05-26 16:09:07 - INFO status_check - Starting check: Coffee Dumping
+2025-05-26 16:09:08 - INFO status_check - Starting check: Glass Slider
+2025-05-26 16:09:10 - INFO calibration - Moving arm to component: Ice Cream Machine at {'x': 200, 'y': 180, 'z': 120, 'pitch': -5, 'roll': -10}
+2025-05-26 16:09:20 - INFO app - Application closed
+2025-05-26 16:09:39 - INFO status_check - Starting check: Coffee Machine
+2025-05-26 16:09:39 - INFO status_check - Starting check: xArm
+2025-05-26 16:09:40 - INFO status_check - Starting check: Cup Dispensers
+2025-05-26 16:09:40 - INFO status_check - Starting check: Ice Cream Machine
+2025-05-26 16:09:40 - INFO status_check - Starting check: Payment System
+2025-05-26 16:09:41 - INFO status_check - Starting check: Coffee Dumping
+2025-05-26 16:09:41 - INFO status_check - Starting check: Glass Slider
+2025-05-26 16:09:44 - INFO calibration - Moving arm to component: Cup Dispenser M at {'x': -200, 'y': 100, 'z': 100, 'pitch': 0, 'roll': 0}
+2025-05-26 16:09:50 - INFO app - Application closed
+2025-05-26 16:09:59 - INFO status_check - Starting check: Coffee Machine
+2025-05-26 16:09:59 - INFO status_check - Starting check: xArm
+2025-05-26 16:09:59 - INFO status_check - Starting check: Cup Dispensers
+2025-05-26 16:10:00 - INFO status_check - Starting check: Ice Cream Machine
+2025-05-26 16:10:00 - INFO status_check - Starting check: Payment System
+2025-05-26 16:10:00 - INFO status_check - Starting check: Coffee Dumping
+2025-05-26 16:10:00 - INFO status_check - Starting check: Glass Slider
+2025-05-26 16:10:03 - INFO calibration - Moving arm to component: Coffee Machine at {'x': 300, 'y': -100, 'z': 150, 'pitch': -15, 'roll': 0}
+2025-05-26 16:10:15 - INFO calibration - Moving arm to component: Arm Base at {'x': 0, 'y': 0, 'z': 0, 'pitch': 0, 'roll': 0, 'yaw': 0}
+2025-05-26 16:10:22 - INFO app - Application closed
+2025-05-26 16:11:06 - INFO status_check - Starting check: Coffee Machine
+2025-05-26 16:11:06 - INFO status_check - Starting check: xArm
+2025-05-26 16:11:06 - INFO status_check - Starting check: Cup Dispensers
+2025-05-26 16:11:07 - INFO status_check - Starting check: Payment System
+2025-05-26 16:11:07 - INFO status_check - Starting check: Glass Slider
+2025-05-26 16:11:08 - INFO status_check - Starting check: Coffee Dumping
+2025-05-26 16:11:08 - INFO status_check - Starting check: Ice Cream Machine
+2025-05-26 16:11:14 - INFO calibration - Moving arm to component: Ice Cream Machine at {'x': 200, 'y': 180, 'z': 120, 'pitch': -5, 'roll': -10}
+2025-05-26 16:11:43 - INFO calibration - Moving arm to component: Arm Base at {'x': 0, 'y': 0, 'z': 0, 'pitch': 0, 'roll': 0, 'yaw': 0}
+2025-05-26 16:11:51 - INFO app - Application closed
+2025-05-26 16:12:03 - INFO status_check - Starting check: Coffee Machine
+2025-05-26 16:12:03 - INFO status_check - Starting check: xArm
+2025-05-26 16:12:03 - INFO status_check - Starting check: Cup Dispensers
+2025-05-26 16:12:04 - INFO status_check - Starting check: Ice Cream Machine
+2025-05-26 16:12:04 - INFO status_check - Starting check: Payment System
+2025-05-26 16:12:04 - INFO status_check - Starting check: Coffee Dumping
+2025-05-26 16:12:05 - INFO status_check - Starting check: Glass Slider
+2025-05-26 16:12:07 - INFO calibration - Moving arm to component: Ice Cream Machine at {'x': 200, 'y': 180, 'z': 120, 'pitch': -5, 'roll': -10}
+2025-05-26 16:12:12 - INFO calibration - Moving arm to component: Arm Base at {'x': 0, 'y': 0, 'z': 0, 'pitch': 0, 'roll': 0, 'yaw': 0}
+2025-05-26 16:12:17 - INFO app - Application closed
+2025-05-26 16:28:28 - INFO status_check - Starting check: Coffee Machine
+2025-05-26 16:28:28 - INFO status_check - Starting check: xArm
+2025-05-26 16:28:29 - INFO status_check - Starting check: Ice Cream Machine
+2025-05-26 16:28:29 - INFO status_check - Starting check: Payment System
+2025-05-26 16:28:29 - INFO status_check - Starting check: Coffee Dumping
+2025-05-26 16:28:30 - INFO status_check - Starting check: Glass Slider
+2025-05-26 16:28:30 - INFO status_check - Starting check: Cup Dispensers
+2025-05-26 16:28:32 - INFO calibration - Moving arm to component: Ice Cream Machine at {'x': 200, 'y': 180, 'z': 120, 'pitch': -5, 'roll': -10}
+2025-05-26 16:28:37 - INFO app - Application closed
+2025-05-26 16:28:48 - INFO status_check - Starting check: Coffee Machine
+2025-05-26 16:28:48 - INFO status_check - Starting check: xArm
+2025-05-26 16:28:49 - INFO status_check - Starting check: Cup Dispensers
+2025-05-26 16:28:49 - INFO status_check - Starting check: Ice Cream Machine
+2025-05-26 16:28:50 - INFO status_check - Starting check: Payment System
+2025-05-26 16:28:50 - INFO status_check - Starting check: Coffee Dumping
+2025-05-26 16:28:50 - INFO status_check - Starting check: Glass Slider
+2025-05-26 16:28:53 - INFO calibration - Moving arm to component: Ice Cream Machine at {'x': 200, 'y': 180, 'z': 120, 'pitch': -5, 'roll': -10}
+2025-05-26 16:29:13 - ERROR calibration - Movement error: 'MockArmController' object has no attribute 'move_x'
+2025-05-26 16:29:15 - ERROR calibration - Movement error: 'MockArmController' object has no attribute 'move_x'
+2025-05-26 16:29:16 - ERROR calibration - Movement error: 'MockArmController' object has no attribute 'move_x'
+2025-05-26 16:29:17 - ERROR calibration - Movement error: 'MockArmController' object has no attribute 'move_y'
+2025-05-26 16:29:17 - ERROR calibration - Movement error: 'MockArmController' object has no attribute 'move_z'
+2025-05-26 16:29:23 - ERROR calibration - Movement error: 'MockArmController' object has no attribute 'move_x'
+2025-05-26 16:29:26 - INFO app - Application closed
+2025-05-26 16:39:59 - INFO status_check - Starting check: Coffee Machine
+2025-05-26 16:39:59 - INFO status_check - Starting check: xArm
+2025-05-26 16:40:00 - INFO status_check - Starting check: Cup Dispensers
+2025-05-26 16:40:00 - INFO status_check - Starting check: Ice Cream Machine
+2025-05-26 16:40:00 - INFO status_check - Starting check: Payment System
+2025-05-26 16:40:00 - INFO status_check - Starting check: Coffee Dumping
+2025-05-26 16:40:01 - INFO status_check - Starting check: Glass Slider
+2025-05-26 16:40:03 - INFO calibration - Moving arm to component: Ice Cream Machine at {'x': 200, 'y': 180, 'z': 120, 'pitch': -5, 'roll': -10}
+2025-05-26 16:40:14 - ERROR calibration - Movement error: 'MockArmController' object has no attribute 'move_x'
+2025-05-26 16:40:16 - ERROR calibration - Movement error: 'MockArmController' object has no attribute 'move_x'
+2025-05-26 16:40:17 - ERROR calibration - Movement error: 'MockArmController' object has no attribute 'move_x'
+2025-05-26 16:40:18 - ERROR calibration - Movement error: 'MockArmController' object has no attribute 'move_z'
+2025-05-26 16:40:18 - ERROR calibration - Movement error: 'MockArmController' object has no attribute 'move_y'
+2025-05-26 16:40:48 - INFO app - Application closed

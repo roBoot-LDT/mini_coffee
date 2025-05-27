@@ -1,8 +1,8 @@
 # src/mini_coffee/gui/operator/calibration.py
-import json
+import json, time
 from pathlib import Path
 from PySide6.QtWidgets import (
-    QWidget, QHBoxLayout, QGraphicsView, QGraphicsScene, QGraphicsItem, QGraphicsPixmapItem, QGroupBox, QComboBox,
+    QWidget, QHBoxLayout, QGraphicsView, QGraphicsScene, QGraphicsItem, QGraphicsPixmapItem, QGroupBox, QMessageBox,
     QGraphicsEllipseItem, QGraphicsSimpleTextItem, QGraphicsPathItem, QMenu, QTabWidget, QDialog, QPushButton, QVBoxLayout, QLabel
 )
 from PySide6.QtCore import Qt, Signal, QObject
@@ -12,6 +12,7 @@ from PySide6.QtGui import (
 from mini_coffee.hardware.arm.controller import MockArmController
 from typing import Dict, Optional
 from mini_coffee.utils.logger import setup_logger
+from mini_coffee.utils.helpers import Pathfinder
 
 logger = setup_logger()
 
@@ -27,6 +28,29 @@ class Data:
         self.mode = mode
         self.path = Path(__file__).parent / "config" / "calibration" / self.FILES[self.mode]
         self.data = self.load_data()
+
+        # Load nodes data for all modes
+        self.nodes_data = self._load_nodes_data()
+    
+    def _load_nodes_data(self):
+        nodes_path = Path(__file__).parent / "config" / "calibration" / self.FILES[2]
+        if not nodes_path.exists():
+            return {}
+        try:
+            with open(nodes_path, "r") as f:
+                return json.load(f)
+        except (json.JSONDecodeError, OSError):
+            return {} 
+    
+    def get_node_status(self, node_name):
+        return self.nodes_data.get(node_name, {}).get("calibrated", False)
+    
+    def mark_node_calibrated(self, node_name):
+        if node_name in self.nodes_data:
+            self.nodes_data[node_name]["calibrated"] = True
+            nodes_path = Path(__file__).parent / "config" / "calibration" / self.FILES[2]
+            with open(nodes_path, "w") as f:
+                json.dump(self.nodes_data, f, indent=2)
 
     def save_data(self, data: dict) -> None:
         """Save data dict to the selected JSON file."""
@@ -77,23 +101,40 @@ class SchematicView(QGraphicsView):
         self.setBackgroundBrush(QColor("#9bd1e4"))  # Set background to grey
     
     def load_icons(self) -> Dict[str, Optional[QPixmap]]:
-        """Load SVG icons for components that need them"""
+        """Load SVG icons with _r suffix for uncalibrated nodes"""
         icon_dir = Path(__file__).parent.parent.parent.parent.parent / "resources" / "icons"
+        data = Data(2)  # Access node calibration status
         icons = {}
-
-        # Use self.data.components to ensure icons match loaded data
-        for name, (_, _, icon, _, _) in self.components.items():
-            if icon != "none":
-                icon_path = icon_dir / icon
+        for name, component_data in self.components.items():
+            _, _, base_icon, _, _ = component_data
+            
+            if base_icon == "none":
+                icons[name] = None
+                continue
+                
+            # Get calibration status from nodes.json
+            is_calibrated = data.get_node_status(name)
+    
+            # Use _r suffix only for uncalibrated components
+            icon_file = base_icon if is_calibrated else self._get_uncalibrated_icon(base_icon)
+            for attempt in [icon_file, base_icon]:
+                icon_path = icon_dir / attempt
                 if icon_path.exists():
                     icons[name] = QPixmap(str(icon_path))
-                else:
-                    print(f"Warning: Icon not found for {name} at {icon_path}")
-                    icons[name] = None
+                    break
             else:
+                logger.warning(f"Icon not found for {name}: {icon_file} or {base_icon}")
                 icons[name] = None
+
         return icons
-        
+    
+    def _get_uncalibrated_icon(self, base_icon):
+        """Safely append _r suffix"""
+        if not base_icon.endswith('_r'):
+            parts = base_icon.rsplit('.', 1)
+            return f"{parts[0]}_r.{parts[1]}" if len(parts) > 1 else f"{base_icon}_r"
+        return base_icon
+
     def draw_schematic(self):
         """Draw components with either icons or colored circles"""
         for name, (x, y, icon, scale, color) in self.components.items():
@@ -216,13 +257,13 @@ class NodeEditor(QGraphicsView):
         self.connections = connections or []
         self.icons = self.load_icons(components)
 
-        for name, (x, y, _, scale, _) in components.items():
+        for name, (x, y, _, _, _) in components.items():
             self.add_node(
                 name=name,
                 x=x,
                 y=y,
                 color=colors[name],
-                arm_coords=self.arm.get_position(),
+                arm_coords=self.arm.get_position_name(),
                 
             )
 
@@ -255,6 +296,7 @@ class NodeEditor(QGraphicsView):
                 icons[name] = None
                 
         return icons
+        
 
     def add_node(self, name, x, y, color, arm_coords) -> None:
         icon = None
@@ -326,7 +368,7 @@ class NodeEditor(QGraphicsView):
                 x=event.pos().x(),
                 y=event.pos().y(),
                 color="#3498db",
-                arm_coords=self.arm.get_position(),
+                arm_coords=self.arm.get_position_name(),
             )
         )
         menu.exec(event.globalPos())
@@ -426,8 +468,10 @@ class CheckDialog(QDialog):
         """
         
 class CalibrationControls(QWidget):
+    calibration_done = Signal(str)  # emits the node/component name
     def __init__(self, arm, component, parent=None):
         super().__init__(parent)
+        self.data = Data(2)  # Load nodes.json 
         self.arm = arm
         self.component = component
         self.parent_widget = parent
@@ -553,7 +597,9 @@ class CalibrationControls(QWidget):
         self.parent_widget.update_icon(self.component) # type: ignore
         self.parent_widget.layout().removeWidget(self) # type: ignore
         self.deleteLater()
+        self.parent_widget.calib_widget = None  # type: ignore
         self.parent_widget.layout().itemAt(1).widget().show()  # type: ignore # Show node editor tabs
+        self.calibration_done.emit(self.component)  # Notify parent
     
     def _create_axis_control(self, axis):
         widget = QWidget()
@@ -593,14 +639,15 @@ class CalibrationControls(QWidget):
     
     def update_coordinates_display(self):
         """Update displayed coordinates with current arm position"""
-        pos = self.arm.get_position()
+        pos = self.arm.get_position_name()
+        pos_data = self.data.data.get("positions", {}).get(pos, {})
         coords = [
-            f"🏗️  X: {pos.get('x', 0):.2f} mm",
-            f"🏗️  Y: {pos.get('y', 0):.2f} mm",
-            f"🏗️  Z: {pos.get('z', 0):.2f} mm",
-            f"🎚️  Yaw: {pos.get('yaw', 0):.2f}°",
-            f"🎚️  Pitch: {pos.get('pitch', 0):.2f}°",
-            f"🎚️  Roll: {pos.get('roll', 0):.2f}°"
+            f"🏗️  X: {pos_data.get('x', 0):.2f} mm",
+            f"🏗️  Y: {pos_data.get('y', 0):.2f} mm",
+            f"🏗️  Z: {pos_data.get('z', 0):.2f} mm",
+            f"🎚️  Yaw: {pos_data.get('yaw', 0):.2f}°",
+            f"🎚️  Pitch: {pos_data.get('pitch', 0):.2f}°",
+            f"🎚️  Roll: {pos_data.get('roll', 0):.2f}°"
         ]
         self.coords_label.setText("\n".join(coords))
         
@@ -642,6 +689,11 @@ class CalibrationWindow(QWidget):
         self.arm = arm_controller
         self.schematic = SchematicView()
         self.data = Data(0)  # Load calibration.json by default
+        
+        # Path finding logic
+        self.current_tab = "All"
+        self.pathfinder = None
+        self.update_pathfinder()
         # Define node sets for each tab
         all_nodes = list(self.schematic.components.keys())
         nodes = {
@@ -650,6 +702,7 @@ class CalibrationWindow(QWidget):
             "Ice Cream": 2,
             "Bin": 3
         }
+        
         # Load node sets and connections from self.data (calibration.json)
         coffee_nodes = self.data.data["tabs"][nodes["Coffee"]].get("nodes", [])
         ice_cream_nodes = self.data.data["tabs"][nodes["Ice Cream"]].get("nodes", [])
@@ -685,6 +738,7 @@ class CalibrationWindow(QWidget):
         
         self.init_ui()
     
+    
     def init_ui(self) -> None:
         layout = QHBoxLayout()
         layout.addWidget(self.schematic, 1)
@@ -709,24 +763,31 @@ class CalibrationWindow(QWidget):
                 layout.removeWidget(self.calib_widget)
                 self.calib_widget.deleteLater()
             except RuntimeError:
-                pass  # Already deleted
+                pass 
             self.calib_widget = None
         self.calib_widget = CalibrationControls(self.arm, component, self)
+        self.calib_widget.calibration_done.connect(self.on_calibration_done)
         # Hide node editor tabs if present
         item = layout.itemAt(1)
         if item is not None and item.widget() is not None:
             item.widget().hide()
         layout.addWidget(self.calib_widget)
-        
+        self._pending_calibration_node = component  # Track which node is being calibrated
+    
+    def on_calibration_done(self, node):
+        # Mark node as calibrated after editing
+        data = Data(2)
+        data.mark_node_calibrated(node)
+        # After calibration, verify and continue
+        self._verify_calibration_completion(node)
+        # If you are in a movement path, resume it
+        if hasattr(self, "_current_path") and self._current_path:
+            self.execute_movement_path(self._current_path)
+            
     def update_icon(self, component):
         # Remove '_r' from icon name and reload
         icon_name = self.schematic.components[component][2]
-        if icon_name.endswith('_r.png'):
-            new_icon = icon_name.replace('_r.png', '.png')
-        elif icon_name.endswith('_r.svg'):
-            new_icon = icon_name.replace('_r.svg', '.svg')
-        else:
-            return  # Already updated
+        new_icon = icon_name 
 
         # Update component data
         comp = list(self.schematic.components[component])
@@ -737,22 +798,86 @@ class CalibrationWindow(QWidget):
         ))
         self.schematic._scene.clear()
         self.schematic.draw_schematic()
+    
+    def update_pathfinder(self):
+        current_tab_data = next(t for t in self.data.data["tabs"] if t["name"] == self.current_tab)
+        self.pathfinder = Pathfinder(current_tab_data["connections"])
 
     def handle_component_click(self, component) -> None:
+        current_position = self.arm.get_position_name() 
         positions = self.data.data.get("positions", {})
+        target = component
+        
         if component in positions:
-            logger.info(f"Moving arm to component: {component} at {positions[component]}")
-            self.arm.move_to(**positions[component])
-        if component != 'Arm Base':
-            dlg = CheckDialog(component, self)
-            if dlg.exec() == QDialog.DialogCode.Accepted:
-                if dlg.check_result == "good":
-                    self.update_icon(component)
-                elif dlg.check_result == "edit":
-                    self.enter_calibration_mode(component)
+            path = self.pathfinder.find_path(current_position, target) #type: ignore
+            if not path:
+                QMessageBox.warning(self, "No Path", f"No valid path from {current_position} to {target}")
+                return      
+            self.execute_movement_path(path)
+          
+    def execute_movement_path(self, path):
+        """Move through path with calibration checks"""
+        self._current_path = path.copy()
+        last_node = None
+        while self._current_path:
+            node = self._current_path.pop(0)
+            last_node = node
+            # Skip first node (current position)
+            if node == self.arm.get_position_name():
+                continue
+                
+            if not self._handle_node_calibration(node):
+                self._pending_node = node
+                return
+                
+            # Move to next node
+            if node in self.data.data["positions"]:
+                position = self.data.data["positions"][node]
+                logger.info(f"Moving to {node} at {position}")
+                self.arm.move_to(**position)
+                time.sleep(0.5)
+            else:
+                logger.error(f"Position data missing for {node}")
+        if last_node:
+            self.arm.set_position_name(last_node)  # Update arm position name after path completion
+    
+       
+    def _handle_node_calibration(self, node):
+        """Check and calibrate node if needed"""
+        data = Data(2)
+        if data.get_node_status(node):
+            return True
             
+        # Node needs calibration
+        dlg = CheckDialog(node, self)
+        result = dlg.exec()
+                                
+        if result == QDialog.DialogCode.Accepted:
+            if dlg.check_result == "good":
+                data.mark_node_calibrated(node)
+                self.schematic._scene.clear()
+                self.update_icon(node)
+                self.schematic.draw_schematic()
+                return True
+            elif dlg.check_result == "edit":
+                self.enter_calibration_mode(node)
+                return False # Wait for calibration completion
+        return False
+    
+    def _verify_calibration_completion(self, node):
+        """Check if node was calibrated after editing"""
+        data = Data(mode=2)  # Load nodes.json
+        if data.get_node_status(node):
+            # Reload icons and redraw schematic
+            self.schematic.icons = self.schematic.load_icons()
+            self.schematic._scene.clear()
+            self.schematic.draw_schematic()
+            return True
             
-
+        QMessageBox.warning(self, "Calibration Required", 
+            f"{node} must be calibrated before proceeding!")
+        return False
+                
 class NodeSignals(QObject):
     moved = Signal()
     
