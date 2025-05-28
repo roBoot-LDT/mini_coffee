@@ -16,7 +16,7 @@ class MockArmController:
         
     def move_to(self, **kwargs):
         # Existing movement logic
-        print(f"Moving to {kwargs}")
+        pass
         
     def get_position_name(self):
         return self.current_position

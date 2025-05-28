@@ -4,10 +4,11 @@ import os
 from pathlib import Path
 from dotenv import load_dotenv, dotenv_values # type: ignore
 from PySide6.QtWidgets import (
-    QWidget, QVBoxLayout, QHBoxLayout, QLineEdit, QPushButton, 
+    QWidget, QVBoxLayout, QHBoxLayout, QLineEdit, QPushButton,
     QLabel, QMessageBox, QInputDialog, QGroupBox, QScrollArea, QDialog, QComboBox
 )
-from PySide6.QtCore import Qt
+from PySide6.QtCore import Qt, QSize
+from PySide6.QtGui import QIcon
 from mini_coffee.hardware.relays import PLC
 from mini_coffee.utils.logger import setup_logger
 
@@ -189,74 +190,173 @@ class SettingsWindow(QWidget):
             logger.error(f"Failed to save settings: {str(e)}")
 
     def detect_ports(self) -> None:
-        options = ["dispenserS", "dispenserM", "shield", "bin"]
+        options = ["Dispenser S", "Dispenser M", "Shield", "Bin"]
+        mapping = {
+            "Dispenser S": self.disS,
+            "Dispenser M": self.disM,
+            "Shield": self.shield,
+            "Bin": self.bin
+        }
+        
+        # Track which devices have been assigned
+        assigned_devices = set()
+        
+        # Create a dialog that will be reused for each port
+        dialog = PortConfigDialog(options, self)
+        
         for i in range(8):
             state = f"all{format(1 << i, '08b')}"
             self.plc.relay(state)
-            dialog = PortConfigDialog(state, options, self)
+            
+            # Update dialog for current port
+            dialog.set_port_number(state)
+            
+            # Only show unassigned options
+            dialog.set_options([opt for opt in options if opt not in assigned_devices])
+            
             result = dialog.exec()
-            choice = dialog.combo.currentText() if dialog.selected is None else dialog.selected
+            choice = dialog.selected
 
-            if result == 1 and choice != "skip":
-                mapping = {
-                    "dispenserS": self.disS,
-                    "dispenserM": self.disM,
-                    "shield": self.shield,
-                    "bin": self.bin
-                }
-                if choice in mapping:
-                    mapping[choice].setText(state)
+            if result == 1 and choice is not None and choice != "skip":
+                # Update input field and mark device as assigned
+                mapping[choice].setText(state)
+                assigned_devices.add(choice)
                 logger.info(f"Port {state} configured for {choice} with state {state}")
+                
+                # Mark button as green for this device
+                dialog.mark_button_green(choice)
+                
+                # If all devices are assigned, break early
+                if len(assigned_devices) == len(options):
+                    break
             elif result == 2 or choice == "skip":
                 continue
             else:
                 break
 
+
+
 class PortConfigDialog(QDialog):
-    def __init__(self, port_number, options, parent=None):
+    def __init__(self, options, parent=None):
         super().__init__(parent)
         self.setWindowTitle("Port Configuration")
         self.selected = None
+        self.button_states = {opt: False for opt in options}
+        self.buttons = {}
+        self.current_port = ""
 
         layout = QVBoxLayout(self)
-        label = QLabel(f"Select device for port {port_number}:")
-        label.setStyleSheet("font-size: 22px;")
-        layout.addWidget(label)
-
-        self.combo = QComboBox()
-        self.combo.addItems(options)
-        self.combo.setStyleSheet("""
-            QComboBox {
-            font-size: 25px;
-            padding: 6px 12px;
-            border-radius: 4px;
-            background-color: #383838;
-            color: #e0e0e0;
-            border: 1px solid #3c3c3c;
-            }
-            QComboBox QAbstractItemView {
-            background: #2d2d2d;
-            color: #e0e0e0;
-            selection-background-color: #88c0d0;
-            selection-color: #2d2d2d;
-            }
-        """)
-        layout.addWidget(self.combo)
-
+        
+        # Port label
+        self.port_label = QLabel()
+        self.port_label.setStyleSheet("font-size: 22px;")
+        self.port_label.setAlignment(Qt.AlignmentFlag.AlignHCenter)
+        layout.addWidget(self.port_label)
+        
+        # Device buttons container
+        self.btn_container = QWidget()
+        self.btn_layout = QHBoxLayout(self.btn_container)
+        self.btn_layout.setAlignment(Qt.AlignmentFlag.AlignHCenter)
+        layout.addWidget(self.btn_container)
+        
+        # Create buttons for all options
+        icon_map = {
+            "Dispenser S": "cup_S.png",
+            "Dispenser M": "cup_M.png",
+            "Shield": "shield.png",
+            "Bin": "bin.png"
+        }
+        for opt in options:
+            self._create_button(opt, icon_map.get(opt, ""))
+        
+        # Cancel and Skip buttons
         btn_layout = QHBoxLayout()
-        ok_btn = QPushButton("OK")
         cancel_btn = QPushButton("Cancel")
         skip_btn = QPushButton("Skip")
-
-        ok_btn.clicked.connect(self.accept)
         cancel_btn.clicked.connect(self.reject)
         skip_btn.clicked.connect(self.skip)
-
-        btn_layout.addWidget(ok_btn)
         btn_layout.addWidget(cancel_btn)
         btn_layout.addWidget(skip_btn)
         layout.addLayout(btn_layout)
+    
+    def _create_button(self, opt, icon_name):
+        vbox = QVBoxLayout()
+        vbox.setAlignment(Qt.AlignmentFlag.AlignHCenter)
+        
+        btn = QPushButton()
+        btn.setFixedSize(80, 80)
+        btn.setObjectName(opt)
+        btn.setEnabled(False)  # Disabled by default
+        
+        # Set icon if available
+        icon_path = Path(__file__).parent.parent.parent.parent.parent / "resources" / "icons" / icon_name
+        if icon_path.exists():
+            btn.setIcon(QIcon(str(icon_path)))
+            btn.setIconSize(QSize(70, 70))
+            btn.clicked.connect(lambda _, o=opt: self.select_device(o))
+        
+        # Set initial style based on state
+        self._update_button_style(btn, self.button_states[opt])
+        
+        label = QLabel(opt)
+        label.setAlignment(Qt.AlignmentFlag.AlignHCenter)
+        label.setStyleSheet("font-size: 13px; color: white; margin-top: 6px;")
 
+        vbox.addWidget(btn, alignment=Qt.AlignmentFlag.AlignHCenter)
+        vbox.addWidget(label)
+        self.btn_layout.addLayout(vbox)
+        
+        self.buttons[opt] = btn
+    
+    def _update_button_style(self, btn, is_selected):
+        if is_selected:
+            btn.setStyleSheet("""
+                QPushButton {
+                    background-color: #4CAF50;
+                    border-radius: 12px;
+                    min-width: 80px;
+                    min-height: 80px;
+                    border: 2px solid #388E3C;
+                }
+            """)
+        else:
+            btn.setStyleSheet("""
+                QPushButton {
+                    background-color: #e74c3c;
+                    border-radius: 12px;
+                    min-width: 80px;
+                    min-height: 80px;
+                    border: 2px solid #b71c1c;
+                }
+                QPushButton:hover {
+                    background-color: #ff5252;
+                }
+            """)
+    
+    def set_port_number(self, port_number):
+        self.current_port = port_number
+        self.port_label.setText(f"Select device for port {port_number}:")
+    
+    def set_options(self, options):
+        """Enable only the unassigned options"""
+        for opt, btn in self.buttons.items():
+            if opt in options:
+                btn.setEnabled(True)
+                self._update_button_style(btn, self.button_states[opt])
+            else:
+                btn.setEnabled(False)
+    
+    def mark_button_green(self, device):
+        """Mark a device as selected (green)"""
+        self.button_states[device] = True
+        btn = self.buttons[device]
+        self._update_button_style(btn, True)
+        btn.setEnabled(False)
+    
+    def select_device(self, device):
+        self.selected = device
+        self.accept()
+    
     def skip(self):
         self.selected = "skip"
-        self.done(2)  # Custom code for skip
+        self.done(2)

@@ -1,8 +1,40 @@
-2025-05-27 13:59:20 - ERROR calibration - Position data missing for I
-2025-05-27 13:59:24 - ERROR calibration - Position data missing for c
-2025-05-27 13:59:28 - ERROR calibration - Aborting path due to calibration failure at e
-2025-05-27 14:16:50 - ERROR calibration - Aborting path due to calibration failure at Cup Dispenser M
-2025-05-27 14:17:01 - ERROR calibration - Movement error: 'MockArmController' object has no attribute 'move_x'
-2025-05-27 14:37:50 - ERROR calibration - Aborting path due to calibration failure at Cup Dispenser M
-2025-05-27 14:45:20 - ERROR calibration - Movement error: 'MockArmController' object has no attribute 'move_x'
-2025-05-27 14:45:20 - ERROR calibration - Movement error: 'MockArmController' object has no attribute 'move_z'
+2025-05-28 14:06:50 - ERROR calibration - Error updating arm position: Internal C++ object (ArmMarker) already deleted.
+2025-05-28 14:06:50 - ERROR calibration - Error updating arm position: Internal C++ object (ArmMarker) already deleted.
+2025-05-28 14:06:50 - ERROR calibration - Error updating arm position: Internal C++ object (ArmMarker) already deleted.
+2025-05-28 14:06:51 - ERROR calibration - Error updating arm position: Internal C++ object (ArmMarker) already deleted.
+2025-05-28 14:06:51 - ERROR calibration - Error updating arm position: Internal C++ object (ArmMarker) already deleted.
+2025-05-28 14:06:52 - ERROR calibration - Error updating arm position: Internal C++ object (ArmMarker) already deleted.
+2025-05-28 14:06:52 - ERROR calibration - Error updating arm position: Internal C++ object (ArmMarker) already deleted.
+2025-05-28 14:06:53 - ERROR calibration - Error updating arm position: Internal C++ object (ArmMarker) already deleted.
+2025-05-28 14:06:53 - ERROR calibration - Error updating arm position: Internal C++ object (ArmMarker) already deleted.
+2025-05-28 14:06:54 - ERROR calibration - Error updating arm position: Internal C++ object (ArmMarker) already deleted.
+2025-05-28 14:06:54 - ERROR calibration - Error updating arm position: Internal C++ object (ArmMarker) already deleted.
+2025-05-28 14:06:55 - ERROR calibration - Error updating arm position: Internal C++ object (ArmMarker) already deleted.
+2025-05-28 14:06:55 - ERROR calibration - Error updating arm position: Internal C++ object (ArmMarker) already deleted.
+2025-05-28 14:06:56 - ERROR calibration - Error updating arm position: Internal C++ object (ArmMarker) already deleted.
+2025-05-28 14:06:56 - ERROR calibration - Error updating arm position: Internal C++ object (ArmMarker) already deleted.
+2025-05-28 14:06:57 - ERROR calibration - Error updating arm position: Internal C++ object (ArmMarker) already deleted.
+2025-05-28 14:06:57 - ERROR calibration - Error updating arm position: Internal C++ object (ArmMarker) already deleted.
+2025-05-28 14:06:58 - ERROR calibration - Error updating arm position: Internal C++ object (ArmMarker) already deleted.
+2025-05-28 14:11:22 - ERROR calibration - Error updating arm marker: Internal C++ object (ArmMarker) already deleted.
+2025-05-28 14:11:22 - ERROR calibration - Error updating arm marker: Internal C++ object (ArmMarker) already deleted.
+2025-05-28 14:11:23 - ERROR calibration - Error updating arm marker: Internal C++ object (ArmMarker) already deleted.
+2025-05-28 14:11:23 - ERROR calibration - Error updating arm marker: Internal C++ object (ArmMarker) already deleted.
+2025-05-28 14:11:24 - ERROR calibration - Error updating arm marker: Internal C++ object (ArmMarker) already deleted.
+2025-05-28 14:11:24 - ERROR calibration - Error updating arm marker: Internal C++ object (ArmMarker) already deleted.
+2025-05-28 14:11:25 - ERROR calibration - Error updating arm marker: Internal C++ object (ArmMarker) already deleted.
+2025-05-28 14:11:25 - ERROR calibration - Error updating arm marker: Internal C++ object (ArmMarker) already deleted.
+2025-05-28 14:11:26 - ERROR calibration - Error updating arm marker: Internal C++ object (ArmMarker) already deleted.
+2025-05-28 14:11:26 - ERROR calibration - Error updating arm marker: Internal C++ object (ArmMarker) already deleted.
+2025-05-28 14:11:27 - ERROR calibration - Error updating arm marker: Internal C++ object (ArmMarker) already deleted.
+2025-05-28 14:11:27 - ERROR calibration - Error updating arm marker: Internal C++ object (ArmMarker) already deleted.
+2025-05-28 14:11:28 - ERROR calibration - Error updating arm marker: Internal C++ object (ArmMarker) already deleted.
+2025-05-28 14:12:51 - ERROR calibration - Error updating arm marker: Internal C++ object (ArmMarker) already deleted.
+2025-05-28 14:12:51 - ERROR calibration - Error updating arm marker: Internal C++ object (ArmMarker) already deleted.
+2025-05-28 14:12:52 - ERROR calibration - Error updating arm marker: Internal C++ object (ArmMarker) already deleted.
+2025-05-28 14:12:52 - ERROR calibration - Error updating arm marker: Internal C++ object (ArmMarker) already deleted.
+2025-05-28 14:12:53 - ERROR calibration - Error updating arm marker: Internal C++ object (ArmMarker) already deleted.
+2025-05-28 14:12:53 - ERROR calibration - Error updating arm marker: Internal C++ object (ArmMarker) already deleted.
+2025-05-28 14:12:54 - ERROR calibration - Error updating arm marker: Internal C++ object (ArmMarker) already deleted.
+2025-05-28 14:12:54 - ERROR calibration - Error updating arm marker: Internal C++ object (ArmMarker) already deleted.
+2025-05-28 14:12:55 - ERROR calibration - Error updating arm marker: Internal C++ object (ArmMarker) already deleted.

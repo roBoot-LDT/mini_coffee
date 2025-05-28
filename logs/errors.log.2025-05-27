@@ -1,0 +1,8 @@
+2025-05-27 13:59:20 - ERROR calibration - Position data missing for I
+2025-05-27 13:59:24 - ERROR calibration - Position data missing for c
+2025-05-27 13:59:28 - ERROR calibration - Aborting path due to calibration failure at e
+2025-05-27 14:16:50 - ERROR calibration - Aborting path due to calibration failure at Cup Dispenser M
+2025-05-27 14:17:01 - ERROR calibration - Movement error: 'MockArmController' object has no attribute 'move_x'
+2025-05-27 14:37:50 - ERROR calibration - Aborting path due to calibration failure at Cup Dispenser M
+2025-05-27 14:45:20 - ERROR calibration - Movement error: 'MockArmController' object has no attribute 'move_x'
+2025-05-27 14:45:20 - ERROR calibration - Movement error: 'MockArmController' object has no attribute 'move_z'

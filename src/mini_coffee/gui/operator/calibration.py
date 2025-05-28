@@ -2,12 +2,13 @@
 import json, time
 from pathlib import Path
 from PySide6.QtWidgets import (
-    QWidget, QHBoxLayout, QGraphicsView, QGraphicsScene, QGraphicsItem, QGraphicsPixmapItem, QGroupBox, QMessageBox,
-    QGraphicsEllipseItem, QGraphicsSimpleTextItem, QGraphicsPathItem, QMenu, QTabWidget, QDialog, QPushButton, QVBoxLayout, QLabel
+    QWidget, QHBoxLayout, QGraphicsView, QGraphicsScene, QGraphicsItem, QGraphicsPixmapItem, QGroupBox, QMessageBox, QLineEdit, QFormLayout,
+    QGraphicsEllipseItem, QGraphicsSimpleTextItem, QGraphicsPathItem, QMenu, QTabWidget, QDialog, QPushButton, QVBoxLayout, QLabel,
+    QComboBox, QDialogButtonBox
 )
 from PySide6.QtCore import Qt, Signal, QObject
 from PySide6.QtGui import (
-    QPainter, QPen, QBrush, QColor, QPainterPath, QPixmap, QMouseEvent
+    QPainter, QPen, QBrush, QColor, QPainterPath, QPixmap, QMouseEvent, QFont, QRadialGradient
 )
 from mini_coffee.hardware.arm.controller import MockArmController
 from typing import Dict, Optional
@@ -135,9 +136,11 @@ class SchematicView(QGraphicsView):
             return f"{parts[0]}_r.{parts[1]}" if len(parts) > 1 else f"{base_icon}_r"
         return base_icon
 
-    def draw_schematic(self):
+    def draw_schematic(self, current_position=None):
         """Draw components with either icons or colored circles"""
+        self._scene.clear()
         for name, (x, y, icon, scale, color) in self.components.items():
+            highlight = (name == current_position)
             if icon == "none":
                 # Draw colored circle
                 radius = 40
@@ -145,7 +148,6 @@ class SchematicView(QGraphicsView):
                 item.setBrush(QBrush(QColor(color)))
                 item.setPen(QPen(QColor("black"), 2))
             else:
-                # Draw icon if available, otherwise fallback to circle
                 icon_pixmap = self.icons.get(name)
                 if icon_pixmap is not None:
                     pixmap = icon_pixmap.scaledToWidth(
@@ -155,7 +157,6 @@ class SchematicView(QGraphicsView):
                     item = QGraphicsPixmapItem(pixmap)
                     item.setPos(x - pixmap.width()/2, y - pixmap.height()/2)
                 else:
-                    # Fallback to colored circle
                     radius = 40
                     item = QGraphicsEllipseItem(x-radius, y-radius, radius*2, radius*2)
                     item.setBrush(QBrush(QColor(color)))
@@ -164,7 +165,39 @@ class SchematicView(QGraphicsView):
             item.setData(0, name)
             item.setCursor(Qt.CursorShape.PointingHandCursor)
             self._scene.addItem(item)
-    
+
+            # Draw highlight if this is the current arm position
+            if highlight:
+                # Create a modern, elegant highlight marker
+                marker_size = 80
+                
+                # Outer animated ring (pulsing effect)
+                ring = QGraphicsEllipseItem(
+                    x - marker_size/2, y - marker_size/2, marker_size, marker_size
+                )
+                ring_pen = QPen(QColor("#FF5722"), 3)  # Vibrant orange
+                ring.setPen(ring_pen)
+                ring.setBrush(Qt.BrushStyle.NoBrush)
+                ring.setZValue(20)
+                self._scene.addItem(ring)
+                
+                # Inner filled circle with gradient
+                inner_size = 24
+                inner = QGraphicsEllipseItem(
+                    x - inner_size/2, y - inner_size/2, inner_size, inner_size
+                )
+                
+                # Create radial gradient for a 3D effect
+                gradient = QRadialGradient(x, y, inner_size)
+                gradient.setColorAt(0, QColor("#FF5722"))  # Bright center
+                gradient.setColorAt(1, QColor("#E64A19"))  # Darker edge
+                inner.setBrush(QBrush(gradient))
+                
+                inner_pen = QPen(QColor("#FFFFFF"), 1.5)  # White border
+                inner.setPen(inner_pen)
+                inner.setZValue(21)
+                self._scene.addItem(inner)
+        
     def mousePressEvent(self, event: QMouseEvent) -> None:
         items: list[QGraphicsItem] = self.items(event.position().toPoint())
         for item in items:
@@ -245,8 +278,9 @@ class Edge(QGraphicsPathItem):
 class NodeEditor(QGraphicsView):
     NODE_SIZE = 80  # Fixed size for all nodes
 
-    def __init__(self, arm_controller, components, colors, connections=None, icons=None) -> None:
+    def __init__(self, arm_controller, components, colors, connections=None, tab_index=0) -> None:
         super().__init__()
+        self.tab_index = tab_index  # Track which calibration.json tab this belongs to
         self.arm = arm_controller
         self.data = Data(mode=2)  # nodes.json
         self._scene = QGraphicsScene()
@@ -362,16 +396,70 @@ class NodeEditor(QGraphicsView):
     def contextMenuEvent(self, event) -> None:
         menu = QMenu()
         add_action = menu.addAction("Add Node")
-        add_action.triggered.connect(
-            lambda: self.add_node(
-                name=f"node_{len(self.nodes)+1}",
-                x=event.pos().x(),
-                y=event.pos().y(),
-                color="#3498db",
-                arm_coords=self.arm.get_position_name(),
-            )
-        )
+        add_action.triggered.connect(lambda: self._add_node_with_config(event.pos()))
         menu.exec(event.globalPos())
+
+    def _add_node_with_config(self, pos):
+        # Create temporary node
+        temp_name = f"node_{len(self.nodes)+1}"
+        self.add_node(
+            name=temp_name,
+            x=pos.x(), y=pos.y(),
+            color="#3498db",  # Default color
+            arm_coords={}  # Placeholder
+        )
+        
+        # Get existing node names for dropdowns
+        existing_nodes = list(self.nodes.keys())
+        
+        # Show configuration dialog
+        dlg = NodeConfigDialog(existing_nodes, self)
+        if dlg.exec() == QDialog.DialogCode.Accepted:
+            # Update arm coordinates
+            arm_data = {
+                "x": float(dlg.x_input.text()),
+                "y": float(dlg.y_input.text()),
+                "z": float(dlg.z_input.text()),
+                "yaw": float(dlg.yaw_input.text()),
+                "pitch": float(dlg.pitch_input.text()),
+                "roll": float(dlg.roll_input.text())
+            }
+            
+            # Update node data in components.json (mode=1)
+            comp_data = [
+                self.nodes[temp_name].scenePos().x(),
+                self.nodes[temp_name].scenePos().y(),
+                "none",  # Default icon
+                0.1,    # Default scale
+                "#3498db" # Default color
+            ]
+            Data(mode=1).edit_entry(temp_name, comp_data)
+            
+            # Save to nodes.json (mode=2)
+            Data(mode=2).edit_entry(temp_name, {
+                "x": self.nodes[temp_name].scenePos().x(),
+                "y": self.nodes[temp_name].scenePos().y(),
+                "arm_coords": arm_data
+            })
+            
+            # Add connections to calibration.json (mode=0)
+            prev_node = dlg.prev_combo.currentText()
+            next_node = dlg.next_combo.currentText()
+            calib_data = Data(mode=0).load_data()
+            
+            if prev_node:
+                calib_data["tabs"][self.tab_index]["connections"].append((prev_node, temp_name))
+            if next_node:
+                calib_data["tabs"][self.tab_index]["connections"].append((temp_name, next_node))
+            
+            Data(mode=0).save_data(calib_data)
+            
+            # Redraw edges
+            self.create_edges_from_connections()
+        else:
+            # Remove temporary node if canceled
+            self._scene.removeItem(self.nodes[temp_name])
+            del self.nodes[temp_name]
 
 class CheckDialog(QDialog):
     def __init__(self, component, parent=None):
@@ -721,22 +809,23 @@ class CalibrationWindow(QWidget):
             NodeEditor(self.arm,
                        filter_dict(self.schematic.components, all_nodes),
                        filter_dict(self.schematic.colors, all_nodes),
-                       connections=all_connections),
+                       connections=all_connections, tab_index=0),
             NodeEditor(self.arm,
                        filter_dict(self.schematic.components, coffee_nodes),
                        filter_dict(self.schematic.colors, coffee_nodes),
-                       connections=coffee_connections),
+                       connections=coffee_connections, tab_index=1),
             NodeEditor(self.arm,
                        filter_dict(self.schematic.components, ice_cream_nodes),
                        filter_dict(self.schematic.colors, ice_cream_nodes),
-                       connections=ice_cream_connections),
+                       connections=ice_cream_connections, tab_index=2),
             NodeEditor(self.arm,
                        filter_dict(self.schematic.components, bin_nodes),
                        filter_dict(self.schematic.colors, bin_nodes),
-                       connections=bin_connections),
+                       connections=bin_connections, tab_index=3),
         ]
-        
+        self.schematic.draw_schematic(self.arm.get_position_name())
         self.init_ui()
+        
     
     
     def init_ui(self) -> None:
@@ -797,7 +886,7 @@ class CalibrationWindow(QWidget):
             Path(__file__).parent.parent.parent.parent.parent / "resources" / "icons" / new_icon
         ))
         self.schematic._scene.clear()
-        self.schematic.draw_schematic()
+        self.schematic.draw_schematic(self.arm.get_position_name())
     
     def update_pathfinder(self):
         current_tab_data = next(t for t in self.data.data["tabs"] if t["name"] == self.current_tab)
@@ -818,28 +907,27 @@ class CalibrationWindow(QWidget):
     def execute_movement_path(self, path):
         """Move through path with calibration checks"""
         self._current_path = path.copy()
-        last_node = None
         while self._current_path:
             node = self._current_path.pop(0)
-            last_node = node
             # Skip first node (current position)
             if node == self.arm.get_position_name():
                 continue
-                
+
             if not self._handle_node_calibration(node):
                 self._pending_node = node
                 return
-                
+
             # Move to next node
             if node in self.data.data["positions"]:
                 position = self.data.data["positions"][node]
                 logger.info(f"Moving to {node} at {position}")
                 self.arm.move_to(**position)
                 time.sleep(0.5)
+                # Update arm position name after each move
+                self.arm.set_position_name(node)
+                self.schematic.draw_schematic(self.arm.get_position_name())
             else:
                 logger.error(f"Position data missing for {node}")
-        if last_node:
-            self.arm.set_position_name(last_node)  # Update arm position name after path completion
     
        
     def _handle_node_calibration(self, node):
@@ -857,7 +945,7 @@ class CalibrationWindow(QWidget):
                 data.mark_node_calibrated(node)
                 self.schematic._scene.clear()
                 self.update_icon(node)
-                self.schematic.draw_schematic()
+                self.schematic.draw_schematic(self.arm.get_position_name())
                 return True
             elif dlg.check_result == "edit":
                 self.enter_calibration_mode(node)
@@ -871,7 +959,7 @@ class CalibrationWindow(QWidget):
             # Reload icons and redraw schematic
             self.schematic.icons = self.schematic.load_icons()
             self.schematic._scene.clear()
-            self.schematic.draw_schematic()
+            self.schematic.draw_schematic(self.arm.get_position_name())
             return True
             
         QMessageBox.warning(self, "Calibration Required", 
@@ -880,7 +968,49 @@ class CalibrationWindow(QWidget):
                 
 class NodeSignals(QObject):
     moved = Signal()
-    
+
+
+class NodeConfigDialog(QDialog):
+    def __init__(self, existing_nodes, parent=None):
+        super().__init__(parent)
+        self.setWindowTitle("Configure Node")
+        layout = QVBoxLayout(self)
+        
+        # Arm Coordinates Input
+        self.x_input = QLineEdit()
+        self.y_input = QLineEdit()
+        self.z_input = QLineEdit()
+        self.yaw_input = QLineEdit()
+        self.pitch_input = QLineEdit()
+        self.roll_input = QLineEdit()
+        
+        coords_layout = QFormLayout()
+        coords_layout.addRow("X (mm):", self.x_input)
+        coords_layout.addRow("Y (mm):", self.y_input)
+        coords_layout.addRow("Z (mm):", self.z_input)
+        coords_layout.addRow("Yaw (°):", self.yaw_input)
+        coords_layout.addRow("Pitch (°):", self.pitch_input)
+        coords_layout.addRow("Roll (°):", self.roll_input)
+        layout.addLayout(coords_layout)
+        
+        # Previous/Next Node Selection
+        self.prev_combo = QComboBox()
+        self.next_combo = QComboBox()
+        self.prev_combo.addItems([""] + existing_nodes)
+        self.next_combo.addItems([""] + existing_nodes)
+        
+        conn_layout = QFormLayout()
+        conn_layout.addRow("Previous Node:", self.prev_combo)
+        conn_layout.addRow("Next Node:", self.next_combo)
+        layout.addLayout(conn_layout)
+        
+        # Buttons
+        btn_box = QDialogButtonBox(QDialogButtonBox.StandardButton.Ok | QDialogButtonBox.StandardButton.Cancel)
+        btn_box.accepted.connect(self.accept)
+        btn_box.rejected.connect(self.reject)
+        layout.addWidget(btn_box)
+        
+        
 if __name__ == "__main__":
     from PySide6.QtWidgets import QApplication
     
