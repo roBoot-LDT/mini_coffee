@@ -139,6 +139,5 @@ MIT License. See `LICENSE` file for details.
 
 ## 👤 Author
 
-Developed by \[Your Name or Company], 2025.
+Developed by Nemkov M, 2025.
 
-```
