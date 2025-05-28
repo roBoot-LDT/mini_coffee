@@ -19,8 +19,9 @@ A Python-based GUI application to operate and calibrate an automated robotic cof
 
 ## 🖥️ Screenshots
 
-_(Insert screenshots of the schematic view, calibration controls, and client UI here)_
-
+![alt text](image-1.png)
+![alt text](image-2.png)
+![alt text](image-3.png)
 ---
 
 ## 🧱 Project Structure

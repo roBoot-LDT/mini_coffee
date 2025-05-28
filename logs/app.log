@@ -420,3 +420,19 @@
 2025-05-28 14:35:31 - INFO calibration - Moving to Delivery Area at {'x': 0, 'y': 250, 'z': 80, 'pitch': 0, 'roll': 0}
 2025-05-28 14:35:31 - INFO calibration - Moving to Bin at {'x': -300, 'y': 200, 'z': 100, 'pitch': 0, 'roll': 0}
 2025-05-28 14:35:35 - INFO app - Application closed
+2025-05-28 16:39:52 - INFO status_check - Starting check: Coffee Machine
+2025-05-28 16:39:52 - INFO status_check - Starting check: xArm
+2025-05-28 16:39:52 - INFO status_check - Starting check: Cup Dispensers
+2025-05-28 16:39:53 - INFO status_check - Starting check: Ice Cream Machine
+2025-05-28 16:39:53 - INFO status_check - Starting check: Payment System
+2025-05-28 16:39:53 - INFO status_check - Starting check: Coffee Dumping
+2025-05-28 16:39:53 - INFO status_check - Starting check: Glass Slider
+2025-05-28 16:40:00 - INFO app - Application closed
+2025-05-28 16:40:33 - INFO status_check - Starting check: Coffee Machine
+2025-05-28 16:40:36 - INFO status_check - Starting check: xArm
+2025-05-28 16:40:39 - INFO status_check - Starting check: Cup Dispensers
+2025-05-28 16:40:42 - INFO status_check - Starting check: Ice Cream Machine
+2025-05-28 16:40:44 - INFO status_check - Starting check: Payment System
+2025-05-28 16:40:47 - INFO status_check - Starting check: Glass Slider
+2025-05-28 16:40:50 - INFO status_check - Starting check: Coffee Dumping
+2025-05-28 16:42:18 - INFO app - Application closed
