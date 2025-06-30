@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 2025-05-28 12:52:42 - INFO status_check - Starting check: Coffee Machine
 2025-05-28 12:52:43 - INFO status_check - Starting check: xArm
 2025-05-28 12:52:43 - INFO status_check - Starting check: Cup Dispensers
@@ -421,22 +420,18 @@
 2025-05-28 14:35:31 - INFO calibration - Moving to Delivery Area at {'x': 0, 'y': 250, 'z': 80, 'pitch': 0, 'roll': 0}
 2025-05-28 14:35:31 - INFO calibration - Moving to Bin at {'x': -300, 'y': 200, 'z': 100, 'pitch': 0, 'roll': 0}
 2025-05-28 14:35:35 - INFO app - Application closed
-2025-05-28 16:39:52 - INFO status_check - Starting check: Coffee Machine
-2025-05-28 16:39:52 - INFO status_check - Starting check: xArm
-2025-05-28 16:39:52 - INFO status_check - Starting check: Cup Dispensers
-2025-05-28 16:39:53 - INFO status_check - Starting check: Ice Cream Machine
-2025-05-28 16:39:53 - INFO status_check - Starting check: Payment System
-2025-05-28 16:39:53 - INFO status_check - Starting check: Coffee Dumping
-2025-05-28 16:39:53 - INFO status_check - Starting check: Glass Slider
-2025-05-28 16:40:00 - INFO app - Application closed
-2025-05-28 16:40:33 - INFO status_check - Starting check: Coffee Machine
-2025-05-28 16:40:36 - INFO status_check - Starting check: xArm
-2025-05-28 16:40:39 - INFO status_check - Starting check: Cup Dispensers
-2025-05-28 16:40:42 - INFO status_check - Starting check: Ice Cream Machine
-2025-05-28 16:40:44 - INFO status_check - Starting check: Payment System
-2025-05-28 16:40:47 - INFO status_check - Starting check: Glass Slider
-2025-05-28 16:40:50 - INFO status_check - Starting check: Coffee Dumping
-2025-05-28 16:42:18 - INFO app - Application closed
-=======
-2025-06-30 18:25:02 - INFO app - Application closed
->>>>>>> fca84a3 (30.06.25)
+2025-05-28 15:40:32 - INFO settings - Port all00000001 configured for Shield with state all00000001
+2025-05-28 15:40:33 - INFO settings - Port all00000010 configured for Bin with state all00000010
+2025-05-28 15:40:34 - INFO settings - Port all00000100 configured for Dispenser M with state all00000100
+2025-05-28 15:40:34 - INFO settings - Port all00001000 configured for Dispenser S with state all00001000
+2025-05-28 15:40:37 - INFO settings - Settings saved successfully.
+2025-05-28 15:40:40 - INFO status_check - Starting check: Coffee Dumping
+2025-05-28 15:40:40 - INFO status_check - Starting check: Glass Slider
+2025-05-28 15:40:41 - INFO status_check - Starting check: Payment System
+2025-05-28 15:40:41 - INFO status_check - Starting check: Ice Cream Machine
+2025-05-28 15:40:42 - INFO status_check - Starting check: Cup Dispensers
+2025-05-28 15:40:42 - INFO status_check - Starting check: xArm
+2025-05-28 15:40:43 - INFO status_check - Starting check: Coffee Machine
+2025-05-28 15:40:47 - INFO calibration - Moving to Cup Dispenser S at {'x': -150, 'y': 50, 'z': 100, 'pitch': 0, 'roll': 0}
+2025-05-28 15:40:48 - INFO calibration - Moving to Ice Cream Machine at {'x': 200, 'y': 180, 'z': 120, 'pitch': -5, 'roll': -10}
+2025-05-28 15:40:52 - INFO app - Application closed
