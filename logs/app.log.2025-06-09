@@ -1,0 +1,32 @@
+2025-06-09 18:55:48 - INFO status_check - Starting check: Coffee Machine
+2025-06-09 18:55:59 - INFO status_check - Starting check: xArm
+2025-06-09 18:55:59 - INFO status_check - Starting check: Cup Dispensers
+2025-06-09 18:55:59 - ERROR status_check - PLC communication error: [Errno 51] Network is unreachable
+2025-06-09 18:56:00 - INFO status_check - Starting check: Ice Cream Machine
+2025-06-09 18:56:20 - INFO status_check - Starting check: Payment System
+2025-06-09 18:56:21 - INFO status_check - Starting check: Coffee Dumping
+2025-06-09 18:56:21 - ERROR status_check - PLC communication error: [Errno 51] Network is unreachable
+2025-06-09 18:56:23 - INFO status_check - Starting check: Glass Slider
+2025-06-09 18:56:23 - ERROR status_check - PLC communication error: [Errno 51] Network is unreachable
+2025-06-09 18:57:00 - INFO app - Application closed
+2025-06-09 18:58:03 - INFO status_check - Starting check: Glass Slider
+2025-06-09 18:58:05 - INFO status_check - Starting check: Coffee Machine
+2025-06-09 18:58:06 - INFO status_check - Starting check: xArm
+2025-06-09 18:58:07 - INFO status_check - Starting check: Cup Dispensers
+2025-06-09 18:58:07 - INFO status_check - Starting check: Ice Cream Machine
+2025-06-09 18:58:08 - INFO status_check - Starting check: Payment System
+2025-06-09 18:58:08 - INFO status_check - Starting check: Coffee Dumping
+2025-06-09 18:58:14 - INFO relays - Triggering all relays
+2025-06-09 18:58:42 - INFO settings - Settings saved successfully.
+2025-06-09 18:59:23 - INFO calibration - Moving to Cup Dispenser S at {'x': -150, 'y': 50, 'z': 100, 'pitch': 0, 'roll': 0}
+2025-06-09 18:59:42 - INFO app - Application closed
+2025-06-09 19:00:14 - INFO status_check - Starting check: Coffee Machine
+2025-06-09 19:00:15 - INFO status_check - Starting check: xArm
+2025-06-09 19:00:15 - INFO status_check - Starting check: Cup Dispensers
+2025-06-09 19:00:15 - INFO status_check - Starting check: Ice Cream Machine
+2025-06-09 19:00:16 - INFO status_check - Starting check: Payment System
+2025-06-09 19:00:16 - INFO status_check - Starting check: Glass Slider
+2025-06-09 19:00:17 - INFO status_check - Starting check: Coffee Dumping
+2025-06-09 19:00:27 - INFO calibration - Moving to Cup Dispenser S at {'x': -150, 'y': 50, 'z': 100, 'pitch': 0, 'roll': 0}
+2025-06-09 19:00:30 - INFO calibration - Moving to Arm Base at {'x': 0, 'y': 0, 'z': 0, 'pitch': 0, 'roll': 0, 'yaw': 0}
+2025-06-09 19:13:45 - INFO app - Application closed
