@@ -14,6 +14,9 @@ class PLC:
         self.DISS = str(os.getenv("DISPENSER_S", "all00000100"))
         self.BIN = str(os.getenv("BIN", "all00001000"))
         self.SHIELD = str(os.getenv("SHIELD", "all00000001"))
+        self.ICE_LEFT = str(os.getenv("ICE_LEFT", "all00010000"))
+        self.ICE_MIDDLE = str(os.getenv("ICE_MIDDLE", "all00100000"))
+        self.ICE_RIGHT = str(os.getenv("ICE_RIGHT", "all01000000"))
         self.rel = [
             ["off1", "on1"],
             ["off2", "on2"],
@@ -48,7 +51,22 @@ class PLC:
         self.relay(self.BIN)
         time.sleep(sec)
         self.relay("all00000000")
-        
+    
+    def l_ice(self, sec) -> None:
+        self.relay(self.ICE_LEFT)
+        time.sleep(sec)
+        self.relay("all00000000")
+
+    def m_ice(self, sec) -> None:
+        self.relay(self.ICE_MIDDLE)
+        time.sleep(sec)
+        self.relay("all00000000")
+
+    def r_ice(self, sec) -> None:
+        self.relay(self.ICE_RIGHT)
+        time.sleep(sec)
+        self.relay("all00000000")
+
     def trigger_all(self) -> None:
         logger.info("Triggering all relays")
         self.relay("all11111111")

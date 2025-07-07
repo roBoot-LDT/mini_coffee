@@ -47,6 +47,9 @@ class SettingsWindow(QWidget):
         self.disM = QLineEdit()
         self.shield = QLineEdit()
         self.bin = QLineEdit()
+        self.l_ice = QLineEdit()
+        self.m_ice = QLineEdit()
+        self.r_ice = QLineEdit()
         
         # Network Configuration Group
         network_group = QGroupBox("Network Configuration")
@@ -69,6 +72,9 @@ class SettingsWindow(QWidget):
         self._create_input_field(device_layout, "Dispenser M:", self.disM)
         self._create_input_field(device_layout, "Shield:", self.shield)
         self._create_input_field(device_layout, "Bin:", self.bin)
+        self._create_input_field(device_layout, "Left Ice:", self.l_ice)
+        self._create_input_field(device_layout, "Middle Ice:", self.m_ice)
+        self._create_input_field(device_layout, "Right Ice:", self.r_ice)
         device_group.setLayout(device_layout)
         layout.addWidget(device_group)
 
@@ -169,6 +175,9 @@ class SettingsWindow(QWidget):
             self.disM.setText(config.get('DISPENSER_M') or 'all00000010')
             self.bin.setText(config.get('BIN') or 'all00000100')
             self.shield.setText(config.get('SHIELD') or 'all00001000')
+            self.l_ice.setText(config.get('LEFT_ICE') or 'all00001000')
+            self.m_ice.setText(config.get('MIDDLE_ICE') or 'all00001000')
+            self.r_ice.setText(config.get('RIGHT_ICE') or 'all00001000')
 
     def save_settings(self) -> None:
         env_content = f"""RELAY_IP={self.ip_input.text()}
@@ -178,7 +187,10 @@ class SettingsWindow(QWidget):
                         DISPENSER_S={self.disS.text()}
                         DISPENSER_M={self.disM.text()}
                         BIN={self.bin.text()}
-                        SHIELD={self.shield.text()}"""
+                        SHIELD={self.shield.text()}
+                        ICE_LEFT={self.l_ice.text()}
+                        ICE_MIDDLE={self.m_ice.text()}
+                        ICE_RIGHT={self.r_ice.text()}"""
         
         try:
             with open(self.env_path, 'w') as f:
@@ -190,11 +202,14 @@ class SettingsWindow(QWidget):
             logger.error(f"Failed to save settings: {str(e)}")
 
     def detect_ports(self) -> None:
-        options = ["Dispenser S", "Dispenser M", "Shield", "Bin"]
+        options = ["Dispenser S", "Dispenser M", "Shield", "Bin", "Left Ice", "Middle Ice", "Right Ice"]
         mapping = {
             "Dispenser S": self.disS,
             "Dispenser M": self.disM,
             "Shield": self.shield,
+            "Left Ice": self.l_ice,
+            "Middle Ice": self.m_ice,
+            "Right Ice": self.r_ice,
             "Bin": self.bin
         }
         
@@ -264,6 +279,9 @@ class PortConfigDialog(QDialog):
             "Dispenser S": "cup_S.png",
             "Dispenser M": "cup_M.png",
             "Shield": "shield.png",
+            "Left Ice": "l_ice.png",
+            "Right Ice": "r_ice.png",
+            "Middle Ice": "m_ice.png",
             "Bin": "bin.png"
         }
         for opt in options:

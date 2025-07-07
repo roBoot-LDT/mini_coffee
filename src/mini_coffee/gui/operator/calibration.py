@@ -838,9 +838,42 @@ class CalibrationWindow(QWidget):
         tabs.addTab(self.node_editors[2], "Ice Cream")
         tabs.addTab(self.node_editors[3], "Bin")
 
-        layout.addWidget(tabs, 1)
+        # Add client mode button
+        client_btn = QPushButton("Switch to Client Mode")
+        client_btn.setStyleSheet("""
+            QPushButton {
+                background-color: #4CAF50;
+                color: white;
+                padding: 15px;
+                border-radius: 8px;
+                font-size: 16px;
+                font-weight: bold;
+                margin: 10px;
+            }
+            QPushButton:hover {
+                background-color: #45a049;
+            }
+        """)
+        client_btn.clicked.connect(self.show_client_screen)
+        
+        control_layout = QVBoxLayout()
+        control_layout.addWidget(tabs)
+        control_layout.addWidget(client_btn)
+        
+        layout.addLayout(control_layout, 1)
         self.setLayout(layout)
         self.schematic.component_clicked.connect(self.handle_component_click)
+    
+    def show_client_screen(self):
+        """Switch to full-screen client view"""
+        from mini_coffee.gui.client.client_screen import ClientScreen
+        from mini_coffee.hardware.arm.controller import XArmAPI
+        from mini_coffee.hardware.relays import PLC
+        self.arm = arm = XArmAPI('192.168.1.191', baud_checkset=False)
+        self.plc = PLC()
+        self.client_screen = ClientScreen(self.arm, self.plc)
+        self.client_screen.showFullScreen()
+        self.hide()
     
     def enter_calibration_mode(self, component):
         layout = self.layout()

@@ -1,40 +1,21 @@
-2025-05-28 14:06:50 - ERROR calibration - Error updating arm position: Internal C++ object (ArmMarker) already deleted.
-2025-05-28 14:06:50 - ERROR calibration - Error updating arm position: Internal C++ object (ArmMarker) already deleted.
-2025-05-28 14:06:50 - ERROR calibration - Error updating arm position: Internal C++ object (ArmMarker) already deleted.
-2025-05-28 14:06:51 - ERROR calibration - Error updating arm position: Internal C++ object (ArmMarker) already deleted.
-2025-05-28 14:06:51 - ERROR calibration - Error updating arm position: Internal C++ object (ArmMarker) already deleted.
-2025-05-28 14:06:52 - ERROR calibration - Error updating arm position: Internal C++ object (ArmMarker) already deleted.
-2025-05-28 14:06:52 - ERROR calibration - Error updating arm position: Internal C++ object (ArmMarker) already deleted.
-2025-05-28 14:06:53 - ERROR calibration - Error updating arm position: Internal C++ object (ArmMarker) already deleted.
-2025-05-28 14:06:53 - ERROR calibration - Error updating arm position: Internal C++ object (ArmMarker) already deleted.
-2025-05-28 14:06:54 - ERROR calibration - Error updating arm position: Internal C++ object (ArmMarker) already deleted.
-2025-05-28 14:06:54 - ERROR calibration - Error updating arm position: Internal C++ object (ArmMarker) already deleted.
-2025-05-28 14:06:55 - ERROR calibration - Error updating arm position: Internal C++ object (ArmMarker) already deleted.
-2025-05-28 14:06:55 - ERROR calibration - Error updating arm position: Internal C++ object (ArmMarker) already deleted.
-2025-05-28 14:06:56 - ERROR calibration - Error updating arm position: Internal C++ object (ArmMarker) already deleted.
-2025-05-28 14:06:56 - ERROR calibration - Error updating arm position: Internal C++ object (ArmMarker) already deleted.
-2025-05-28 14:06:57 - ERROR calibration - Error updating arm position: Internal C++ object (ArmMarker) already deleted.
-2025-05-28 14:06:57 - ERROR calibration - Error updating arm position: Internal C++ object (ArmMarker) already deleted.
-2025-05-28 14:06:58 - ERROR calibration - Error updating arm position: Internal C++ object (ArmMarker) already deleted.
-2025-05-28 14:11:22 - ERROR calibration - Error updating arm marker: Internal C++ object (ArmMarker) already deleted.
-2025-05-28 14:11:22 - ERROR calibration - Error updating arm marker: Internal C++ object (ArmMarker) already deleted.
-2025-05-28 14:11:23 - ERROR calibration - Error updating arm marker: Internal C++ object (ArmMarker) already deleted.
-2025-05-28 14:11:23 - ERROR calibration - Error updating arm marker: Internal C++ object (ArmMarker) already deleted.
-2025-05-28 14:11:24 - ERROR calibration - Error updating arm marker: Internal C++ object (ArmMarker) already deleted.
-2025-05-28 14:11:24 - ERROR calibration - Error updating arm marker: Internal C++ object (ArmMarker) already deleted.
-2025-05-28 14:11:25 - ERROR calibration - Error updating arm marker: Internal C++ object (ArmMarker) already deleted.
-2025-05-28 14:11:25 - ERROR calibration - Error updating arm marker: Internal C++ object (ArmMarker) already deleted.
-2025-05-28 14:11:26 - ERROR calibration - Error updating arm marker: Internal C++ object (ArmMarker) already deleted.
-2025-05-28 14:11:26 - ERROR calibration - Error updating arm marker: Internal C++ object (ArmMarker) already deleted.
-2025-05-28 14:11:27 - ERROR calibration - Error updating arm marker: Internal C++ object (ArmMarker) already deleted.
-2025-05-28 14:11:27 - ERROR calibration - Error updating arm marker: Internal C++ object (ArmMarker) already deleted.
-2025-05-28 14:11:28 - ERROR calibration - Error updating arm marker: Internal C++ object (ArmMarker) already deleted.
-2025-05-28 14:12:51 - ERROR calibration - Error updating arm marker: Internal C++ object (ArmMarker) already deleted.
-2025-05-28 14:12:51 - ERROR calibration - Error updating arm marker: Internal C++ object (ArmMarker) already deleted.
-2025-05-28 14:12:52 - ERROR calibration - Error updating arm marker: Internal C++ object (ArmMarker) already deleted.
-2025-05-28 14:12:52 - ERROR calibration - Error updating arm marker: Internal C++ object (ArmMarker) already deleted.
-2025-05-28 14:12:53 - ERROR calibration - Error updating arm marker: Internal C++ object (ArmMarker) already deleted.
-2025-05-28 14:12:53 - ERROR calibration - Error updating arm marker: Internal C++ object (ArmMarker) already deleted.
-2025-05-28 14:12:54 - ERROR calibration - Error updating arm marker: Internal C++ object (ArmMarker) already deleted.
-2025-05-28 14:12:54 - ERROR calibration - Error updating arm marker: Internal C++ object (ArmMarker) already deleted.
-2025-05-28 14:12:55 - ERROR calibration - Error updating arm marker: Internal C++ object (ArmMarker) already deleted.
+2025-07-07 15:07:41 - ERROR client_screen - Failed to load recipes. Using defaults.
+2025-07-07 15:07:55 - ERROR client_screen - Position data missing for Home
+2025-07-07 15:07:57 - ERROR client_screen - Position data missing for Home
+2025-07-07 15:08:00 - ERROR client_screen - Position data missing for Home
+2025-07-07 15:39:50 - ERROR client_screen - Failed to load recipes. Using defaults.
+2025-07-07 16:48:24 - ERROR client_screen - Failed to load recipes. Using defaults.
+2025-07-07 16:48:30 - ERROR client_screen - Failed to load recipes. Using defaults.
+2025-07-07 16:48:42 - ERROR client_screen - Failed to load recipes. Using defaults.
+2025-07-07 16:48:47 - ERROR client_screen - Failed to load recipes. Using defaults.
+2025-07-07 16:48:53 - ERROR client_screen - Position data missing for Home
+2025-07-07 16:48:54 - ERROR client_screen - Position data missing for Home
+2025-07-07 16:48:54 - ERROR client_screen - Position data missing for Home
+2025-07-07 16:50:26 - ERROR client_screen - Failed to load recipes. Using defaults.
+2025-07-07 16:50:28 - ERROR client_screen - Failed to load recipes. Using defaults.
+2025-07-07 16:50:34 - ERROR client_screen - Position data missing for Home
+2025-07-07 16:50:37 - ERROR client_screen - Position data missing for Home
+2025-07-07 16:52:33 - ERROR client_screen - Failed to load recipes. Using defaults.
+2025-07-07 16:53:45 - ERROR client_screen - Failed to load recipes. Using defaults.
+2025-07-07 16:53:48 - ERROR client_screen - Position data missing for Home
+2025-07-07 16:53:49 - ERROR client_screen - Position data missing for Home
+2025-07-07 16:53:50 - ERROR client_screen - Position data missing for Home
