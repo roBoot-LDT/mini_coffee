@@ -21,7 +21,8 @@ class Data:
     FILES = {
         0: "calibration.json",
         1: "components.json",
-        2: "nodes.json"
+        2: "nodes.json",
+        3: "receipts.json"
     }
 
     def __init__(self, mode: int = 1):

@@ -24,7 +24,6 @@ class ClientScreen(QWidget):
         super().__init__(parent)
         self.arm = arm_controller
         self.plc = plc
-        self.data = Data(0)  # Load calibration.json
         self.recipes = self.load_recipes()
         self.current_order = None
         self.order_path = []
@@ -32,19 +31,17 @@ class ClientScreen(QWidget):
         self.setWindowFlags(Qt.WindowType.FramelessWindowHint)
         self.init_ui()
         
-    def load_recipes(self):
-        """Load ice cream recipes from JSON file"""
-        recipe_path = Path(__file__).parent.parent.parent.parent.parent / "config" / "recipes.json"
+    def load_recipes(self, flavor):
+        """Load ice cream recipes from Data(3)"""
+        data = Data(3)
         try:
-            with open(recipe_path, "r") as f:
-                return json.load(f)
-        except (FileNotFoundError, json.JSONDecodeError):
-            logger.error("Failed to load recipes. Using defaults.")
-            return {
-                "vanilla": ["Home", "VanillaDispenser", "CupDispenser", "Finish"],
-                "chocolate": ["Home", "ChocolateDispenser", "CupDispenser", "Finish"],
-                "mix": ["Home", "VanillaDispenser", "ChocolateDispenser", "CupDispenser", "Finish"]
-            }
+            recipes = data.recipes if hasattr(data, "recipes") else data.get("recipes", {})
+            if not recipes:
+                raise ValueError("No recipes found in Data(3)")
+            return recipes[flavor] if flavor in recipes else {}
+        except Exception as e:
+            logger.error(f"Failed to load recipes from Data(3): {e}. Using defaults.")
+            
     
     def init_ui(self):
         # Main layout with background
@@ -256,7 +253,7 @@ class ClientScreen(QWidget):
                     return
 
                 step = self.order_path.pop(0)
-                coord = self.data.get(step)
+                coord = self.load_recipes(flavor)
                 if isinstance(coord, list) and len(coord) == 6:
                     self.arm_status_changed.emit(f"Moving to {step}...")
                     try:
