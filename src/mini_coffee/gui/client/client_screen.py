@@ -244,48 +244,48 @@ class ClientScreen(QWidget):
         
         # Get recipe path
         self.recipes = self.load_recipes(flavor)
-        path = self.recipes[flavor]
-        self.order_path = path.copy()
-        def process_next_step():
-            if not self.order_path:
+        if not self.recipes:
+            logger.error(f"No recipe found for flavor: {flavor}")
+            self.complete_order()
+            return
+
+        def process_next(index=0):
+            if index >= len(self.recipes):
                 self.complete_order()
                 return
 
-            step = self.order_path.pop(0)
-            coord = self.load_recipes(flavor)
-            if isinstance(coord, list) and len(coord) == 6:
-                self.arm_status_changed.emit(f"Moving to {step}...")
-                try:
-                    self.arm.set_position(*coord, wait=True)
-                except Exception as e:
-                    logger.error(f"Arm move failed at {step}: {e}")
-                    self.arm_status_changed.emit(f"Error at {step}")
-                    self.complete_order()
-                    return
-                QTimer.singleShot(500, process_next_step)
-            else:
-                # Handle special steps for ice cream dispensing
-                if isinstance(coord, list) and len(coord) == 1 and isinstance(coord[0], int):
-                    if coord[0] == 0:
-                        self.arm_status_changed.emit("Dispensing Vanilla...")
-                        self.plc.l_ice(1)
-                    elif coord[0] == 1:
-                        self.arm_status_changed.emit("Dispensing Mix...")
-                        self.plc.m_ice(1)
-                    elif coord[0] == 2:
-                        self.arm_status_changed.emit("Dispensing Chocolate...")
-                        self.plc.r_ice(1)
-                    elif coord[0] == 3:
-                        self.arm_status_changed.emit("Dispensing Cup...")
-                        self.plc.dispenserS(1)
-                    else:
-                        logger.warning(f"Unknown ice cream code: {coord[0]}")
+            coord = self.recipes[index]
+            # If coord is a list with a single int, handle special action
+            if isinstance(coord, list) and len(coord) == 1 and isinstance(coord[0], int):
+                code = coord[0]
+                if code == 0:
+                    self.arm_status_changed.emit("Dispensing Vanilla...")
+                    self.plc.l_ice(1)
+                elif code == 1:
+                    self.arm_status_changed.emit("Dispensing Mix...")
+                    self.plc.m_ice(1)
+                elif code == 2:
+                    self.arm_status_changed.emit("Dispensing Chocolate...")
+                    self.plc.r_ice(1)
+                elif code == 3:
+                    self.arm_status_changed.emit("Dispensing Cup...")
+                    self.plc.dispenserS(1)
                 else:
-                    # Skip steps that are not valid 6D coordinates
-                    logger.warning(f"Skipping invalid step: {step} -> {coord}")
-                QTimer.singleShot(100, process_next_step)
+                    logger.warning(f"Unknown code: {code}")
+                # Simulate time for action, then continue
+                QTimer.singleShot(1, lambda: process_next(index + 1))
+            else:
+                # Move arm linearly to the coordinate
+                self.arm_status_changed.emit(f"Moving arm to {coord}...")
+                try:
+                    self.arm.set_servo_angle(coord, set_wait=True)
+                except Exception as e:
+                    logger.error(f"Arm movement failed: {e}")
+                QTimer.singleShot(1000, lambda: process_next(index + 1))
 
-        process_next_step()
+        process_next()
+           
+
    
     
     
