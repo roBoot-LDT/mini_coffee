@@ -34,7 +34,7 @@ class ClientScreen(QWidget):
         """Load ice cream recipes from Data(3)"""
         data = Data(3)
         try:
-            recipes = data.recipes if hasattr(data, "recipes") else data.get("recipes", {})
+            recipes = data.recipes if hasattr(data, "recipes") else data.load_data()
             if not recipes:
                 raise ValueError("No recipes found in Data(3)")
             return recipes[flavor] if flavor in recipes else {}
