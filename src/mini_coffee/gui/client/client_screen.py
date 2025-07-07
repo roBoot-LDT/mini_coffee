@@ -142,7 +142,7 @@ class ClientScreen(QWidget):
         # Arm status
         self.arm_status_label = QLabel()
         self.arm_status_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        self.arm_status_label.setMinimumHeight(30)
+        self.arm_status_label.setMinimumHeight(50)
         self.arm_status_label.setStyleSheet("""
             font-size: 24px;
             color: #FF6B6B;
@@ -283,7 +283,7 @@ class ClientScreen(QWidget):
                         angles = coord[0]
                     else:
                         angles = coord
-                    self.arm._arm.set_servo_angle(angle=angles, wait=True, radius=20)
+                    self.arm._arm.set_servo_angle(angle=angles, wait=True, speed=30, mvacc=500, radius=20)
                 except Exception as e:
                     logger.error(f"Arm movement failed: {e}")
                 QTimer.singleShot(1000, lambda: process_next(index + 1))
