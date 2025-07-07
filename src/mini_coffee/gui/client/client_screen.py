@@ -284,7 +284,7 @@ class ClientScreen(QWidget):
                         angles = coord[0]
                     else:
                         angles = coord
-                    self.arm._arm.set_servo_angle(angles, wait=True)
+                    self.arm._arm.set_servo_angle(angle=angles, wait=True)
                 except Exception as e:
                     logger.error(f"Arm movement failed: {e}")
                 QTimer.singleShot(1000, lambda: process_next(index + 1))
