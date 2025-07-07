@@ -868,11 +868,13 @@ class CalibrationWindow(QWidget):
     def show_client_screen(self):
         """Switch to full-screen client view"""
         from mini_coffee.gui.client.client_screen import ClientScreen
-        from mini_coffee.hardware.arm.controller import XArmAPI
+        from src.mini_coffee.hardware.arm.xarm.wrapper import XArmAPI
         from mini_coffee.hardware.relays import PLC
-        self.arm = arm = XArmAPI('192.168.1.191', baud_checkset=False)
+        from mini_coffee.hardware.arm.controller import RobotMain
+        self.arm = XArmAPI('192.168.1.191', baud_checkset=False)
+        self.robot = RobotMain(self.arm)
         self.plc = PLC()
-        self.client_screen = ClientScreen(self.arm, self.plc)
+        self.client_screen = ClientScreen(self.robot, self.plc)
         self.client_screen.showFullScreen()
         self.hide()
     

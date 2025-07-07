@@ -279,7 +279,7 @@ class ClientScreen(QWidget):
                 self.arm_status_changed.emit(f"Moving arm to {coord}...")
                 try:
                     print(f"Moving arm to {coord}")
-                    self.arm.set_servo_angle(coord, set_wait=True)
+                    self.arm._arm.set_servo_angle(coord, set_wait=True)
                 except Exception as e:
                     logger.error(f"Arm movement failed: {e}")
                 QTimer.singleShot(1000, lambda: process_next(index + 1))
