@@ -278,7 +278,6 @@ class ClientScreen(QWidget):
                 # Move arm linearly to the coordinate
                 self.arm_status_changed.emit(f"Moving arm to {coord}...")
                 try:
-                    print(f"Moving arm to {coord}")
                     # Flatten coord if it's a list of length 1 containing another list
                     if isinstance(coord, list) and len(coord) == 1 and isinstance(coord[0], list):
                         angles = coord[0]
@@ -322,7 +321,6 @@ class ClientScreen(QWidget):
             self.status_label.setText(f"Your {flavor} ice cream is ready! Enjoy! 🎉")
             self.status_label.setStyleSheet("""
                 font-size: 32px;
-                font-height: 100;
                 font-weight: 500;
                 color: #4ECDC4;
                 text-align: center;
@@ -334,6 +332,10 @@ class ClientScreen(QWidget):
     def update_arm_status(self, status):
         """Update the arm status display"""
         self.arm_status_label.setText(f"🤖 Arm Status: {status}")
+        # Ensure the label resizes to fit the text
+        self.arm_status_label.setMinimumHeight(50)
+        self.arm_status_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        self.arm_status_label.adjustSize()
     
     def showEvent(self, event):
         """Handle show event to ensure fullscreen"""
