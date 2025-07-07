@@ -24,7 +24,6 @@ class ClientScreen(QWidget):
         super().__init__(parent)
         self.arm = arm_controller
         self.plc = plc
-        self.recipes = self.load_recipes()
         self.current_order = None
         self.order_path = []
         self.setStyleSheet(self._get_stylesheet())
@@ -244,52 +243,50 @@ class ClientScreen(QWidget):
         self.chocolate_btn.setEnabled(False)
         
         # Get recipe path
-        if flavor in self.recipes:
-            path = self.recipes[flavor]
-            self.order_path = path.copy()
-            def process_next_step():
-                if not self.order_path:
+        self.recipes = self.load_recipes(flavor)
+        path = self.recipes[flavor]
+        self.order_path = path.copy()
+        def process_next_step():
+            if not self.order_path:
+                self.complete_order()
+                return
+
+            step = self.order_path.pop(0)
+            coord = self.load_recipes(flavor)
+            if isinstance(coord, list) and len(coord) == 6:
+                self.arm_status_changed.emit(f"Moving to {step}...")
+                try:
+                    self.arm.set_position(*coord, wait=True)
+                except Exception as e:
+                    logger.error(f"Arm move failed at {step}: {e}")
+                    self.arm_status_changed.emit(f"Error at {step}")
                     self.complete_order()
                     return
-
-                step = self.order_path.pop(0)
-                coord = self.load_recipes(flavor)
-                if isinstance(coord, list) and len(coord) == 6:
-                    self.arm_status_changed.emit(f"Moving to {step}...")
-                    try:
-                        self.arm.set_position(*coord, wait=True)
-                    except Exception as e:
-                        logger.error(f"Arm move failed at {step}: {e}")
-                        self.arm_status_changed.emit(f"Error at {step}")
-                        self.complete_order()
-                        return
-                    QTimer.singleShot(500, process_next_step)
-                else:
-                    # Handle special steps for ice cream dispensing
-                    if isinstance(coord, list) and len(coord) == 1 and isinstance(coord[0], int):
-                        if coord[0] == 0:
-                            self.arm_status_changed.emit("Dispensing Vanilla...")
-                            self.plc.l_ice(1)
-                        elif coord[0] == 1:
-                            self.arm_status_changed.emit("Dispensing Mix...")
-                            self.plc.m_ice(1)
-                        elif coord[0] == 2:
-                            self.arm_status_changed.emit("Dispensing Chocolate...")
-                            self.plc.r_ice(1)
-                        elif coord[0] == 3:
-                            self.arm_status_changed.emit("Dispensing Cup...")
-                            self.plc.dispenserS(1)
-                        else:
-                            logger.warning(f"Unknown ice cream code: {coord[0]}")
+                QTimer.singleShot(500, process_next_step)
+            else:
+                # Handle special steps for ice cream dispensing
+                if isinstance(coord, list) and len(coord) == 1 and isinstance(coord[0], int):
+                    if coord[0] == 0:
+                        self.arm_status_changed.emit("Dispensing Vanilla...")
+                        self.plc.l_ice(1)
+                    elif coord[0] == 1:
+                        self.arm_status_changed.emit("Dispensing Mix...")
+                        self.plc.m_ice(1)
+                    elif coord[0] == 2:
+                        self.arm_status_changed.emit("Dispensing Chocolate...")
+                        self.plc.r_ice(1)
+                    elif coord[0] == 3:
+                        self.arm_status_changed.emit("Dispensing Cup...")
+                        self.plc.dispenserS(1)
                     else:
-                        # Skip steps that are not valid 6D coordinates
-                        logger.warning(f"Skipping invalid step: {step} -> {coord}")
-                    QTimer.singleShot(100, process_next_step)
+                        logger.warning(f"Unknown ice cream code: {coord[0]}")
+                else:
+                    # Skip steps that are not valid 6D coordinates
+                    logger.warning(f"Skipping invalid step: {step} -> {coord}")
+                QTimer.singleShot(100, process_next_step)
 
-            process_next_step()
-        else:
-            logger.error(f"No recipe found for {flavor}")
-            self.complete_order()
+        process_next_step()
+   
     
     
     def complete_order(self):
