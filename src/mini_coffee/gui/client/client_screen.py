@@ -279,7 +279,12 @@ class ClientScreen(QWidget):
                 self.arm_status_changed.emit(f"Moving arm to {coord}...")
                 try:
                     print(f"Moving arm to {coord}")
-                    self.arm._arm.set_servo_angle(coord, set_wait=True)
+                    # Flatten coord if it's a list of length 1 containing another list
+                    if isinstance(coord, list) and len(coord) == 1 and isinstance(coord[0], list):
+                        angles = coord[0]
+                    else:
+                        angles = coord
+                    self.arm._arm.set_servo_angle(angles, wait=True)
                 except Exception as e:
                     logger.error(f"Arm movement failed: {e}")
                 QTimer.singleShot(1000, lambda: process_next(index + 1))
