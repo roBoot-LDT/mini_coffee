@@ -18,7 +18,7 @@ class RobotMain(object):
         self._ignore_exit_state = False
         self._tcp_speed = 100
         self._tcp_acc = 2000
-        self._angle_speed = 20
+        self._angle_speed = 50
         self._angle_acc = 500
         self._vars = {}
         self._funcs = {}
