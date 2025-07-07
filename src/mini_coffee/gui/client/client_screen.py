@@ -278,6 +278,7 @@ class ClientScreen(QWidget):
                 # Move arm linearly to the coordinate
                 self.arm_status_changed.emit(f"Moving arm to {coord}...")
                 try:
+                    print(f"Moving arm to {coord}")
                     self.arm.set_servo_angle(coord, set_wait=True)
                 except Exception as e:
                     logger.error(f"Arm movement failed: {e}")
@@ -316,6 +317,7 @@ class ClientScreen(QWidget):
             self.status_label.setText(f"Your {flavor} ice cream is ready! Enjoy! 🎉")
             self.status_label.setStyleSheet("""
                 font-size: 32px;
+                font-height: 100;
                 font-weight: 500;
                 color: #4ECDC4;
                 text-align: center;
