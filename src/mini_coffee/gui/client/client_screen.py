@@ -43,22 +43,53 @@ class ClientScreen(QWidget):
             
     
     def init_ui(self):
-        # Main layout with background
+        # Main layout with background gradient
         main_layout = QVBoxLayout()
         main_layout.setContentsMargins(0, 0, 0, 0)
         main_layout.setSpacing(0)
         self.setLayout(main_layout)
         
-        # Background container
+        # Background container with gradient and rounded corners
         bg_widget = QWidget()
-        bg_widget.setStyleSheet("background-color: #1A1A2E;")
+        bg_widget.setStyleSheet("""
+            background: qlineargradient(
+                x1:0, y1:0, x2:1, y2:1,
+                stop:0 #23243a, stop:1 #1A1A2E
+            );
+            border-radius: 40px;
+            border: 2px solid #4ECDC4;
+        """)
         bg_layout = QVBoxLayout(bg_widget)
-        bg_layout.setContentsMargins(50, 50, 50, 50)
+        bg_layout.setContentsMargins(60, 60, 60, 60)
         bg_layout.setSpacing(40)
-                
+        
+        # Title label
+        title_label = QLabel("🍦 Mini Coffee Ice Cream Robot 🍦")
+        title_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        title_label.setStyleSheet("""
+            font-size: 56px;
+            font-weight: bold;
+            color: #FFD166;
+            letter-spacing: 2px;
+            margin-bottom: 30px;
+            text-shadow: 2px 2px 8px #00000088;
+        """)
+        bg_layout.addWidget(title_label)
+        
+        # Status label
+        self.status_label = QLabel("Ready to take your order!")
+        self.status_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        self.status_label.setStyleSheet("""
+            font-size: 32px;
+            font-weight: 500;
+            color: #4ECDC4;
+            margin-bottom: 20px;
+        """)
+        bg_layout.addWidget(self.status_label)
+        
         # Ice cream options
         options_layout = QHBoxLayout()
-        options_layout.setSpacing(50)
+        options_layout.setSpacing(60)
         options_layout.setContentsMargins(50, 0, 50, 0)
         
         # Load icons
@@ -84,6 +115,20 @@ class ClientScreen(QWidget):
         
         bg_layout.addLayout(options_layout)
         
+        # Arm status label
+        self.arm_status_label = QLabel("🤖 Arm Status: Idle")
+        self.arm_status_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        self.arm_status_label.setMinimumHeight(50)
+        self.arm_status_label.setStyleSheet("""
+            font-size: 28px;
+            color: #FFD166;
+            background: rgba(30, 30, 46, 0.7);
+            border-radius: 18px;
+            padding: 12px 0;
+            margin-top: 30px;
+        """)
+        bg_layout.addWidget(self.arm_status_label)
+        
         main_layout.addWidget(bg_widget)
         
         # Set size policies
@@ -93,19 +138,19 @@ class ClientScreen(QWidget):
         self.order_started.connect(self.update_status)
         self.order_completed.connect(self.update_status)
         self.arm_status_changed.connect(self.update_arm_status)
-    
+
     def create_icon_button(self, icon_path, tooltip):
-        """Create a clickable icon button with animation"""
+        """Create a clickable icon button with animation and shadow"""
         btn = QPushButton()
         btn.setToolTip(tooltip)
-        btn.setMinimumSize(600, 600)
-        btn.setMaximumSize(800, 800)
+        btn.setMinimumSize(260, 260)
+        btn.setMaximumSize(400, 400)
         btn.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding)
         
         if Path(icon_path).exists():
             pixmap = QPixmap(icon_path)
             btn.setIcon(QIcon(pixmap))
-            btn.setIconSize(pixmap.size().scaled(600, 600, Qt.AspectRatioMode.KeepAspectRatio))
+            btn.setIconSize(pixmap.size().scaled(260, 260, Qt.AspectRatioMode.KeepAspectRatio))
         
         # Add hover animation
         opacity_effect = QGraphicsOpacityEffect(btn)
@@ -126,8 +171,22 @@ class ClientScreen(QWidget):
         
         btn.setStyleSheet("""
             QPushButton {
-                border: none;
-                background: transparent;
+                border: 4px solid #FFD166;
+                border-radius: 32px;
+                background: qradialgradient(
+                    cx:0.5, cy:0.5, radius: 1.0,
+                    fx:0.5, fy:0.5,
+                    stop:0 #23243a, stop:1 #1A1A2E
+                );
+                box-shadow: 0 8px 32px #00000044;
+            }
+            QPushButton:hover {
+                border: 4px solid #4ECDC4;
+                background: qradialgradient(
+                    cx:0.5, cy:0.5, radius: 1.0,
+                    fx:0.5, fy:0.5,
+                    stop:0 #292F36, stop:1 #23243a
+                );
             }
             QToolTip {
                 font-size: 24px;
