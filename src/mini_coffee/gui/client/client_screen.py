@@ -55,30 +55,7 @@ class ClientScreen(QWidget):
         bg_layout = QVBoxLayout(bg_widget)
         bg_layout.setContentsMargins(50, 50, 50, 50)
         bg_layout.setSpacing(40)
-        
-        # Header
-        header = QLabel("Mini Ice Cream Barista")
-        header.setStyleSheet("""
-            font-size: 48px;
-            font-weight: bold;
-            color: #FF6B6B;
-            text-align: center;
-            margin-top: 20px;
-        """)
-        header.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        bg_layout.addWidget(header)
-        
-        # Instruction
-        instruction = QLabel("Select your ice cream flavor:")
-        instruction.setStyleSheet("""
-            font-size: 32px;
-            color: #4ECDC4;
-            text-align: center;
-            margin-bottom: 40px;
-        """)
-        instruction.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        bg_layout.addWidget(instruction)
-        
+                
         # Ice cream options
         options_layout = QHBoxLayout()
         options_layout.setSpacing(50)
@@ -107,70 +84,6 @@ class ClientScreen(QWidget):
         
         bg_layout.addLayout(options_layout)
         
-        # Status area
-        status_widget = QWidget()
-        status_widget.setStyleSheet("""
-            background-color: #292F36;
-            border-radius: 25px;
-            padding: 30px;
-        """)
-        status_layout = QVBoxLayout(status_widget)
-        status_layout.setSpacing(20)
-        
-        self.status_label = QLabel("Ready to take your order!")
-        self.status_label.setStyleSheet("""
-            font-size: 32px;
-            font-weight: 500;
-            color: #4ECDC4;
-            text-align: center;
-            margin-bottom: 20px;
-        """)
-        self.status_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        status_layout.addWidget(self.status_label)
-        
-        # Progress bar simulation
-        self.progress_label = QLabel()
-        self.progress_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        self.progress_label.setMinimumHeight(30)
-        self.progress_label.setStyleSheet("""
-            font-size: 24px;
-            color: #FFD166;
-            font-family: 'Courier New', monospace;
-        """)
-        status_layout.addWidget(self.progress_label)
-        
-        # Arm status
-        self.arm_status_label = QLabel()
-        self.arm_status_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        self.arm_status_label.setMinimumHeight(50)
-        self.arm_status_label.setStyleSheet("""
-            font-size: 24px;
-            color: #FF6B6B;
-            font-family: 'Courier New', monospace;
-        """)
-        status_layout.addWidget(self.arm_status_label)
-        
-        # Back button (for operator)
-        back_btn = QPushButton("Operator Mode")
-        back_btn.setStyleSheet("""
-            QPushButton {
-                background-color: #6A0572;
-                color: white;
-                padding: 15px 30px;
-                border-radius: 10px;
-                font-size: 20px;
-                font-weight: bold;
-                margin-top: 20px;
-                min-width: 200px;
-            }
-            QPushButton:hover {
-                background-color: #7D3C98;
-            }
-        """)
-        back_btn.clicked.connect(self.close)
-        status_layout.addWidget(back_btn, 0, Qt.AlignmentFlag.AlignRight)
-        
-        bg_layout.addWidget(status_widget)
         main_layout.addWidget(bg_widget)
         
         # Set size policies
@@ -185,14 +98,14 @@ class ClientScreen(QWidget):
         """Create a clickable icon button with animation"""
         btn = QPushButton()
         btn.setToolTip(tooltip)
-        btn.setMinimumSize(300, 300)
-        btn.setMaximumSize(400, 400)
+        btn.setMinimumSize(600, 600)
+        btn.setMaximumSize(800, 800)
         btn.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding)
         
         if Path(icon_path).exists():
             pixmap = QPixmap(icon_path)
             btn.setIcon(QIcon(pixmap))
-            btn.setIconSize(pixmap.size().scaled(300, 300, Qt.AspectRatioMode.KeepAspectRatio))
+            btn.setIconSize(pixmap.size().scaled(600, 600, Qt.AspectRatioMode.KeepAspectRatio))
         
         # Add hover animation
         opacity_effect = QGraphicsOpacityEffect(btn)
