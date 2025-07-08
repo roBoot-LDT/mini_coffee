@@ -43,26 +43,12 @@ class ClientScreen(QWidget):
             
     
     def init_ui(self):
-        # Main layout with background gradient
+        # Main layout
         main_layout = QVBoxLayout()
         main_layout.setContentsMargins(0, 0, 0, 0)
         main_layout.setSpacing(0)
         self.setLayout(main_layout)
-        
-        # Background container with gradient and rounded corners
-        bg_widget = QWidget()
-        bg_widget.setStyleSheet("""
-            background: qlineargradient(
-                x1:0, y1:0, x2:1, y2:1,
-                stop:0 #23243a, stop:1 #1A1A2E
-            );
-            border-radius: 40px;
-            border: 2px solid #4ECDC4;
-        """)
-        bg_layout = QVBoxLayout(bg_widget)
-        bg_layout.setContentsMargins(60, 60, 60, 60)
-        bg_layout.setSpacing(40)
-        
+
         # Title label
         title_label = QLabel("🍦 Mini Coffee Ice Cream Robot 🍦")
         title_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
@@ -74,70 +60,35 @@ class ClientScreen(QWidget):
             margin-bottom: 30px;
             text-shadow: 2px 2px 8px #00000088;
         """)
-        bg_layout.addWidget(title_label)
-        
-        # Status label
-        self.status_label = QLabel("Ready to take your order!")
-        self.status_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        self.status_label.setStyleSheet("""
-            font-size: 32px;
-            font-weight: 500;
-            color: #4ECDC4;
-            margin-bottom: 20px;
-        """)
-        bg_layout.addWidget(self.status_label)
-        
+        main_layout.addWidget(title_label)
+
         # Ice cream options
         options_layout = QHBoxLayout()
         options_layout.setSpacing(60)
         options_layout.setContentsMargins(50, 0, 50, 0)
-        
+
         # Load icons
         icon_dir = Path(__file__).parent.parent.parent.parent.parent / "resources" / "icons"
-        
+
         # Vanilla
         vanilla_icon = str(icon_dir / "l_ice.png")
         self.vanilla_btn = self.create_icon_button(vanilla_icon, "Vanilla")
         self.vanilla_btn.clicked.connect(lambda: self.start_order("vanilla"))
         options_layout.addWidget(self.vanilla_btn)
-        
+
         # Mix
         mix_icon = str(icon_dir / "m_ice.png")
         self.mix_btn = self.create_icon_button(mix_icon, "Chocolate & Vanilla")
         self.mix_btn.clicked.connect(lambda: self.start_order("mix"))
         options_layout.addWidget(self.mix_btn)
-        
+
         # Chocolate
         chocolate_icon = str(icon_dir / "r_ice.png")
         self.chocolate_btn = self.create_icon_button(chocolate_icon, "Chocolate")
         self.chocolate_btn.clicked.connect(lambda: self.start_order("chocolate"))
         options_layout.addWidget(self.chocolate_btn)
-        
-        bg_layout.addLayout(options_layout)
-        
-        # Arm status label
-        self.arm_status_label = QLabel("🤖 Arm Status: Idle")
-        self.arm_status_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        self.arm_status_label.setMinimumHeight(50)
-        self.arm_status_label.setStyleSheet("""
-            font-size: 28px;
-            color: #FFD166;
-            background: rgba(30, 30, 46, 0.7);
-            border-radius: 18px;
-            padding: 12px 0;
-            margin-top: 30px;
-        """)
-        bg_layout.addWidget(self.arm_status_label)
-        
-        main_layout.addWidget(bg_widget)
-        
-        # Set size policies
-        bg_widget.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding)
-        
-        # Connect signals
-        self.order_started.connect(self.update_status)
-        self.order_completed.connect(self.update_status)
-        self.arm_status_changed.connect(self.update_arm_status)
+
+        main_layout.addLayout(options_layout)
 
     def create_icon_button(self, icon_path, tooltip):
         """Create a clickable icon button with animation and shadow"""
@@ -146,29 +97,29 @@ class ClientScreen(QWidget):
         btn.setMinimumSize(260, 260)
         btn.setMaximumSize(400, 400)
         btn.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding)
-        
+
         if Path(icon_path).exists():
             pixmap = QPixmap(icon_path)
             btn.setIcon(QIcon(pixmap))
             btn.setIconSize(pixmap.size().scaled(260, 260, Qt.AspectRatioMode.KeepAspectRatio))
-        
+
         # Add hover animation
         opacity_effect = QGraphicsOpacityEffect(btn)
         btn.setGraphicsEffect(opacity_effect)
-        
+
         hover_animation = QPropertyAnimation(opacity_effect, b"opacity")
         hover_animation.setDuration(200)
         hover_animation.setEasingCurve(QEasingCurve.Type.InOutQuad)
-        
+
         def animate_hover(enter):
             hover_animation.stop()
             hover_animation.setStartValue(opacity_effect.opacity())
             hover_animation.setEndValue(0.7 if enter else 1.0)
             hover_animation.start()
-        
+
         btn.enterEvent = lambda e: animate_hover(True)
         btn.leaveEvent = lambda e: animate_hover(False)
-        
+
         btn.setStyleSheet("""
             QPushButton {
                 border: 4px solid #FFD166;
@@ -197,7 +148,7 @@ class ClientScreen(QWidget):
                 opacity: 200;
             }
         """)
-        
+
         return btn
     
     def start_order(self, flavor):
