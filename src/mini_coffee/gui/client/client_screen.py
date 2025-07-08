@@ -49,7 +49,7 @@ class ClientScreen(QWidget):
         main_layout.setSpacing(0)
         self.setLayout(main_layout)
 
-        # Title label
+        # Title label at the top
         title_label = QLabel("🍦 Mini Coffee Ice Cream Robot 🍦")
         title_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
         title_label.setStyleSheet("""
@@ -60,9 +60,12 @@ class ClientScreen(QWidget):
             margin-bottom: 30px;
             text-shadow: 2px 2px 8px #00000088;
         """)
-        main_layout.addWidget(title_label)
+        main_layout.addWidget(title_label, alignment=Qt.AlignmentFlag.AlignTop | Qt.AlignmentFlag.AlignHCenter)
 
-        # Ice cream options
+        # Spacer to push icons to vertical center
+        main_layout.addStretch(1)
+
+        # Ice cream options centered
         options_layout = QHBoxLayout()
         options_layout.setSpacing(60)
         options_layout.setContentsMargins(50, 0, 50, 0)
@@ -88,7 +91,11 @@ class ClientScreen(QWidget):
         self.chocolate_btn.clicked.connect(lambda: self.start_order("chocolate"))
         options_layout.addWidget(self.chocolate_btn)
 
-        main_layout.addLayout(options_layout)
+        # Add the options layout centered horizontally
+        main_layout.addLayout(options_layout, stretch=0)
+
+        # Spacer to keep icons vertically centered
+        main_layout.addStretch(2)
 
     def create_icon_button(self, icon_path, tooltip):
         """Create a clickable icon button with animation and shadow"""
