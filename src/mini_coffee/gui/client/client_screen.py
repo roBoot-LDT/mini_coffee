@@ -87,15 +87,6 @@ class ClientScreen(QWidget):
         """)
         main_layout.addWidget(self.status_label, alignment=Qt.AlignmentFlag.AlignHCenter)
 
-        self.arm_status_label = QLabel("🤖 Arm Status: Idle")
-        self.arm_status_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        self.arm_status_label.setStyleSheet("""
-            font-size: 24px;
-            color: #4ECDC4;
-            margin-bottom: 10px;
-        """)
-        main_layout.addWidget(self.arm_status_label, alignment=Qt.AlignmentFlag.AlignHCenter)
-        
         # Vanilla
         vanilla_icon = str(icon_dir / "l_ice.png")
         vanilla_btn = self.create_icon_button(vanilla_icon, "Vanilla")
