@@ -72,7 +72,30 @@ class ClientScreen(QWidget):
 
         # Load icons
         icon_dir = Path(__file__).parent.parent.parent.parent.parent / "resources" / "icons"
+        # Track order state to disable buttons during processing
+        self.current_order = None
 
+        # Status labels (optional, can be used for feedback)
+        self.status_label = QLabel("Ready to take your order!")
+        self.status_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        self.status_label.setStyleSheet("""
+            font-size: 32px;
+            font-weight: 500;
+            color: #FFD166;
+            text-align: center;
+            margin-bottom: 20px;
+        """)
+        main_layout.addWidget(self.status_label, alignment=Qt.AlignmentFlag.AlignHCenter)
+
+        self.arm_status_label = QLabel("🤖 Arm Status: Idle")
+        self.arm_status_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        self.arm_status_label.setStyleSheet("""
+            font-size: 24px;
+            color: #4ECDC4;
+            margin-bottom: 10px;
+        """)
+        main_layout.addWidget(self.arm_status_label, alignment=Qt.AlignmentFlag.AlignHCenter)
+        
         # Vanilla
         vanilla_icon = str(icon_dir / "l_ice.png")
         vanilla_btn = self.create_icon_button(vanilla_icon, "Vanilla")
