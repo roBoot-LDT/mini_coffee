@@ -46,140 +46,43 @@ class ClientScreen(QWidget):
             }
     
     def init_ui(self):
-        # Main layout with background
+        # Main layout
         main_layout = QVBoxLayout()
         main_layout.setContentsMargins(0, 0, 0, 0)
         main_layout.setSpacing(0)
         self.setLayout(main_layout)
-        
-        # Background container
-        bg_widget = QWidget()
-        bg_widget.setStyleSheet("background-color: #1A1A2E;")
-        bg_layout = QVBoxLayout(bg_widget)
-        bg_layout.setContentsMargins(50, 50, 50, 50)
-        bg_layout.setSpacing(40)
-        
-        # Header
-        header = QLabel("Mini Ice Cream Barista")
-        header.setStyleSheet("""
-            font-size: 48px;
-            font-weight: bold;
-            color: #FF6B6B;
-            text-align: center;
-            margin-top: 20px;
-        """)
-        header.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        bg_layout.addWidget(header)
-        
-        # Instruction
-        instruction = QLabel("Select your ice cream flavor:")
-        instruction.setStyleSheet("""
-            font-size: 32px;
-            color: #4ECDC4;
-            text-align: center;
-            margin-bottom: 40px;
-        """)
-        instruction.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        bg_layout.addWidget(instruction)
-        
-        # Ice cream options
+
+        # Ice cream options only
         options_layout = QHBoxLayout()
         options_layout.setSpacing(50)
         options_layout.setContentsMargins(50, 0, 50, 0)
-        
+
         # Load icons
         icon_dir = Path(__file__).parent.parent.parent.parent.parent / "resources" / "icons"
-        
+
         # Vanilla
         vanilla_icon = str(icon_dir / "vanilla_icon.png")
         self.vanilla_btn = self.create_icon_button(vanilla_icon, "Vanilla")
         self.vanilla_btn.clicked.connect(lambda: self.start_order("vanilla"))
         options_layout.addWidget(self.vanilla_btn)
-        
+
         # Mix
         mix_icon = str(icon_dir / "mix_icon.png")
         self.mix_btn = self.create_icon_button(mix_icon, "Chocolate & Vanilla")
         self.mix_btn.clicked.connect(lambda: self.start_order("mix"))
         options_layout.addWidget(self.mix_btn)
-        
+
         # Chocolate
         chocolate_icon = str(icon_dir / "chocolate_icon.png")
         self.chocolate_btn = self.create_icon_button(chocolate_icon, "Chocolate")
         self.chocolate_btn.clicked.connect(lambda: self.start_order("chocolate"))
         options_layout.addWidget(self.chocolate_btn)
-        
-        bg_layout.addLayout(options_layout)
-        
-        # Status area
-        status_widget = QWidget()
-        status_widget.setStyleSheet("""
-            background-color: #292F36;
-            border-radius: 25px;
-            padding: 30px;
-        """)
-        status_layout = QVBoxLayout(status_widget)
-        status_layout.setSpacing(20)
-        
-        self.status_label = QLabel("Ready to take your order!")
-        self.status_label.setStyleSheet("""
-            font-size: 32px;
-            font-weight: 500;
-            color: #4ECDC4;
-            text-align: center;
-            margin-bottom: 20px;
-        """)
-        self.status_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        status_layout.addWidget(self.status_label)
-        
-        # Progress bar simulation
-        self.progress_label = QLabel()
-        self.progress_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        self.progress_label.setMinimumHeight(30)
-        self.progress_label.setStyleSheet("""
-            font-size: 24px;
-            color: #FFD166;
-            font-family: 'Courier New', monospace;
-        """)
-        status_layout.addWidget(self.progress_label)
-        
-        # Arm status
-        self.arm_status_label = QLabel()
-        self.arm_status_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        self.arm_status_label.setMinimumHeight(30)
-        self.arm_status_label.setStyleSheet("""
-            font-size: 24px;
-            color: #FF6B6B;
-            font-family: 'Courier New', monospace;
-        """)
-        status_layout.addWidget(self.arm_status_label)
-        
-        # Back button (for operator)
-        back_btn = QPushButton("Operator Mode")
-        back_btn.setStyleSheet("""
-            QPushButton {
-                background-color: #6A0572;
-                color: white;
-                padding: 15px 30px;
-                border-radius: 10px;
-                font-size: 20px;
-                font-weight: bold;
-                margin-top: 20px;
-                min-width: 200px;
-            }
-            QPushButton:hover {
-                background-color: #7D3C98;
-            }
-        """)
-        back_btn.clicked.connect(self.close)
-        status_layout.addWidget(back_btn, 0, Qt.AlignmentFlag.AlignRight)
-        
-        bg_layout.addWidget(status_widget)
-        main_layout.addWidget(bg_widget)
-        
-        # Set size policies
-        bg_widget.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding)
-        
-        # Connect signals
+
+        main_layout.addStretch(1)
+        main_layout.addLayout(options_layout)
+        main_layout.addStretch(1)
+
+        # Connect signals (optional, if you want to keep order logic)
         self.order_started.connect(self.update_status)
         self.order_completed.connect(self.update_status)
         self.arm_status_changed.connect(self.update_arm_status)
