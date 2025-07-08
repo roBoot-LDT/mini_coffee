@@ -72,20 +72,9 @@ class ClientScreen(QWidget):
 
         # Load icons
         icon_dir = Path(__file__).parent.parent.parent.parent.parent / "resources" / "icons"
-        # Track order state to disable buttons during processing
-        self.current_order = None
 
-        # Status labels (optional, can be used for feedback)
-        self.status_label = QLabel("Ready to take your order!")
-        self.status_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        self.status_label.setStyleSheet("""
-            font-size: 32px;
-            font-weight: 500;
-            color: #FFD166;
-            text-align: center;
-            margin-bottom: 20px;
-        """)
-        main_layout.addWidget(self.status_label, alignment=Qt.AlignmentFlag.AlignHCenter)
+        # Track order state to disable buttons during processing
+        self.current_order = None        
 
         # Vanilla
         vanilla_icon = str(icon_dir / "l_ice.png")
@@ -257,7 +246,7 @@ class ClientScreen(QWidget):
                 try:
                     angles = coord
                     wait_param = True if isinstance(angles, list) and len(angles) >= 7 else False
-                    self.arm._arm.set_servo_angle(angle=angles[:6], wait=wait_param, speed=30, mvacc=500, radius=20)
+                    self.arm._arm.set_servo_angle(angle=angles[:6], wait=wait_param, speed=10, mvacc=100, radius=50)
                 except Exception as e:
                     logger.error(f"Arm movement failed: {e}")
                 QTimer.singleShot(0, lambda: process_next(index + 1))
