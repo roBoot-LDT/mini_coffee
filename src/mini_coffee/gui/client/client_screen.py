@@ -20,7 +20,7 @@ class ClientScreen(QWidget):
     order_completed = Signal(str)
     arm_status_changed = Signal(str)
     
-    def __init__(self, arm_controller: MockArmController, parent=None):
+    def __init__(self, arm_controller: XArmAPI, parent=None):
         super().__init__(parent)
         self.arm = arm_controller
         self.data = Data(0)  # Load calibration.json
