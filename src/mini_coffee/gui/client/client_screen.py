@@ -20,27 +20,30 @@ class ClientScreen(QWidget):
     order_completed = Signal(str)
     arm_status_changed = Signal(str)
     
-    def __init__(self, arm_controller: XArmAPI, plc: PLC, parent=None):
+    def __init__(self, arm_controller: MockArmController, parent=None):
         super().__init__(parent)
         self.arm = arm_controller
-        self.plc = plc
+        self.data = Data(0)  # Load calibration.json
+        self.recipes = self.load_recipes()
         self.current_order = None
         self.order_path = []
         self.setStyleSheet(self._get_stylesheet())
         self.setWindowFlags(Qt.WindowType.FramelessWindowHint)
         self.init_ui()
         
-    def load_recipes(self, flavor):
-        """Load ice cream recipes from Data(3)"""
-        data = Data(3)
+    def load_recipes(self):
+        """Load ice cream recipes from JSON file"""
+        recipe_path = Path(__file__).parent.parent.parent.parent.parent / "config" / "recipes.json"
         try:
-            recipes = data.recipes if hasattr(data, "recipes") else data.load_data()
-            if not recipes:
-                raise ValueError("No recipes found in Data(3)")
-            return recipes[flavor] if flavor in recipes else {}
-        except Exception as e:
-            logger.error(f"Failed to load recipes from Data(3): {e}. Using defaults.")
-            
+            with open(recipe_path, "r") as f:
+                return json.load(f)
+        except (FileNotFoundError, json.JSONDecodeError):
+            logger.error("Failed to load recipes. Using defaults.")
+            return {
+                "vanilla": ["Home", "VanillaDispenser", "CupDispenser", "Finish"],
+                "chocolate": ["Home", "ChocolateDispenser", "CupDispenser", "Finish"],
+                "mix": ["Home", "VanillaDispenser", "ChocolateDispenser", "CupDispenser", "Finish"]
+            }
     
     def init_ui(self):
         # Main layout with background
@@ -88,19 +91,19 @@ class ClientScreen(QWidget):
         icon_dir = Path(__file__).parent.parent.parent.parent.parent / "resources" / "icons"
         
         # Vanilla
-        vanilla_icon = str(icon_dir / "l_ice.png")
+        vanilla_icon = str(icon_dir / "vanilla_icon.png")
         self.vanilla_btn = self.create_icon_button(vanilla_icon, "Vanilla")
         self.vanilla_btn.clicked.connect(lambda: self.start_order("vanilla"))
         options_layout.addWidget(self.vanilla_btn)
         
         # Mix
-        mix_icon = str(icon_dir / "m_ice.png")
+        mix_icon = str(icon_dir / "mix_icon.png")
         self.mix_btn = self.create_icon_button(mix_icon, "Chocolate & Vanilla")
         self.mix_btn.clicked.connect(lambda: self.start_order("mix"))
         options_layout.addWidget(self.mix_btn)
         
         # Chocolate
-        chocolate_icon = str(icon_dir / "r_ice.png")
+        chocolate_icon = str(icon_dir / "chocolate_icon.png")
         self.chocolate_btn = self.create_icon_button(chocolate_icon, "Chocolate")
         self.chocolate_btn.clicked.connect(lambda: self.start_order("chocolate"))
         options_layout.addWidget(self.chocolate_btn)
@@ -142,7 +145,7 @@ class ClientScreen(QWidget):
         # Arm status
         self.arm_status_label = QLabel()
         self.arm_status_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        self.arm_status_label.setMinimumHeight(50)
+        self.arm_status_label.setMinimumHeight(30)
         self.arm_status_label.setStyleSheet("""
             font-size: 24px;
             color: #FF6B6B;
@@ -329,10 +332,6 @@ class ClientScreen(QWidget):
     def update_arm_status(self, status):
         """Update the arm status display"""
         self.arm_status_label.setText(f"🤖 Arm Status: {status}")
-        # Ensure the label resizes to fit the text
-        self.arm_status_label.setMinimumHeight(50)
-        self.arm_status_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        self.arm_status_label.adjustSize()
     
     def showEvent(self, event):
         """Handle show event to ensure fullscreen"""
