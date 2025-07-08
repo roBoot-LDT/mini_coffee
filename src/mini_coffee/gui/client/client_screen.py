@@ -67,7 +67,7 @@ class ClientScreen(QWidget):
 
         # Ice cream options centered
         options_layout = QHBoxLayout()
-        options_layout.setSpacing(60)
+        options_layout.setSpacing(100)
         options_layout.setContentsMargins(50, 0, 50, 0)
 
         # Load icons
@@ -75,21 +75,30 @@ class ClientScreen(QWidget):
 
         # Vanilla
         vanilla_icon = str(icon_dir / "l_ice.png")
-        self.vanilla_btn = self.create_icon_button(vanilla_icon, "Vanilla")
+        vanilla_btn = self.create_icon_button(vanilla_icon, "Vanilla")
+        vanilla_label = self.create_flavor_label("Vanilla")
+        self.vanilla_btn = vanilla_btn
         self.vanilla_btn.clicked.connect(lambda: self.start_order("vanilla"))
-        options_layout.addWidget(self.vanilla_btn)
+        vanilla_widget = self.create_icon_with_label_widget(vanilla_btn, vanilla_label)
+        options_layout.addWidget(vanilla_widget)
 
         # Mix
         mix_icon = str(icon_dir / "m_ice.png")
-        self.mix_btn = self.create_icon_button(mix_icon, "Chocolate & Vanilla")
+        mix_btn = self.create_icon_button(mix_icon, "Chocolate & Vanilla")
+        mix_label = self.create_flavor_label("Chocolate & Vanilla")
+        self.mix_btn = mix_btn
         self.mix_btn.clicked.connect(lambda: self.start_order("mix"))
-        options_layout.addWidget(self.mix_btn)
+        mix_widget = self.create_icon_with_label_widget(mix_btn, mix_label)
+        options_layout.addWidget(mix_widget)
 
         # Chocolate
         chocolate_icon = str(icon_dir / "r_ice.png")
-        self.chocolate_btn = self.create_icon_button(chocolate_icon, "Chocolate")
+        chocolate_btn = self.create_icon_button(chocolate_icon, "Chocolate")
+        chocolate_label = self.create_flavor_label("Chocolate")
+        self.chocolate_btn = chocolate_btn
         self.chocolate_btn.clicked.connect(lambda: self.start_order("chocolate"))
-        options_layout.addWidget(self.chocolate_btn)
+        chocolate_widget = self.create_icon_with_label_widget(chocolate_btn, chocolate_label)
+        options_layout.addWidget(chocolate_widget)
 
         # Add the options layout centered horizontally
         main_layout.addLayout(options_layout, stretch=0)
@@ -101,14 +110,14 @@ class ClientScreen(QWidget):
         """Create a clickable icon button with animation and shadow"""
         btn = QPushButton()
         btn.setToolTip(tooltip)
-        btn.setMinimumSize(260, 260)
-        btn.setMaximumSize(400, 400)
+        btn.setMinimumSize(420, 420)
+        btn.setMaximumSize(600, 600)
         btn.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding)
 
         if Path(icon_path).exists():
             pixmap = QPixmap(icon_path)
             btn.setIcon(QIcon(pixmap))
-            btn.setIconSize(pixmap.size().scaled(260, 260, Qt.AspectRatioMode.KeepAspectRatio))
+            btn.setIconSize(pixmap.size().scaled(420, 420, Qt.AspectRatioMode.KeepAspectRatio))
 
         # Add hover animation
         opacity_effect = QGraphicsOpacityEffect(btn)
@@ -129,17 +138,17 @@ class ClientScreen(QWidget):
 
         btn.setStyleSheet("""
             QPushButton {
-                border: 4px solid #FFD166;
-                border-radius: 32px;
+                border: 6px solid #FFD166;
+                border-radius: 48px;
                 background: qradialgradient(
                     cx:0.5, cy:0.5, radius: 1.0,
                     fx:0.5, fy:0.5,
                     stop:0 #23243a, stop:1 #1A1A2E
                 );
-                box-shadow: 0 8px 32px #00000044;
+                box-shadow: 0 12px 48px #00000044;
             }
             QPushButton:hover {
-                border: 4px solid #4ECDC4;
+                border: 6px solid #4ECDC4;
                 background: qradialgradient(
                     cx:0.5, cy:0.5, radius: 1.0,
                     fx:0.5, fy:0.5,
@@ -147,16 +156,40 @@ class ClientScreen(QWidget):
                 );
             }
             QToolTip {
-                font-size: 24px;
+                font-size: 28px;
                 color: white;
                 background-color: #292F36;
-                padding: 15px;
-                border-radius: 10px;
-                opacity: 200;
+                padding: 18px;
+                border-radius: 12px;
+                opacity: 220;
             }
         """)
 
         return btn
+
+    def create_flavor_label(self, text):
+        """Create a label for the flavor under the icon"""
+        label = QLabel(text)
+        label.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        label.setStyleSheet("""
+            font-size: 38px;
+            font-weight: 600;
+            color: #FFD166;
+            margin-top: 24px;
+            letter-spacing: 1px;
+        """)
+        return label
+
+    def create_icon_with_label_widget(self, btn, label):
+        """Combine icon button and label in a vertical layout"""
+        widget = QWidget()
+        layout = QVBoxLayout()
+        layout.setContentsMargins(0, 0, 0, 0)
+        layout.setSpacing(0)
+        layout.addWidget(btn, alignment=Qt.AlignmentFlag.AlignHCenter)
+        layout.addWidget(label, alignment=Qt.AlignmentFlag.AlignHCenter)
+        widget.setLayout(layout)
+        return widget
     
     def start_order(self, flavor):
         """Start processing an ice cream order"""
