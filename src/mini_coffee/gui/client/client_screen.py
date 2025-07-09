@@ -78,29 +78,26 @@ class ClientScreen(QWidget):
 
         # Vanilla
         vanilla_icon = str(icon_dir / "l_ice.png")
-        vanilla_btn = self.create_icon_button(vanilla_icon, "Vanilla")
-        vanilla_label = self.create_flavor_label("Vanilla")
+        vanilla_btn = self.create_icon_button(vanilla_icon, "Salted Caramel")
         self.vanilla_btn = vanilla_btn
         self.vanilla_btn.clicked.connect(lambda: self.start_order("vanilla"))
-        vanilla_widget = self.create_icon_with_label_widget(vanilla_btn, vanilla_label)
+        vanilla_widget = self.create_icon_with_label_widget(vanilla_btn)
         options_layout.addWidget(vanilla_widget)
 
         # Mix
         mix_icon = str(icon_dir / "m_ice.png")
-        mix_btn = self.create_icon_button(mix_icon, "Chocolate & Vanilla")
-        mix_label = self.create_flavor_label("Chocolate & Vanilla")
+        mix_btn = self.create_icon_button(mix_icon, "Vanilla & Salted Caramel")
         self.mix_btn = mix_btn
         self.mix_btn.clicked.connect(lambda: self.start_order("mix"))
-        mix_widget = self.create_icon_with_label_widget(mix_btn, mix_label)
+        mix_widget = self.create_icon_with_label_widget(mix_btn)
         options_layout.addWidget(mix_widget)
 
         # Chocolate
         chocolate_icon = str(icon_dir / "r_ice.png")
-        chocolate_btn = self.create_icon_button(chocolate_icon, "Chocolate")
-        chocolate_label = self.create_flavor_label("Chocolate")
+        chocolate_btn = self.create_icon_button(chocolate_icon, "Vanilla")
         self.chocolate_btn = chocolate_btn
         self.chocolate_btn.clicked.connect(lambda: self.start_order("chocolate"))
-        chocolate_widget = self.create_icon_with_label_widget(chocolate_btn, chocolate_label)
+        chocolate_widget = self.create_icon_with_label_widget(chocolate_btn)
         options_layout.addWidget(chocolate_widget)
 
         # Add the options layout centered horizontally
@@ -257,10 +254,6 @@ class ClientScreen(QWidget):
 
         process_next()
            
-
-   
-    
-    
     def complete_order(self):
         """Complete the current order"""
         flavor = self.current_order
