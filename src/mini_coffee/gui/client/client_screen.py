@@ -239,6 +239,7 @@ class ClientScreen(QWidget):
                 elif code == 3:
                     self.arm_status_changed.emit("Dispensing Cup...")
                     self.plc.dispenserS(1)
+                    time.sleep(0.3)
                 else:
                     logger.warning(f"Unknown code: {code}")
                 # Simulate time for action, then continue
