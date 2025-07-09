@@ -227,12 +227,15 @@ class ClientScreen(QWidget):
                 if code == 0:
                     self.arm_status_changed.emit("Dispensing Vanilla...")
                     self.plc.l_ice(7)
+                    time.sleep(3)
                 elif code == 1:
                     self.arm_status_changed.emit("Dispensing Mix...")
                     self.plc.m_ice(7)
+                    time.sleep(3)
                 elif code == 2:
                     self.arm_status_changed.emit("Dispensing Chocolate...")
                     self.plc.r_ice(7)
+                    time.sleep(3)
                 elif code == 3:
                     self.arm_status_changed.emit("Dispensing Cup...")
                     self.plc.dispenserS(1)
