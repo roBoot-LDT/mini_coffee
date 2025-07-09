@@ -226,15 +226,15 @@ class ClientScreen(QWidget):
                 code = coord[0]
                 if code == 0:
                     self.arm_status_changed.emit("Dispensing Vanilla...")
-                    self.plc.l_ice(3)
+                    self.plc.l_ice(5)
                     time.sleep(4)
                 elif code == 1:
                     self.arm_status_changed.emit("Dispensing Mix...")
-                    self.plc.m_ice(3)
+                    self.plc.m_ice(5)
                     time.sleep(4)
                 elif code == 2:
                     self.arm_status_changed.emit("Dispensing Chocolate...")
-                    self.plc.r_ice(3)
+                    self.plc.r_ice(5)
                     time.sleep(4)
                 elif code == 3:
                     self.arm_status_changed.emit("Dispensing Cup...")
