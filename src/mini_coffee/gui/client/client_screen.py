@@ -121,14 +121,14 @@ class ClientScreen(QWidget):
         icon_dir = Path(__file__).parent.parent.parent.parent.parent / "resources" / "icons"
         
         # Coffee button
-        coffee_icon = str(icon_dir / "coffee.png")
+        coffee_icon = str(icon_dir / "cup_M.png")
         coffee_btn = self.create_icon_button(coffee_icon, "Coffee Menu")
         coffee_btn.clicked.connect(lambda: self.show_screen("coffee"))
         coffee_widget = self.create_icon_with_label_widget(coffee_btn, QLabel("Coffee"))
         options_layout.addWidget(coffee_widget)
         
         # Ice Cream button
-        icecream_icon = str(icon_dir / "ice_cream.png")
+        icecream_icon = str(icon_dir / "l_ice.png")
         icecream_btn = self.create_icon_button(icecream_icon, "Ice Cream Menu")
         icecream_btn.clicked.connect(lambda: self.show_screen("icecream"))
         icecream_widget = self.create_icon_with_label_widget(icecream_btn, QLabel("Ice Cream"))
@@ -158,15 +158,6 @@ class ClientScreen(QWidget):
         home_btn.clicked.connect(lambda: self.show_screen("main"))
         nav_bar.addWidget(home_btn)
         
-        # Title
-        title = QLabel("COFFEE MENU")
-        title.setStyleSheet("""
-            font-size: 48px;
-            font-weight: bold;
-            color: #FFD166;
-            text-align: center;
-        """)
-        nav_bar.addWidget(title, 1)
         
         # Ice cream button
         icecream_icon = str(icon_dir / "r_ice.png")
@@ -235,16 +226,6 @@ class ClientScreen(QWidget):
         home_btn.clicked.connect(lambda: self.show_screen("main"))
         nav_bar.addWidget(home_btn)
         
-        # Title
-        title = QLabel("ICE CREAM MENU")
-        title.setStyleSheet("""
-            font-size: 48px;
-            font-weight: bold;
-            color: #FFD166;
-            text-align: center;
-        """)
-        nav_bar.addWidget(title, 1)
-        
         # Coffee button
         coffee_icon = str(icon_dir / "cup_M.png")
         coffee_btn = self.create_nav_button(coffee_icon, "Coffee")
@@ -302,7 +283,7 @@ class ClientScreen(QWidget):
         if Path(icon_path).exists():
             pixmap = QPixmap(icon_path)
             btn.setIcon(QIcon(pixmap))
-            btn.setIconSize(pixmap.size().scaled(60, 60, Qt.AspectRatioMode.KeepAspectRatio))
+            btn.setIconSize(pixmap.size().scaled(100, 100, Qt.AspectRatioMode.KeepAspectRatio))
 
         btn.setStyleSheet("""
             QPushButton {
