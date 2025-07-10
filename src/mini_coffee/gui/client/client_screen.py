@@ -1,7 +1,7 @@
 # src/mini_coffee/gui/client/client_screen.py
 from PySide6.QtWidgets import (
     QWidget, QVBoxLayout, QHBoxLayout, QPushButton, QLabel,
-    QGraphicsOpacityEffect, QSizePolicy
+    QGraphicsOpacityEffect, QSizePolicy, QGridLayout, QStackedWidget
 )
 from PySide6.QtCore import Qt, Signal, QTimer, QPropertyAnimation, QEasingCurve
 from PySide6.QtGui import QPixmap, QIcon, QFont
@@ -28,6 +28,7 @@ class ClientScreen(QWidget):
         self.order_path = []
         self.setStyleSheet(self._get_stylesheet())
         self.setWindowFlags(Qt.WindowType.FramelessWindowHint)
+        self.is_cooking = False  # Track cooking state
         self.init_ui()
         
     def load_recipes(self, flavor):
@@ -49,8 +50,54 @@ class ClientScreen(QWidget):
         main_layout.setSpacing(0)
         self.setLayout(main_layout)
 
+        # Create stacked widget for screens
+        self.screen_stack = QStackedWidget()
+        main_layout.addWidget(self.screen_stack, 1)  # Takes most space
+
+        # Create screens
+        self.main_screen = self.create_main_screen()
+        self.coffee_screen = self.create_coffee_screen()
+        self.icecream_screen = self.create_icecream_screen()
+        
+        # Add screens to stack
+        self.screen_stack.addWidget(self.main_screen)
+        self.screen_stack.addWidget(self.coffee_screen)
+        self.screen_stack.addWidget(self.icecream_screen)
+        
+        # Status bar at bottom
+        status_bar = QWidget()
+        status_layout = QVBoxLayout()
+        self.status_label = QLabel("Ready to take your order!")
+        self.status_label.setStyleSheet("""
+            font-size: 32px;
+            font-weight: 500;
+            color: #FFD166;
+            text-align: center;
+        """)
+        status_layout.addWidget(self.status_label)
+        
+        self.arm_status_label = QLabel("🤖 Arm Status: Ready")
+        self.arm_status_label.setStyleSheet("""
+            font-size: 24px;
+            color: #4ECDC4;
+            text-align: center;
+        """)
+        status_layout.addWidget(self.arm_status_label)
+        status_bar.setLayout(status_layout)
+        main_layout.addWidget(status_bar)
+        
+        # Show main screen initially
+        self.show_screen("main")
+
+    def create_main_screen(self):
+        """Create the main screen with coffee and ice cream icons"""
+        screen = QWidget()
+        screen.setStyleSheet("background-color: #1A1A2E;")
+        layout = QVBoxLayout()
+        layout.setContentsMargins(0, 0, 0, 0)
+        
         # Title label at the top
-        title_label = QLabel("🍦 Mini Coffee Ice Cream Robot 🍦")
+        title_label = QLabel("☕ Mini Coffee & Ice Cream Robot 🍦")
         title_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
         title_label.setStyleSheet("""
             font-size: 56px;
@@ -60,54 +107,215 @@ class ClientScreen(QWidget):
             margin-bottom: 30px;
             text-shadow: 2px 2px 8px #00000088;
         """)
-        main_layout.addWidget(title_label, alignment=Qt.AlignmentFlag.AlignTop | Qt.AlignmentFlag.AlignHCenter)
-
+        layout.addWidget(title_label, alignment=Qt.AlignmentFlag.AlignTop | Qt.AlignmentFlag.AlignHCenter)
+        
         # Spacer to push icons to vertical center
-        main_layout.addStretch(1)
-
-        # Ice cream options centered
+        layout.addStretch(1)
+        
+        # Main options centered
         options_layout = QHBoxLayout()
         options_layout.setSpacing(100)
         options_layout.setContentsMargins(50, 0, 50, 0)
-
+        
         # Load icons
         icon_dir = Path(__file__).parent.parent.parent.parent.parent / "resources" / "icons"
+        
+        # Coffee button
+        coffee_icon = str(icon_dir / "coffee.png")
+        coffee_btn = self.create_icon_button(coffee_icon, "Coffee Menu")
+        coffee_btn.clicked.connect(lambda: self.show_screen("coffee"))
+        coffee_widget = self.create_icon_with_label_widget(coffee_btn, QLabel("Coffee"))
+        options_layout.addWidget(coffee_widget)
+        
+        # Ice Cream button
+        icecream_icon = str(icon_dir / "ice_cream.png")
+        icecream_btn = self.create_icon_button(icecream_icon, "Ice Cream Menu")
+        icecream_btn.clicked.connect(lambda: self.show_screen("icecream"))
+        icecream_widget = self.create_icon_with_label_widget(icecream_btn, QLabel("Ice Cream"))
+        options_layout.addWidget(icecream_widget)
+        
+        layout.addLayout(options_layout, stretch=0)
+        layout.addStretch(2)  # Bottom spacer
+        
+        screen.setLayout(layout)
+        return screen
+    
+    def create_coffee_screen(self):
+        """Create the coffee selection screen"""
+        screen = QWidget()
+        screen.setStyleSheet("background-color: #1A1A2E;")
+        layout = QVBoxLayout()
+        layout.setContentsMargins(20, 20, 20, 0)
+        
+        # Top navigation bar
+        nav_bar = QHBoxLayout()
+        nav_bar.setContentsMargins(0, 0, 0, 20)
+        
+        # Home button
+        icon_dir = Path(__file__).parent.parent.parent.parent.parent / "resources" / "icons"
+        home_icon = str(icon_dir / "home.png")
+        home_btn = self.create_nav_button(home_icon, "Home")
+        home_btn.clicked.connect(lambda: self.show_screen("main"))
+        nav_bar.addWidget(home_btn)
+        
+        # Title
+        title = QLabel("COFFEE MENU")
+        title.setStyleSheet("""
+            font-size: 48px;
+            font-weight: bold;
+            color: #FFD166;
+            text-align: center;
+        """)
+        nav_bar.addWidget(title, 1)
+        
+        # Ice cream button
+        icecream_icon = str(icon_dir / "ice_cream.png")
+        icecream_btn = self.create_nav_button(icecream_icon, "Ice Cream")
+        icecream_btn.clicked.connect(lambda: self.show_screen("icecream"))
+        nav_bar.addWidget(icecream_btn)
+        
+        layout.addLayout(nav_bar)
+        
+        # Coffee options grid
+        coffee_options = [
+            "Espresso", "Americano", "Cappuccino", 
+            "Latte", "Mocha", "Macchiato",
+            "Flat White", "Cold Brew"
+        ]
+        
+        grid = QGridLayout()
+        grid.setSpacing(30)
+        
+        for i, coffee in enumerate(coffee_options):
+            btn = QPushButton(coffee)
+            btn.setFont(QFont("Arial", 24, QFont.Bold))
+            btn.setStyleSheet("""
+                QPushButton {
+                    background-color: #4ECDC4;
+                    color: #1A1A2E;
+                    border-radius: 20px;
+                    padding: 20px;
+                }
+                QPushButton:disabled {
+                    background-color: #555555;
+                    color: #aaaaaa;
+                }
+            """)
+            btn.setMinimumSize(300, 100)
+            btn.clicked.connect(lambda _, c=coffee: self.start_coffee_order(c))
+            grid.addWidget(btn, i // 2, i % 2)
+            
+        layout.addLayout(grid, 1)
+        screen.setLayout(layout)
+        
+        # Store coffee buttons for enabling/disabling
+        self.coffee_buttons = []
+        for i in range(grid.count()):
+            widget = grid.itemAt(i).widget()
+            if isinstance(widget, QPushButton):
+                self.coffee_buttons.append(widget)
+                
+        return screen
 
-        # Track order state to disable buttons during processing
-        self.current_order = None        
+    def create_icecream_screen(self):
+        """Create the ice cream selection screen"""
+        screen = QWidget()
+        screen.setStyleSheet("background-color: #1A1A2E;")
+        layout = QVBoxLayout()
+        layout.setContentsMargins(20, 20, 20, 0)
+        
+        # Top navigation bar
+        nav_bar = QHBoxLayout()
+        nav_bar.setContentsMargins(0, 0, 0, 20)
+        
+        # Home button
+        icon_dir = Path(__file__).parent.parent.parent.parent.parent / "resources" / "icons"
+        home_icon = str(icon_dir / "home.png")
+        home_btn = self.create_nav_button(home_icon, "Home")
+        home_btn.clicked.connect(lambda: self.show_screen("main"))
+        nav_bar.addWidget(home_btn)
+        
+        # Title
+        title = QLabel("ICE CREAM MENU")
+        title.setStyleSheet("""
+            font-size: 48px;
+            font-weight: bold;
+            color: #FFD166;
+            text-align: center;
+        """)
+        nav_bar.addWidget(title, 1)
+        
+        # Coffee button
+        coffee_icon = str(icon_dir / "coffee.png")
+        coffee_btn = self.create_nav_button(coffee_icon, "Coffee")
+        coffee_btn.clicked.connect(lambda: self.show_screen("coffee"))
+        nav_bar.addWidget(coffee_btn)
+        
+        layout.addLayout(nav_bar)
+        
+        # Ice cream options
+        options_layout = QHBoxLayout()
+        options_layout.setSpacing(50)
+        options_layout.setContentsMargins(50, 0, 50, 0)
 
         # Vanilla
         vanilla_icon = str(icon_dir / "l_ice.png")
-        vanilla_btn = self.create_icon_button(vanilla_icon, "")  # No tooltip
+        vanilla_btn = self.create_icon_button(vanilla_icon, "Salted Caramel")
+        vanilla_btn.clicked.connect(lambda: self.start_order("vanilla"))
         vanilla_label = self.create_flavor_label("Salted Caramel")
         self.vanilla_btn = vanilla_btn
-        self.vanilla_btn.clicked.connect(lambda: self.start_order("vanilla"))
         vanilla_widget = self.create_icon_with_label_widget(vanilla_btn, vanilla_label)
         options_layout.addWidget(vanilla_widget)
 
         # Mix
         mix_icon = str(icon_dir / "m_ice.png")
-        mix_btn = self.create_icon_button(mix_icon, "")  # No tooltip
+        mix_btn = self.create_icon_button(mix_icon, "Mix")
+        mix_btn.clicked.connect(lambda: self.start_order("mix"))
         mix_label = self.create_flavor_label("Mix")
         self.mix_btn = mix_btn
-        self.mix_btn.clicked.connect(lambda: self.start_order("mix"))
         mix_widget = self.create_icon_with_label_widget(mix_btn, mix_label)
         options_layout.addWidget(mix_widget)
 
         # Chocolate
         chocolate_icon = str(icon_dir / "r_ice.png")
-        chocolate_btn = self.create_icon_button(chocolate_icon, "")  # No tooltip
+        chocolate_btn = self.create_icon_button(chocolate_icon, "Vanilla")
+        chocolate_btn.clicked.connect(lambda: self.start_order("chocolate"))
         chocolate_label = self.create_flavor_label("Vanilla")
         self.chocolate_btn = chocolate_btn
-        self.chocolate_btn.clicked.connect(lambda: self.start_order("chocolate"))
         chocolate_widget = self.create_icon_with_label_widget(chocolate_btn, chocolate_label)
         options_layout.addWidget(chocolate_widget)
 
-        # Add the options layout centered horizontally
-        main_layout.addLayout(options_layout, stretch=0)
+        layout.addLayout(options_layout, 1)
+        screen.setLayout(layout)
+        
+        # Store ice cream buttons for enabling/disabling
+        self.icecream_buttons = [self.vanilla_btn, self.mix_btn, self.chocolate_btn]
+        
+        return screen
+    
+    def create_nav_button(self, icon_path, tooltip):
+        """Create a navigation button for top bar"""
+        btn = QPushButton()
+        btn.setToolTip(tooltip)
+        btn.setFixedSize(80, 80)
+        
+        if Path(icon_path).exists():
+            pixmap = QPixmap(icon_path)
+            btn.setIcon(QIcon(pixmap))
+            btn.setIconSize(pixmap.size().scaled(60, 60, Qt.AspectRatioMode.KeepAspectRatio))
 
-        # Spacer to keep icons vertically centered
-        main_layout.addStretch(2)
+        btn.setStyleSheet("""
+            QPushButton {
+                background-color: transparent;
+                border: none;
+            }
+            QPushButton:hover {
+                background-color: #444466;
+                border-radius: 40px;
+            }
+        """)
+        
+        return btn
 
     def create_icon_button(self, icon_path, tooltip):
         """Create a clickable icon button with animation and shadow"""
@@ -150,7 +358,15 @@ class ClientScreen(QWidget):
                 );
                 box-shadow: 0 12px 48px #00000044;
             }
-            QPushButton:hover {
+            QPushButton:disabled {
+                border: 6px solid #555555;
+                background: qradialgradient(
+                    cx:0.5, cy:0.5, radius: 1.0,
+                    fx:0.5, fy:0.5,
+                    stop:0 #333333, stop:1 #222222
+                );
+            }
+            QPushButton:hover:enabled {
                 border: 6px solid #4ECDC4;
                 background: qradialgradient(
                     cx:0.5, cy:0.5, radius: 1.0,
@@ -194,19 +410,50 @@ class ClientScreen(QWidget):
         widget.setLayout(layout)
         return widget
     
+    def show_screen(self, screen_name):
+        """Switch between different screens"""
+        screens = {
+            "main": 0,
+            "coffee": 1,
+            "icecream": 2
+        }
+        self.screen_stack.setCurrentIndex(screens[screen_name])
+    
+
+    def start_coffee_order(self, coffee_type):
+        """Start processing a coffee order (simulated)"""
+        if self.is_cooking:
+            logger.warning("Already processing an order")
+            return
+            
+        self.is_cooking = True
+        self.update_button_states()
+        self.status_label.setText(f"Making {coffee_type}...")
+        self.order_started.emit(coffee_type)
+        
+        # Simulate coffee preparation
+        QTimer.singleShot(5000, lambda: self.complete_coffee_order(coffee_type))
+
+    def complete_coffee_order(self, coffee_type):
+        """Complete the coffee order"""
+        self.is_cooking = False
+        self.status_label.setText(f"{coffee_type} ready! Enjoy!")
+        self.order_completed.emit(coffee_type)
+        self.update_button_states()
+        
+        # Reset status after delay
+        QTimer.singleShot(5000, lambda: self.status_label.setText("Ready to take your order!")) 
+
     def start_order(self, flavor):
         """Start processing an ice cream order"""
-        if self.current_order:
-            logger.warning(f"Already processing {self.current_order} order")
+        if self.is_cooking:
+            logger.warning(f"Already processing an order")
             return
         
-        self.current_order = flavor
+        self.is_cooking = True
+        self.update_button_states()
+        self.status_label.setText(f"Making your {flavor} ice cream...")
         self.order_started.emit(flavor)
-        
-        # Disable buttons during processing
-        self.vanilla_btn.setEnabled(False)
-        self.mix_btn.setEnabled(False)
-        self.chocolate_btn.setEnabled(False)
         
         # Get recipe path
         self.recipes = self.load_recipes(flavor)
@@ -259,45 +506,39 @@ class ClientScreen(QWidget):
            
     def complete_order(self):
         """Complete the current order"""
+        if not self.current_order:
+            return
+            
         flavor = self.current_order
         self.current_order = None
+        self.is_cooking = False
+        self.status_label.setText(f"Your {flavor} ice cream is ready! Enjoy!")
         self.order_completed.emit(flavor)
+        self.update_button_states()
         
-        # Re-enable buttons
-        self.vanilla_btn.setEnabled(True)
-        self.mix_btn.setEnabled(True)
-        self.chocolate_btn.setEnabled(True)
+        # Reset status after delay
+        QTimer.singleShot(5000, lambda: self.status_label.setText("Ready to take your order!"))
         
-    
-    def update_status(self, flavor):
-        """Update the status label based on order state"""
-        if self.current_order:
-            self.status_label.setText(f"Making your {flavor} ice cream... 🍦")
-            self.status_label.setStyleSheet("""
-                font-size: 32px;
-                font-weight: 500;
-                color: #FFD166;
-                text-align: center;
-                margin-bottom: 20px;
-            """)
-        else:
-            self.status_label.setText(f"Your {flavor} ice cream is ready! Enjoy! 🎉")
-            self.status_label.setStyleSheet("""
-                font-size: 32px;
-                font-weight: 500;
-                color: #4ECDC4;
-                text-align: center;
-                margin-bottom: 20px;
-            """)
-            # Reset after 5 seconds
-            QTimer.singleShot(5000, lambda: self.status_label.setText("Ready to take your order!"))
-    
+    def update_button_states(self):
+        """Enable/disable buttons based on cooking state"""
+        # Enable navigation buttons always
+        # Disable selection buttons during cooking
+        state = not self.is_cooking
+        
+        # Update coffee buttons if they exist
+        if hasattr(self, 'coffee_buttons'):
+            for btn in self.coffee_buttons:
+                btn.setEnabled(state)
+        
+        # Update ice cream buttons
+        if hasattr(self, 'icecream_buttons'):
+            for btn in self.icecream_buttons:
+                btn.setEnabled(state)
+
     def update_arm_status(self, status):
         """Update the arm status display"""
         self.arm_status_label.setText(f"🤖 Arm Status: {status}")
-        # Ensure the label resizes to fit the text
         self.arm_status_label.setMinimumHeight(50)
-        self.arm_status_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.arm_status_label.adjustSize()
     
     def showEvent(self, event):
