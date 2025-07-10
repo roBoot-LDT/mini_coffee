@@ -169,7 +169,7 @@ class ClientScreen(QWidget):
         nav_bar.addWidget(title, 1)
         
         # Ice cream button
-        icecream_icon = str(icon_dir / "ice_cream.png")
+        icecream_icon = str(icon_dir / "r_ice.png")
         icecream_btn = self.create_nav_button(icecream_icon, "Ice Cream")
         icecream_btn.clicked.connect(lambda: self.show_screen("icecream"))
         nav_bar.addWidget(icecream_btn)
@@ -246,7 +246,7 @@ class ClientScreen(QWidget):
         nav_bar.addWidget(title, 1)
         
         # Coffee button
-        coffee_icon = str(icon_dir / "coffee.png")
+        coffee_icon = str(icon_dir / "cup_M.png")
         coffee_btn = self.create_nav_button(coffee_icon, "Coffee")
         coffee_btn.clicked.connect(lambda: self.show_screen("coffee"))
         nav_bar.addWidget(coffee_btn)
