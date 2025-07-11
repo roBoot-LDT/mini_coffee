@@ -121,7 +121,7 @@ class ClientScreen(QWidget):
         icon_dir = Path(__file__).parent.parent.parent.parent.parent / "resources" / "icons"
         
         # Coffee button
-        coffee_icon = str(icon_dir / "cup_M.png")
+        coffee_icon = str(icon_dir / "cup_S.png")
         coffee_btn = self.create_icon_button(coffee_icon, "Coffee Menu")
         coffee_btn.clicked.connect(lambda: self.show_screen("coffee"))
         coffee_widget = self.create_icon_with_label_widget(coffee_btn, QLabel("Coffee"))
@@ -139,7 +139,7 @@ class ClientScreen(QWidget):
         
         screen.setLayout(layout)
         return screen
-    
+
     def create_coffee_screen(self):
         """Create the coffee selection screen"""
         screen = QWidget()
@@ -147,21 +147,30 @@ class ClientScreen(QWidget):
         layout = QVBoxLayout()
         layout.setContentsMargins(20, 20, 20, 0)
         
-        # Top navigation bar
+        # Top navigation bar - larger icons
         nav_bar = QHBoxLayout()
         nav_bar.setContentsMargins(0, 0, 0, 20)
         
-        # Home button
+        # Home button - larger size
         icon_dir = Path(__file__).parent.parent.parent.parent.parent / "resources" / "icons"
         home_icon = str(icon_dir / "home.png")
-        home_btn = self.create_nav_button(home_icon, "Home")
+        home_btn = self.create_nav_button(home_icon, "Home", 100)  # 100px size
         home_btn.clicked.connect(lambda: self.show_screen("main"))
         nav_bar.addWidget(home_btn)
         
+        # Title
+        title = QLabel("COFFEE MENU")
+        title.setStyleSheet("""
+            font-size: 48px;
+            font-weight: bold;
+            color: #FFD166;
+            text-align: center;
+        """)
+        nav_bar.addWidget(title, 1)
         
-        # Ice cream button
-        icecream_icon = str(icon_dir / "r_ice.png")
-        icecream_btn = self.create_nav_button(icecream_icon, "Ice Cream")
+        # Ice cream button - larger size
+        icecream_icon = str(icon_dir / "ice_cream.png")
+        icecream_btn = self.create_nav_button(icecream_icon, "Ice Cream", 100)  # 100px size
         icecream_btn.clicked.connect(lambda: self.show_screen("icecream"))
         nav_bar.addWidget(icecream_btn)
         
@@ -215,20 +224,30 @@ class ClientScreen(QWidget):
         layout = QVBoxLayout()
         layout.setContentsMargins(20, 20, 20, 0)
         
-        # Top navigation bar
+        # Top navigation bar - larger icons
         nav_bar = QHBoxLayout()
         nav_bar.setContentsMargins(0, 0, 0, 20)
         
-        # Home button
+        # Home button - larger size
         icon_dir = Path(__file__).parent.parent.parent.parent.parent / "resources" / "icons"
         home_icon = str(icon_dir / "home.png")
-        home_btn = self.create_nav_button(home_icon, "Home")
+        home_btn = self.create_nav_button(home_icon, "Home", 100)  # 100px size
         home_btn.clicked.connect(lambda: self.show_screen("main"))
         nav_bar.addWidget(home_btn)
         
-        # Coffee button
-        coffee_icon = str(icon_dir / "cup_M.png")
-        coffee_btn = self.create_nav_button(coffee_icon, "Coffee")
+        # Title
+        title = QLabel("ICE CREAM MENU")
+        title.setStyleSheet("""
+            font-size: 48px;
+            font-weight: bold;
+            color: #FFD166;
+            text-align: center;
+        """)
+        nav_bar.addWidget(title, 1)
+        
+        # Coffee button - larger size
+        coffee_icon = str(icon_dir / "cup_S.png")
+        coffee_btn = self.create_nav_button(coffee_icon, "Coffee", 100)  # 100px size
         coffee_btn.clicked.connect(lambda: self.show_screen("coffee"))
         nav_bar.addWidget(coffee_btn)
         
@@ -273,17 +292,22 @@ class ClientScreen(QWidget):
         self.icecream_buttons = [self.vanilla_btn, self.mix_btn, self.chocolate_btn]
         
         return screen
-    
-    def create_nav_button(self, icon_path, tooltip):
-        """Create a navigation button for top bar"""
+
+    def create_nav_button(self, icon_path, tooltip, size=100):
+        """Create a larger navigation button for top bar"""
         btn = QPushButton()
         btn.setToolTip(tooltip)
-        btn.setFixedSize(80, 80)
+        btn.setFixedSize(size, size)
         
         if Path(icon_path).exists():
             pixmap = QPixmap(icon_path)
+            # Scale icon to fill most of the button
             btn.setIcon(QIcon(pixmap))
-            btn.setIconSize(pixmap.size().scaled(100, 100, Qt.AspectRatioMode.KeepAspectRatio))
+            btn.setIconSize(pixmap.size().scaled(
+                size - 20, size - 20, 
+                Qt.AspectRatioMode.KeepAspectRatio,
+                Qt.TransformationMode.SmoothTransformation
+            ))
 
         btn.setStyleSheet("""
             QPushButton {
@@ -292,7 +316,7 @@ class ClientScreen(QWidget):
             }
             QPushButton:hover {
                 background-color: #444466;
-                border-radius: 40px;
+                border-radius: 50px;
             }
         """)
         
@@ -400,7 +424,6 @@ class ClientScreen(QWidget):
         }
         self.screen_stack.setCurrentIndex(screens[screen_name])
     
-
     def start_coffee_order(self, coffee_type):
         """Start processing a coffee order (simulated)"""
         if self.is_cooking:
@@ -414,7 +437,7 @@ class ClientScreen(QWidget):
         
         # Simulate coffee preparation
         QTimer.singleShot(5000, lambda: self.complete_coffee_order(coffee_type))
-
+    
     def complete_coffee_order(self, coffee_type):
         """Complete the coffee order"""
         self.is_cooking = False
@@ -423,8 +446,8 @@ class ClientScreen(QWidget):
         self.update_button_states()
         
         # Reset status after delay
-        QTimer.singleShot(5000, lambda: self.status_label.setText("Ready to take your order!")) 
-
+        QTimer.singleShot(5000, lambda: self.status_label.setText("Ready to take your order!"))
+    
     def start_order(self, flavor):
         """Start processing an ice cream order"""
         if self.is_cooking:
@@ -432,6 +455,7 @@ class ClientScreen(QWidget):
             return
         
         self.is_cooking = True
+        self.current_order = flavor  # Set current order for completion
         self.update_button_states()
         self.status_label.setText(f"Making your {flavor} ice cream...")
         self.order_started.emit(flavor)
@@ -499,7 +523,7 @@ class ClientScreen(QWidget):
         
         # Reset status after delay
         QTimer.singleShot(5000, lambda: self.status_label.setText("Ready to take your order!"))
-        
+    
     def update_button_states(self):
         """Enable/disable buttons based on cooking state"""
         # Enable navigation buttons always
@@ -515,7 +539,7 @@ class ClientScreen(QWidget):
         if hasattr(self, 'icecream_buttons'):
             for btn in self.icecream_buttons:
                 btn.setEnabled(state)
-
+    
     def update_arm_status(self, status):
         """Update the arm status display"""
         self.arm_status_label.setText(f"🤖 Arm Status: {status}")
