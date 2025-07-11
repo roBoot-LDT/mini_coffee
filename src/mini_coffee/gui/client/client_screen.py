@@ -3,7 +3,7 @@ from PySide6.QtWidgets import (
     QWidget, QVBoxLayout, QHBoxLayout, QPushButton, QLabel,
     QGraphicsOpacityEffect, QSizePolicy, QGridLayout, QStackedWidget
 )
-from PySide6.QtCore import Qt, Signal, QTimer, QPropertyAnimation, QEasingCurve, QSize
+from PySide6.QtCore import Qt, Signal, QTimer, QPropertyAnimation, QEasingCurve
 from PySide6.QtGui import QPixmap, QIcon, QFont
 from pathlib import Path
 import json
@@ -128,7 +128,7 @@ class ClientScreen(QWidget):
         options_layout.addWidget(coffee_widget)
         
         # Ice Cream button
-        icecream_icon = str(icon_dir / "l_ice.png")
+        icecream_icon = str(icon_dir / "ice_cream.png")
         icecream_btn = self.create_icon_button(icecream_icon, "Ice Cream Menu")
         icecream_btn.clicked.connect(lambda: self.show_screen("icecream"))
         icecream_widget = self.create_icon_with_label_widget(icecream_btn, QLabel("Ice Cream"))
@@ -169,7 +169,7 @@ class ClientScreen(QWidget):
         nav_bar.addWidget(title, 1)
         
         # Ice cream button - larger size
-        icecream_icon = str(icon_dir / "ice_cream.png")
+        icecream_icon = str(icon_dir / "l_ice.png")
         icecream_btn = self.create_nav_button(icecream_icon, "Ice Cream", 100)  # 100px size
         icecream_btn.clicked.connect(lambda: self.show_screen("icecream"))
         nav_bar.addWidget(icecream_btn)
@@ -301,14 +301,17 @@ class ClientScreen(QWidget):
         
         if Path(icon_path).exists():
             pixmap = QPixmap(icon_path)
-            # Scale icon to fill most of the button
-            btn.setIcon(QIcon(pixmap))
-            btn.setIconSize(pixmap.size().scaled(
-                QSize(size - 20, size - 20),
-                Qt.AspectRatioMode.KeepAspectRatio,
+            # Scale the pixmap to the desired size
+            scaled_pixmap = pixmap.scaled(
+                size - 20, 
+                size - 20, 
+                Qt.AspectRatioMode.KeepAspectRatio, 
                 Qt.TransformationMode.SmoothTransformation
-            ))
-
+            )
+            btn.setIcon(QIcon(scaled_pixmap))
+            # Set icon size to match the scaled pixmap
+            btn.setIconSize(scaled_pixmap.size())
+        
         btn.setStyleSheet("""
             QPushButton {
                 background-color: transparent;
