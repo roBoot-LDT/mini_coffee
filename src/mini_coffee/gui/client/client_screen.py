@@ -3,7 +3,7 @@ from PySide6.QtWidgets import (
     QWidget, QVBoxLayout, QHBoxLayout, QPushButton, QLabel,
     QGraphicsOpacityEffect, QSizePolicy, QGridLayout, QStackedWidget
 )
-from PySide6.QtCore import Qt, Signal, QTimer, QPropertyAnimation, QEasingCurve
+from PySide6.QtCore import Qt, Signal, QTimer, QPropertyAnimation, QEasingCurve, QSize
 from PySide6.QtGui import QPixmap, QIcon, QFont
 from pathlib import Path
 import json
@@ -304,7 +304,7 @@ class ClientScreen(QWidget):
             # Scale icon to fill most of the button
             btn.setIcon(QIcon(pixmap))
             btn.setIconSize(pixmap.size().scaled(
-                size - 20, size - 20, 
+                QSize(size - 20, size - 20),
                 Qt.AspectRatioMode.KeepAspectRatio,
                 Qt.TransformationMode.SmoothTransformation
             ))
