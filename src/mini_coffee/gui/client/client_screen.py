@@ -139,7 +139,7 @@ class ClientScreen(QWidget):
         # Ice Cream button
         ice_icon = str(icon_dir / "r_ice.png")
         ice_btn = self.create_icon_button(ice_icon, "Ice Cream")
-        ice_btn.clicked.connect(lambda: self.show_screen("coffee"))
+        ice_btn.clicked.connect(lambda: self.show_screen("icecream"))
         ice_label = QLabel("Мороженное")
         ice_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
         ice_label.setStyleSheet("""
