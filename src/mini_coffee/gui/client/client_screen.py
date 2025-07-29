@@ -120,7 +120,7 @@ class ClientScreen(QWidget):
         icon_dir = Path(__file__).parent.parent.parent.parent.parent / "resources" / "icons"
         
         # Coffee button
-        coffee_icon = str(icon_dir / "cup_S.png")
+        coffee_icon = str(icon_dir / "coffee.png")
         coffee_btn = self.create_icon_button(coffee_icon, "Coffee")
         coffee_btn.clicked.connect(lambda: self.show_screen("coffee"))
         coffee_label = QLabel("Коффе")
@@ -188,7 +188,7 @@ class ClientScreen(QWidget):
         nav_bar.addWidget(title, 1)
         
         # Ice cream button - larger size
-        icecream_icon = str(icon_dir / "l_ice.png")
+        icecream_icon = str(icon_dir / "r_ice.png")
         icecream_btn = self.create_nav_button(icecream_icon, "Ice Cream", 100)  # 100px size
         icecream_btn.clicked.connect(lambda: self.show_screen("icecream"))
         nav_bar.addWidget(icecream_btn)
@@ -265,7 +265,7 @@ class ClientScreen(QWidget):
         nav_bar.addWidget(title, 1)
         
         # Coffee button - larger size
-        coffee_icon = str(icon_dir / "cup_S.png")
+        coffee_icon = str(icon_dir / "coffee.png")
         coffee_btn = self.create_nav_button(coffee_icon, "Coffee", 100)  # 100px size
         coffee_btn.clicked.connect(lambda: self.show_screen("coffee"))
         nav_bar.addWidget(coffee_btn)
