@@ -8,7 +8,7 @@ load_dotenv()
 class PLC:
     def __init__(self):
         self.RELAY_IP = str(os.getenv("RELAY_IP", "192.168.1.130"))
-        self.RELAY_UTP_PORT = int(os.getenv("RELAY_UTP_PORT", 5005))
+        self.RELAY_UTP_PORT = int(os.getenv("RELAY_UTP_PORT", 5000))
         self.BUFFER_SIZE = int(os.getenv("BUFFER_SIZE", 1024))
         self.DISM = str(os.getenv("DISPENSER_M", "all10000000"))
         self.DISS = str(os.getenv("DISPENSER_S", "all00000100"))

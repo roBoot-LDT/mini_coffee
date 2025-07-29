@@ -215,8 +215,8 @@ class StatusCheckWindow(QWidget):
             content_layout.addWidget(btn)
         
         # Next Button
-        self.next_button = QPushButton("Next →")
-        self.next_button.setEnabled(False)
+        self.next_button = QPushButton("Skip")
+        self.next_button.setEnabled(True)
         self.next_button.clicked.connect(self.all_checks_passed.emit)
         self.next_button.setStyleSheet("""
             QPushButton {
@@ -228,6 +228,9 @@ class StatusCheckWindow(QWidget):
             }
             QPushButton:disabled {
                 background-color: #a5d6a7;
+            }
+            QPushButton:hover {
+                background-color: #45a049;
             }
         """)
         content_layout.addStretch()
@@ -289,7 +292,9 @@ class StatusCheckWindow(QWidget):
         # Update completion state
         if all(b.status.color.name() == "#2ecc71" 
                for b in self.component_buttons.values()):
-            self.next_button.setEnabled(True)
+            self.next_button.setText("Next →")
+        else:
+            self.next_button.setText("Skip")
 
 if __name__ == "__main__":
     from PySide6.QtWidgets import QApplication

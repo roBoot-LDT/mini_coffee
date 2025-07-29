@@ -23,8 +23,8 @@
   "Cup Dispenser M": [
     10,
     -300,
-    "cup_M.png",
-    0.25,
+    "ice.png",
+    0.1,
     "#5E422B"
   ],
   "Ice Cream Machine": [

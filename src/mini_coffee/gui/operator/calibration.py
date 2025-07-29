@@ -244,7 +244,49 @@ class Node(QGraphicsItem):
         super().mouseMoveEvent(event)
         self.signals.moved.emit()
 
+class AddNodeDialog(QDialog):
+    def __init__(self, existing_nodes, parent=None):
+        super().__init__(parent)
+        self.setWindowTitle("Add Node")
+        layout = QVBoxLayout(self)
 
+        self.name_edit = QLineEdit()
+        layout.addWidget(QLabel("Node Name:"))
+        layout.addWidget(self.name_edit)
+
+        self.x_spin = QDoubleSpinBox()
+        self.x_spin.setRange(-1000, 1000)
+        layout.addWidget(QLabel("X:"))
+        layout.addWidget(self.x_spin)
+
+        self.y_spin = QDoubleSpinBox()
+        self.y_spin.setRange(-1000, 1000)
+        layout.addWidget(QLabel("Y:"))
+        layout.addWidget(self.y_spin)
+
+        self.prev_combo = QComboBox()
+        self.prev_combo.addItems(existing_nodes)
+        layout.addWidget(QLabel("Prev Node:"))
+        layout.addWidget(self.prev_combo)
+
+        self.next_combo = QComboBox()
+        self.next_combo.addItems(existing_nodes)
+        layout.addWidget(QLabel("Next Node:"))
+        layout.addWidget(self.next_combo)
+
+        self.save_btn = QPushButton("Save")
+        self.save_btn.clicked.connect(self.accept)
+        layout.addWidget(self.save_btn)
+
+    def get_data(self):
+        return {
+            "name": self.name_edit.text(),
+            "x": self.x_spin.value(),
+            "y": self.y_spin.value(),
+            "prev": self.prev_combo.currentText(),
+            "next": self.next_combo.currentText()
+        }
+        
 class Edge(QGraphicsPathItem):
     def __init__(self, source, dest):
         super().__init__()
@@ -780,16 +822,15 @@ class CalibrationWindow(QWidget):
         self.data = Data(0)  # Load calibration.json by default
         
         # Path finding logic
-        self.current_tab = "All"
+        self.current_tab = "Coffee"
         self.pathfinder = None
         self.update_pathfinder()
         # Define node sets for each tab
         all_nodes = list(self.schematic.components.keys())
         nodes = {
-            "All": 0,
-            "Coffee": 1,
-            "Ice Cream": 2,
-            "Bin": 3
+            "Coffee": 0,
+            "Ice Cream": 1,
+            "Bin": 2
         }
         
         # Load node sets and connections from self.data (calibration.json)
@@ -797,7 +838,6 @@ class CalibrationWindow(QWidget):
         ice_cream_nodes = self.data.data["tabs"][nodes["Ice Cream"]].get("nodes", [])
         bin_nodes = self.data.data["tabs"][nodes["Bin"]].get("nodes", [])
 
-        all_connections = self.data.data["tabs"][nodes["All"]].get("connections", [])
         coffee_connections = self.data.data["tabs"][nodes["Coffee"]].get("connections", [])
         ice_cream_connections = self.data.data["tabs"][nodes["Ice Cream"]].get("connections", [])
         bin_connections = self.data.data["tabs"][nodes["Bin"]].get("connections", [])
@@ -807,10 +847,6 @@ class CalibrationWindow(QWidget):
         
         # Create NodeEditors for each tab
         self.node_editors = [
-            NodeEditor(self.arm,
-                       filter_dict(self.schematic.components, all_nodes),
-                       filter_dict(self.schematic.colors, all_nodes),
-                       connections=all_connections, tab_index=0),
             NodeEditor(self.arm,
                        filter_dict(self.schematic.components, coffee_nodes),
                        filter_dict(self.schematic.colors, coffee_nodes),
@@ -834,10 +870,9 @@ class CalibrationWindow(QWidget):
         layout.addWidget(self.schematic, 1)
 
         tabs = QTabWidget()
-        tabs.addTab(self.node_editors[0], "All")
-        tabs.addTab(self.node_editors[1], "Coffee")
-        tabs.addTab(self.node_editors[2], "Ice Cream")
-        tabs.addTab(self.node_editors[3], "Bin")
+        tabs.addTab(self.node_editors[0], "Coffee")
+        tabs.addTab(self.node_editors[1], "Ice Cream")
+        tabs.addTab(self.node_editors[2], "Bin")
 
         # Add client mode button
         client_btn = QPushButton("Switch to Client Mode")
@@ -861,10 +896,15 @@ class CalibrationWindow(QWidget):
         control_layout.addWidget(tabs)
         control_layout.addWidget(client_btn)
         
+        toolbar_layout = QHBoxLayout()
+        self.add_node_btn = QPushButton("Add Node")
+        self.add_node_btn.clicked.connect(self.open_add_node_dialog)
+        toolbar_layout.addWidget(self.add_node_btn)
+
         layout.addLayout(control_layout, 1)
         self.setLayout(layout)
         self.schematic.component_clicked.connect(self.handle_component_click)
-    
+        
     def show_client_screen(self):
         """Switch to full-screen client view"""
         from mini_coffee.gui.client.client_screen import ClientScreen
@@ -1005,7 +1045,6 @@ class CalibrationWindow(QWidget):
 class NodeSignals(QObject):
     moved = Signal()
 
-
 class NodeConfigDialog(QDialog):
     def __init__(self, existing_nodes, parent=None):
         super().__init__(parent)
@@ -1045,8 +1084,7 @@ class NodeConfigDialog(QDialog):
         btn_box.accepted.connect(self.accept)
         btn_box.rejected.connect(self.reject)
         layout.addWidget(btn_box)
-        
-        
+               
 if __name__ == "__main__":
     from PySide6.QtWidgets import QApplication
     

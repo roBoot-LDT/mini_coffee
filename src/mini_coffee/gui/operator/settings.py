@@ -277,7 +277,7 @@ class PortConfigDialog(QDialog):
         # Create buttons for all options
         icon_map = {
             "Dispenser S": "cup_S.png",
-            "Dispenser M": "cup_M.png",
+            "Dispenser M": "ice.png",
             "Shield": "shield.png",
             "Left Ice": "l_ice.png",
             "Right Ice": "r_ice.png",
