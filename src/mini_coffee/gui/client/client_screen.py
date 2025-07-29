@@ -41,8 +41,7 @@ class ClientScreen(QWidget):
             return recipes[flavor] if flavor in recipes else {}
         except Exception as e:
             logger.error(f"Failed to load recipes from Data(3): {e}. Using defaults.")
-            
-    
+             
     def init_ui(self):
         # Main layout
         main_layout = QVBoxLayout()
@@ -122,17 +121,37 @@ class ClientScreen(QWidget):
         
         # Coffee button
         coffee_icon = str(icon_dir / "cup_S.png")
-        coffee_btn = self.create_icon_button(coffee_icon, "Coffee Menu")
+        coffee_btn = self.create_icon_button(coffee_icon, "Coffee")
         coffee_btn.clicked.connect(lambda: self.show_screen("coffee"))
-        coffee_widget = self.create_icon_with_label_widget(coffee_btn, QLabel("Coffee"))
+        coffee_label = QLabel("Коффе")
+        coffee_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        coffee_label.setStyleSheet("""
+            font-size: 44px;
+            font-weight: bold;
+            color: #FFD166;
+            letter-spacing: 2px;
+            margin-top: 24px;
+            text-shadow: 2px 2px 8px #00000088;
+        """)
+        coffee_widget = self.create_icon_with_label_widget(coffee_btn, coffee_label)
         options_layout.addWidget(coffee_widget)
         
         # Ice Cream button
-        icecream_icon = str(icon_dir / "ice_cream.png")
-        icecream_btn = self.create_icon_button(icecream_icon, "Ice Cream Menu")
-        icecream_btn.clicked.connect(lambda: self.show_screen("icecream"))
-        icecream_widget = self.create_icon_with_label_widget(icecream_btn, QLabel("Ice Cream"))
-        options_layout.addWidget(icecream_widget)
+        ice_icon = str(icon_dir / "l_ice.png")
+        ice_btn = self.create_icon_button(coffee_icon, "Ice Cream")
+        ice_btn.clicked.connect(lambda: self.show_screen("coffee"))
+        ice_label = QLabel("Мороженное")
+        ice_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        ice_label.setStyleSheet("""
+            font-size: 44px;
+            font-weight: bold;
+            color: #FFD166;
+            letter-spacing: 2px;
+            margin-top: 24px;
+            text-shadow: 2px 2px 8px #00000088;
+        """)
+        coffee_widget = self.create_icon_with_label_widget(coffee_btn, coffee_label)
+        options_layout.addWidget(coffee_widget)
         
         layout.addLayout(options_layout, stretch=0)
         layout.addStretch(2)  # Bottom spacer
@@ -505,7 +524,7 @@ class ClientScreen(QWidget):
                 try:
                     angles = coord
                     wait_param = True if isinstance(angles, list) and len(angles) >= 7 else False
-                    self.arm._arm.set_servo_angle(angle=angles[:6], wait=wait_param, speed=60, mvacc=400, radius=50)
+                    self.arm._arm.set_servo_angle(angle=angles[:6], wait=wait_param, speed=40, mvacc=300, radius=200)
                 except Exception as e:
                     logger.error(f"Arm movement failed: {e}")
                 QTimer.singleShot(0, lambda: process_next(index + 1))
