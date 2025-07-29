@@ -820,9 +820,7 @@ class CalibrationWindow(QWidget):
         ]
         self.schematic.draw_schematic(self.arm.get_position_name())
         self.init_ui()
-        
-    
-    
+          
     def init_ui(self) -> None:
         layout = QHBoxLayout()
         layout.addWidget(self.schematic, 1)
@@ -853,11 +851,6 @@ class CalibrationWindow(QWidget):
         control_layout = QVBoxLayout()
         control_layout.addWidget(tabs)
         control_layout.addWidget(client_btn)
-        
-        toolbar_layout = QHBoxLayout()
-        self.add_node_btn = QPushButton("Add Node")
-        self.add_node_btn.clicked.connect(self.open_add_node_dialog)
-        toolbar_layout.addWidget(self.add_node_btn)
 
         layout.addLayout(control_layout, 1)
         self.setLayout(layout)
