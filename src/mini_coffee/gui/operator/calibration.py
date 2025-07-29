@@ -244,48 +244,6 @@ class Node(QGraphicsItem):
         super().mouseMoveEvent(event)
         self.signals.moved.emit()
 
-class AddNodeDialog(QDialog):
-    def __init__(self, existing_nodes, parent=None):
-        super().__init__(parent)
-        self.setWindowTitle("Add Node")
-        layout = QVBoxLayout(self)
-
-        self.name_edit = QLineEdit()
-        layout.addWidget(QLabel("Node Name:"))
-        layout.addWidget(self.name_edit)
-
-        self.x_spin = QDoubleSpinBox()
-        self.x_spin.setRange(-1000, 1000)
-        layout.addWidget(QLabel("X:"))
-        layout.addWidget(self.x_spin)
-
-        self.y_spin = QDoubleSpinBox()
-        self.y_spin.setRange(-1000, 1000)
-        layout.addWidget(QLabel("Y:"))
-        layout.addWidget(self.y_spin)
-
-        self.prev_combo = QComboBox()
-        self.prev_combo.addItems(existing_nodes)
-        layout.addWidget(QLabel("Prev Node:"))
-        layout.addWidget(self.prev_combo)
-
-        self.next_combo = QComboBox()
-        self.next_combo.addItems(existing_nodes)
-        layout.addWidget(QLabel("Next Node:"))
-        layout.addWidget(self.next_combo)
-
-        self.save_btn = QPushButton("Save")
-        self.save_btn.clicked.connect(self.accept)
-        layout.addWidget(self.save_btn)
-
-    def get_data(self):
-        return {
-            "name": self.name_edit.text(),
-            "x": self.x_spin.value(),
-            "y": self.y_spin.value(),
-            "prev": self.prev_combo.currentText(),
-            "next": self.next_combo.currentText()
-        }
         
 class Edge(QGraphicsPathItem):
     def __init__(self, source, dest):
