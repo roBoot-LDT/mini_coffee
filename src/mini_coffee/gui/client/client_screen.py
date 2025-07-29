@@ -150,8 +150,8 @@ class ClientScreen(QWidget):
             margin-top: 24px;
             text-shadow: 2px 2px 8px #00000088;
         """)
-        coffee_widget = self.create_icon_with_label_widget(coffee_btn, coffee_label)
-        options_layout.addWidget(coffee_widget)
+        ice_widget = self.create_icon_with_label_widget(ice_btn, ice_label)
+        options_layout.addWidget(ice_widget)
         
         layout.addLayout(options_layout, stretch=0)
         layout.addStretch(2)  # Bottom spacer
