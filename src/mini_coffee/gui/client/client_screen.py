@@ -96,7 +96,7 @@ class ClientScreen(QWidget):
         layout.setContentsMargins(0, 0, 0, 0)
         
         # Title label at the top
-        title_label = QLabel("☕ Mini Coffee & Ice Cream Robot 🍦")
+        title_label = QLabel("CyberCoffee Lite")
         title_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
         title_label.setStyleSheet("""
             font-size: 56px;
@@ -137,8 +137,8 @@ class ClientScreen(QWidget):
         options_layout.addWidget(coffee_widget)
         
         # Ice Cream button
-        ice_icon = str(icon_dir / "l_ice.png")
-        ice_btn = self.create_icon_button(coffee_icon, "Ice Cream")
+        ice_icon = str(icon_dir / "r_ice.png")
+        ice_btn = self.create_icon_button(ice_icon, "Ice Cream")
         ice_btn.clicked.connect(lambda: self.show_screen("coffee"))
         ice_label = QLabel("Мороженное")
         ice_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
