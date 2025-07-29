@@ -281,7 +281,7 @@ class ClientScreen(QWidget):
         vanilla_icon = str(icon_dir / "l_ice.png")
         vanilla_btn = self.create_icon_button(vanilla_icon, "Salted Caramel")
         vanilla_btn.clicked.connect(lambda: self.start_order("vanilla"))
-        vanilla_label = self.create_flavor_label("Salted Caramel")
+        vanilla_label = self.create_flavor_label("Сливочное")
         self.vanilla_btn = vanilla_btn
         vanilla_widget = self.create_icon_with_label_widget(vanilla_btn, vanilla_label)
         options_layout.addWidget(vanilla_widget)
@@ -290,7 +290,7 @@ class ClientScreen(QWidget):
         mix_icon = str(icon_dir / "m_ice.png")
         mix_btn = self.create_icon_button(mix_icon, "Mix")
         mix_btn.clicked.connect(lambda: self.start_order("mix"))
-        mix_label = self.create_flavor_label("Mix")
+        mix_label = self.create_flavor_label("Микс")
         self.mix_btn = mix_btn
         mix_widget = self.create_icon_with_label_widget(mix_btn, mix_label)
         options_layout.addWidget(mix_widget)
@@ -299,7 +299,7 @@ class ClientScreen(QWidget):
         chocolate_icon = str(icon_dir / "r_ice.png")
         chocolate_btn = self.create_icon_button(chocolate_icon, "Vanilla")
         chocolate_btn.clicked.connect(lambda: self.start_order("chocolate"))
-        chocolate_label = self.create_flavor_label("Vanilla")
+        chocolate_label = self.create_flavor_label("Клубника")
         self.chocolate_btn = chocolate_btn
         chocolate_widget = self.create_icon_with_label_widget(chocolate_btn, chocolate_label)
         options_layout.addWidget(chocolate_widget)
