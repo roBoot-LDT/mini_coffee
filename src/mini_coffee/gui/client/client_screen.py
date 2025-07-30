@@ -78,7 +78,7 @@ class ClientScreen(QWidget):
         self.status_label.setStyleSheet("""
             font-size: 38px;
             font-weight: bold;
-            color: #6F4E37;
+            color: #2c1f16;
             letter-spacing: 1.5px;
         """)
         status_layout.addWidget(self.status_label, stretch=1)
@@ -103,7 +103,7 @@ class ClientScreen(QWidget):
         title_label.setStyleSheet("""
             font-size: 56px;
             font-weight: bold;
-            color: #6F4E37;
+            color: #2c1f16;
             letter-spacing: 2px;
             margin-bottom: 30px;
         """)
@@ -129,7 +129,7 @@ class ClientScreen(QWidget):
         coffee_label.setStyleSheet("""
             font-size: 44px;
             font-weight: bold;
-            color: #6F4E37;
+            color: #2c1f16;
             letter-spacing: 2px;
             margin-top: 24px;
         """)
@@ -145,7 +145,7 @@ class ClientScreen(QWidget):
         ice_label.setStyleSheet("""
             font-size: 44px;
             font-weight: bold;
-            color: #6F4E37;
+            color: #2c1f16;
             letter-spacing: 2px;
             margin-top: 24px;
         """)
@@ -181,7 +181,7 @@ class ClientScreen(QWidget):
         title.setStyleSheet("""
             font-size: 48px;
             font-weight: bold;
-            color: #6F4E37;
+            color: #2c1f16;
             text-align: center;
         """)
         nav_bar.addWidget(title, 1)
@@ -236,7 +236,7 @@ class ClientScreen(QWidget):
             label.setStyleSheet("""
                 font-size: 32px;
                 font-weight: bold;
-                color: #6F4E37;
+                color: #2c1f16;
                 margin-top: 18px;
             """)
             widget = self.create_icon_with_label_widget(btn, label)
@@ -277,7 +277,7 @@ class ClientScreen(QWidget):
         title.setStyleSheet("""
             font-size: 48px;
             font-weight: bold;
-            color: #6F4E37;
+            color: #2c1f16;
             text-align: center;
         """)
         nav_bar.addWidget(title, 1)
@@ -437,7 +437,7 @@ class ClientScreen(QWidget):
         label.setStyleSheet("""
             font-size: 38px;
             font-weight: 600;
-            color: #6F4E37;
+            color: #2c1f16;
             margin-top: 24px;
             letter-spacing: 1px;
         """)
