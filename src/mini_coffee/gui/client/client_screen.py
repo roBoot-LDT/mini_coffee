@@ -64,28 +64,28 @@ class ClientScreen(QWidget):
         self.screen_stack.addWidget(self.coffee_screen)
         self.screen_stack.addWidget(self.icecream_screen)
         
-        # Status bar at bottom
-        status_bar = QWidget()
-        status_layout = QHBoxLayout()
-        status_layout.setContentsMargins(0, 0, 0, 20)
-        status_layout.setSpacing(0)
-        status_bar.setStyleSheet("background: transparent;")
+        # # Status bar at bottom
+        # status_bar = QWidget()
+        # status_layout = QHBoxLayout()
+        # status_layout.setContentsMargins(0, 0, 0, 20)
+        # status_layout.setSpacing(0)
+        # status_bar.setStyleSheet("background: transparent;")
 
-        self.status_label = QLabel("Готовы принять ваш заказ!")
-        self.status_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        self.status_label.setStyleSheet("""
-            font-size: 38px;
-            font-weight: bold;
-            color: #FFD166;
-            letter-spacing: 1.5px;
-            padding: 18px 0 8px 0;
-        """)
-        status_layout.addStretch(1)
-        status_layout.addWidget(self.status_label, 10)
-        status_layout.addStretch(1)
+        # self.status_label = QLabel("Готовы принять ваш заказ!")
+        # self.status_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        # self.status_label.setStyleSheet("""
+        #     font-size: 38px;
+        #     font-weight: bold;
+        #     color: #FFD166;
+        #     letter-spacing: 1.5px;
+        #     padding: 18px 0 8px 0;
+        # """)
+        # status_layout.addStretch(1)
+        # status_layout.addWidget(self.status_label, 10)
+        # status_layout.addStretch(1)
         
-        status_bar.setLayout(status_layout)
-        main_layout.addWidget(status_bar)
+        # status_bar.setLayout(status_layout)
+        # main_layout.addWidget(status_bar)
         
         # Show main screen initially
         self.show_screen("main")
