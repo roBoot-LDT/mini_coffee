@@ -113,7 +113,7 @@ class ClientScreen(QWidget):
         
         # Main options centered
         options_layout = QHBoxLayout()
-        options_layout.setSpacing(100)
+        options_layout.setSpacing(30)
         options_layout.setContentsMargins(50, 0, 50, 0)
         
         # Load icons
@@ -291,7 +291,7 @@ class ClientScreen(QWidget):
         
         # Ice cream options
         options_layout = QHBoxLayout()
-        options_layout.setSpacing(50)
+        options_layout.setSpacing(30)
         options_layout.setContentsMargins(50, 0, 50, 0)
 
         # Vanilla
@@ -329,7 +329,7 @@ class ClientScreen(QWidget):
         
         return screen
 
-    def create_nav_button(self, icon_path, tooltip, size=100):
+    def create_nav_button(self, icon_path, tooltip, size=50):
         """Create a larger navigation button for top bar"""
         btn = QPushButton()
         btn.setToolTip(tooltip)
@@ -339,8 +339,8 @@ class ClientScreen(QWidget):
             pixmap = QPixmap(icon_path)
             # Scale the pixmap to the desired size
             scaled_pixmap = pixmap.scaled(
-                size - 20, 
-                size - 20, 
+                size - 14, 
+                size - 14, 
                 Qt.AspectRatioMode.KeepAspectRatio, 
                 Qt.TransformationMode.SmoothTransformation
             )
@@ -355,7 +355,7 @@ class ClientScreen(QWidget):
             }
             QPushButton:hover {
                 background-color: #444466;
-                border-radius: 50px;
+                border-radius: 35px;
             }
         """)
         
@@ -365,14 +365,14 @@ class ClientScreen(QWidget):
         """Create a clickable icon button with animation and shadow"""
         btn = QPushButton()
         btn.setToolTip(tooltip)
-        btn.setMinimumSize(420, 420)
-        btn.setMaximumSize(600, 600)
+        btn.setMinimumSize(200, 200)
+        btn.setMaximumSize(320, 320)
         btn.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding)
 
         if Path(icon_path).exists():
             pixmap = QPixmap(icon_path)
             btn.setIcon(QIcon(pixmap))
-            btn.setIconSize(pixmap.size().scaled(420, 420, Qt.AspectRatioMode.KeepAspectRatio))
+            btn.setIconSize(pixmap.size().scaled(220, 220, Qt.AspectRatioMode.KeepAspectRatio))
 
         # Add hover animation
         opacity_effect = QGraphicsOpacityEffect(btn)
@@ -393,8 +393,8 @@ class ClientScreen(QWidget):
 
         btn.setStyleSheet("""
             QPushButton {
-                border: 6px solid #FFD166;
-                border-radius: 48px;
+                border: 4px solid #FFD166;
+                border-radius: 32px;
                 background: qradialgradient(
                     cx:0.5, cy:0.5, radius: 1.0,
                     fx:0.5, fy:0.5,
@@ -402,7 +402,7 @@ class ClientScreen(QWidget):
                 );
             }
             QPushButton:disabled {
-                border: 6px solid #555555;
+                border: 4px solid #555555;
                 background: qradialgradient(
                     cx:0.5, cy:0.5, radius: 1.0,
                     fx:0.5, fy:0.5,
@@ -410,7 +410,7 @@ class ClientScreen(QWidget):
                 );
             }
             QPushButton:hover:enabled {
-                border: 6px solid #4ECDC4;
+                border: 4px solid #4ECDC4;
                 background: qradialgradient(
                     cx:0.5, cy:0.5, radius: 1.0,
                     fx:0.5, fy:0.5,
@@ -418,10 +418,10 @@ class ClientScreen(QWidget):
                 );
             }
             QToolTip {
-                font-size: 28px;
+                font-size: 20px;
                 color: white;
                 background-color: #292F36;
-                padding: 18px;
+                padding: 12px;
                 border-radius: 12px;
                 opacity: 220;
             }
@@ -434,10 +434,10 @@ class ClientScreen(QWidget):
         label = QLabel(text)
         label.setAlignment(Qt.AlignmentFlag.AlignCenter)
         label.setStyleSheet("""
-            font-size: 38px;
-            font-weight: 600;
+            font-size: 24px;
+            font-weight: 300;
             color: #2c1f16;
-            margin-top: 24px;
+            margin-top: 12px;
             letter-spacing: 1px;
         """)
         return label
