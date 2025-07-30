@@ -556,6 +556,8 @@ class ClientScreen(QWidget):
                     time.sleep(0.3)
                 elif code == 4:
                     time.sleep(1)
+                elif code == 5:
+                    time.sleep(10)
                 else:
                     logger.warning(f"Unknown code: {code}")
                 # Simulate time for action, then continue
