@@ -73,22 +73,22 @@ class ClientScreen(QWidget):
 
         # Add spacers to center the label without using stretch
 
-        status_layout.addSpacerItem(QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum))  # Left spacer
-        self.status_label = QLabel("Готовы принять ваш заказ!")
-        self.status_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        self.status_label.setStyleSheet("""
-            font-size: 38px;
-            font-weight: bold;
-            color: #FFD166;
-            letter-spacing: 1.5px;
-            padding: 18px 0 8px 0;
-        """)
-        self.status_label.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Preferred)
-        status_layout.addWidget(self.status_label, stretch=1)
-        status_layout.addSpacerItem(QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum))  # Right spacer
+        # status_layout.addSpacerItem(QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum))  # Left spacer
+        # self.status_label = QLabel("Готовы принять ваш заказ!")
+        # self.status_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        # self.status_label.setStyleSheet("""
+        #     font-size: 38px;
+        #     font-weight: bold;
+        #     color: #FFD166;
+        #     letter-spacing: 1.5px;
+        #     padding: 18px 0 8px 0;
+        # """)
+        # self.status_label.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Preferred)
+        # status_layout.addWidget(self.status_label, stretch=1)
+        # status_layout.addSpacerItem(QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum))  # Right spacer
 
-        status_bar.setLayout(status_layout)
-        main_layout.addWidget(status_bar)
+        # status_bar.setLayout(status_layout)
+        # main_layout.addWidget(status_bar)
         
         # Show main screen initially
         self.show_screen("main")
