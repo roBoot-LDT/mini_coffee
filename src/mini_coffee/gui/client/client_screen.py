@@ -65,23 +65,25 @@ class ClientScreen(QWidget):
         
         # Status bar at bottom
         status_bar = QWidget()
-        status_layout = QVBoxLayout()
-        self.status_label = QLabel("Ready to take your order!")
+        status_layout = QHBoxLayout()
+        status_layout.setContentsMargins(0, 0, 0, 20)
+        status_layout.setSpacing(0)
+        status_bar.setStyleSheet("background: transparent;")
+
+        self.status_label = QLabel("Готовы принять ваш заказ!")
+        self.status_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.status_label.setStyleSheet("""
-            font-size: 32px;
-            font-weight: 500;
+            font-size: 38px;
+            font-weight: bold;
             color: #FFD166;
-            text-align: center;
+            letter-spacing: 1.5px;
+            padding: 18px 0 8px 0;
+            text-shadow: 2px 2px 8px #00000088;
         """)
-        status_layout.addWidget(self.status_label)
+        status_layout.addStretch(1)
+        status_layout.addWidget(self.status_label, 10)
+        status_layout.addStretch(1)
         
-        self.arm_status_label = QLabel("🤖 Arm Status: Ready")
-        self.arm_status_label.setStyleSheet("""
-            font-size: 24px;
-            color: #4ECDC4;
-            text-align: center;
-        """)
-        status_layout.addWidget(self.arm_status_label)
         status_bar.setLayout(status_layout)
         main_layout.addWidget(status_bar)
         
@@ -219,9 +221,29 @@ class ClientScreen(QWidget):
                     color: #aaaaaa;
                 }
             """)
-            btn.setMinimumSize(300, 100)
+            # Use icons instead of text for coffee buttons
+            icon_dir = Path(__file__).parent.parent.parent.parent.parent / "resources" / "icons"
+            # Map coffee types to icon filenames (adjust as needed)
+            coffee_icons = {
+                "Эспрессо": "espresso.png",
+                "Американо": "americano.png",
+                "Капучино": "cappuccino.png",
+                "Латте": "latte.png"
+            }
+            icon_path = str(icon_dir / coffee_icons.get(coffee, "coffee.png"))
+            btn = self.create_icon_button(icon_path, coffee)
             btn.clicked.connect(lambda _, c=coffee: self.start_coffee_order(c))
-            grid.addWidget(btn, i // 2, i % 2)
+            # Add a label under the icon
+            label = QLabel(coffee)
+            label.setAlignment(Qt.AlignmentFlag.AlignCenter)
+            label.setStyleSheet("""
+                font-size: 32px;
+                font-weight: bold;
+                color: #FFD166;
+                margin-top: 18px;
+            """)
+            widget = self.create_icon_with_label_widget(btn, label)
+            grid.addWidget(widget, i // 2, i % 2)
             
         layout.addLayout(grid, 1)
         screen.setLayout(layout)
@@ -453,7 +475,7 @@ class ClientScreen(QWidget):
             
         self.is_cooking = True
         self.update_button_states()
-        self.status_label.setText(f"Making {coffee_type}...")
+        self.status_label.setText(f"Готовим {coffee_type}...")
         self.order_started.emit(coffee_type)
         
         # Simulate coffee preparation
@@ -462,12 +484,11 @@ class ClientScreen(QWidget):
     def complete_coffee_order(self, coffee_type):
         """Complete the coffee order"""
         self.is_cooking = False
-        self.status_label.setText(f"{coffee_type} ready! Enjoy!")
         self.order_completed.emit(coffee_type)
         self.update_button_states()
         
         # Reset status after delay
-        QTimer.singleShot(5000, lambda: self.status_label.setText("Ready to take your order!"))
+        QTimer.singleShot(5000, lambda: self.status_label.setText("Готов принять ваш заказ!"))
     
     def start_order(self, flavor):
         """Start processing an ice cream order"""
@@ -478,7 +499,7 @@ class ClientScreen(QWidget):
         self.is_cooking = True
         self.current_order = flavor  # Set current order for completion
         self.update_button_states()
-        self.status_label.setText(f"Making your {flavor} ice cream...")
+        self.status_label.setText(f"Готовим мороженное...")
         self.order_started.emit(flavor)
         
         # Get recipe path
@@ -538,12 +559,12 @@ class ClientScreen(QWidget):
         flavor = self.current_order
         self.current_order = None
         self.is_cooking = False
-        self.status_label.setText(f"Your {flavor} ice cream is ready! Enjoy!")
+        self.status_label.setText(f"Готово!")
         self.order_completed.emit(flavor)
         self.update_button_states()
         
         # Reset status after delay
-        QTimer.singleShot(5000, lambda: self.status_label.setText("Ready to take your order!"))
+        QTimer.singleShot(5000, lambda: self.status_label.setText("Готов принять ваш заказ!"))
     
     def update_button_states(self):
         """Enable/disable buttons based on cooking state"""
