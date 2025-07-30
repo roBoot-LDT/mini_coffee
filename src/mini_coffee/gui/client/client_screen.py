@@ -14,7 +14,6 @@ from mini_coffee.hardware.arm.controller import XArmAPI
 from mini_coffee.hardware.relays import PLC
 
 logger = setup_logger()
-ser = serial.Serial('/dev/ttyUSB0', 9600, timeout=1)
 
 class ClientScreen(QWidget):
     order_started = Signal(str)
@@ -41,7 +40,7 @@ class ClientScreen(QWidget):
     def check_serial_port(self):
         if self.ser.in_waiting > 0:
             try:
-                line = self.ser.readline()
+                line = self.ser.readline().decode('utf-8').strip()
                 # if value == 1:
                 print(f"Получено: {line}")
                         # You can add any logic here (e.g., trigger an action)
