@@ -1,7 +1,7 @@
 # src/mini_coffee/gui/client/client_screen.py
 from PySide6.QtWidgets import (
     QWidget, QVBoxLayout, QHBoxLayout, QPushButton, QLabel,
-    QGraphicsOpacityEffect, QSizePolicy, QGridLayout, QStackedWidget
+    QGraphicsOpacityEffect, QSizePolicy, QGridLayout, QStackedWidget, QSpacerItem, QSizePolicy
 )
 from PySide6.QtCore import Qt, Signal, QTimer, QPropertyAnimation, QEasingCurve
 from PySide6.QtGui import QPixmap, QIcon, QFont
@@ -72,7 +72,8 @@ class ClientScreen(QWidget):
         status_bar.setStyleSheet("background: transparent;")
 
         # Add spacers to center the label without using stretch
-        status_layout.addSpacerItem(QHBoxLayout().addSpacing(0))  # Left spacer
+
+        status_layout.addSpacerItem(QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum))  # Left spacer
         self.status_label = QLabel("Готовы принять ваш заказ!")
         self.status_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.status_label.setStyleSheet("""
@@ -83,7 +84,7 @@ class ClientScreen(QWidget):
             padding: 18px 0 8px 0;
         """)
         status_layout.addWidget(self.status_label)
-        status_layout.addSpacerItem(QHBoxLayout().addSpacing(0))  # Right spacer
+        status_layout.addSpacerItem(QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum))  # Right spacer
 
         status_bar.setLayout(status_layout)
         main_layout.addWidget(status_bar)
