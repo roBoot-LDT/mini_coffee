@@ -44,6 +44,19 @@ class ClientScreen(QWidget):
             logger.error(f"Failed to load recipes from Data(3): {e}. Using defaults.")
              
     def init_ui(self):
+        # Set background image using stylesheet
+        icon_dir = Path(__file__).parent.parent.parent.parent.parent / "resources" / "icons"
+        bg_path = str(icon_dir / "bg.png").replace("\\", "/")
+        self.setStyleSheet(f"""
+            QWidget {{
+                background-color: #1A1A2E;
+                background-image: url("{bg_path}");
+                background-repeat: no-repeat;
+                background-position: center;
+                background-attachment: fixed;
+            }}
+        """)
+
         # Main layout
         main_layout = QVBoxLayout()
         main_layout.setContentsMargins(0, 0, 0, 0)
