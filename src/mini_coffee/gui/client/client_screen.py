@@ -30,7 +30,6 @@ class ClientScreen(QWidget):
         self.setWindowFlags(Qt.WindowType.FramelessWindowHint)
         self.is_cooking = False  # Track cooking state
         self.init_ui()
-        self.showFullScreen()
 
     def load_recipes(self, flavor):
         """Load ice cream recipes from Data(3)"""
@@ -572,7 +571,14 @@ class ClientScreen(QWidget):
     
     def showEvent(self, event):
         """Handle show event to ensure fullscreen"""
-        self.showFullScreen()
+        screen = self.screen() if hasattr(self, "screen") else self.window().windowHandle().screen()
+        geometry = screen.geometry()
+        half_width = geometry.width() // 2
+        height = geometry.height()
+        x = geometry.x() + half_width
+        y = geometry.y()
+        self.setGeometry(x, y, half_width, height)
+        self.showNormal()  # Ensure not fullscreen
         super().showEvent(event)
     
     def _get_stylesheet(self):
