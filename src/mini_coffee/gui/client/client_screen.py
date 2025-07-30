@@ -265,11 +265,11 @@ class ClientScreen(QWidget):
         nav_bar.setContentsMargins(0, 0, 0, 20)
         
         # Home button - larger size
-        icon_dir = Path(__file__).parent.parent.parent.parent.parent / "resources" / "icons"
-        home_icon = str(icon_dir / "home.png")
-        home_btn = self.create_nav_button(home_icon, "Home", 100)  # 100px size
-        home_btn.clicked.connect(lambda: self.show_screen("main"))
-        nav_bar.addWidget(home_btn)
+        # icon_dir = Path(__file__).parent.parent.parent.parent.parent / "resources" / "icons"
+        # home_icon = str(icon_dir / "home.png")
+        # home_btn = self.create_nav_button(home_icon, "Home", 100)  # 100px size
+        # home_btn.clicked.connect(lambda: self.show_screen("main"))
+        # nav_bar.addWidget(home_btn)
         
         # Title
         # Centered title at the top
