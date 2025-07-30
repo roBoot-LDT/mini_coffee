@@ -618,6 +618,11 @@ class ClientScreen(QWidget):
     def keyPressEvent(self, event):
         """Handle key presses (Esc exits fullscreen)"""
         if event.key() == Qt.Key.Key_Escape:
+            try:
+                if hasattr(self, 'ser') and self.ser.is_open:
+                    self.ser.close()
+            except Exception:
+                pass
             self.close()
         super().keyPressEvent(event)
 
