@@ -93,9 +93,20 @@ class ClientScreen(QWidget):
     def create_main_screen(self):
         """Create the main screen with coffee and ice cream icons"""
         screen = QWidget()
+        icon_dir = Path(__file__).parent.parent.parent.parent.parent / "resources" / "icons"
+        bg_path = icon_dir / "bg.png"
         screen.setStyleSheet("background-color: #1A1A2E;")
         layout = QVBoxLayout()
-        layout.setContentsMargins(0, 0, 0, 0)
+        layout.setContentsMargins(20, 20, 20, 0)
+        screen.setStyleSheet(f"""
+        QWidget {{
+            background-color: #1A1A2E;
+            background-image: url("{bg_path.as_posix()}");
+            background-repeat: no-repeat;
+            background-position: center;
+            background-size: cover;
+        }}
+    """)
         
         # Title label at the top
         title_label = QLabel("CyberCoffee Lite")
@@ -599,17 +610,11 @@ class ClientScreen(QWidget):
         super().showEvent(event)
     
     def _get_stylesheet(self):
-        icon_dir = Path(__file__).parent.parent.parent.parent.parent / "resources" / "icons"
-        bg_path = icon_dir / "bg.png"
-        return f"""
-        QWidget {{
-            background-color: #1A1A2E;
-            background-image: url("{bg_path.as_posix()}");
-            background-repeat: no-repeat;
-            background-position: center;
-            background-attachment: fixed;
-        }}
-    """
+        return """
+            QWidget {
+                background-color: #1A1A2E;
+            }
+        """
 
     def keyPressEvent(self, event):
         """Handle key presses (Esc exits fullscreen)"""
