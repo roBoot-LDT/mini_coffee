@@ -601,7 +601,7 @@ class ClientScreen(QWidget):
     def _get_stylesheet(self):
         return """
             QWidget {
-                background-color: #1A1A2E;
+                background-color: #6F4E37;
             }
         """
 
