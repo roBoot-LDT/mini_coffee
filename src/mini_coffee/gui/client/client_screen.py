@@ -540,7 +540,7 @@ class ClientScreen(QWidget):
                 try:
                     angles = coord
                     wait_param = True if isinstance(angles, list) and len(angles) >= 7 else False
-                    self.arm._arm.set_servo_angle(angle=angles[:6], wait=wait_param, speed=40, mvacc=300, radius=500)
+                    self.arm._arm.set_servo_angle(angle=angles[:6], wait=wait_param, speed=45, mvacc=100, radius=2)
                 except Exception as e:
                     logger.error(f"Arm movement failed: {e}")
                 QTimer.singleShot(0, lambda: process_next(index + 1))
