@@ -31,7 +31,7 @@ class ClientScreen(QWidget):
         self.is_cooking = False  # Track cooking state
         self.init_ui()
 
-        self.ser = serial.Serial('/dev/ttyUSB0', 9600, timeout=1)  # Use your port
+        self.ser = serial.Serial('/dev/ttyUSB0', 9600)  # Use your port
         self.serial_timer = QTimer(self)
         self.serial_timer.timeout.connect(self.check_serial_port)
         self.serial_timer.start(100)  # Check every 100 ms
@@ -40,7 +40,7 @@ class ClientScreen(QWidget):
     def check_serial_port(self):
         if self.ser.in_waiting > 0:
             try:
-                line = self.ser.readline().decode('utf-8').strip()
+                line = self.ser.readline()
                 # if value == 1:
                 print(f"Получено: {line}")
                         # You can add any logic here (e.g., trigger an action)
