@@ -30,7 +30,7 @@ class ClientScreen(QWidget):
         self.setWindowFlags(Qt.WindowType.FramelessWindowHint)
         self.is_cooking = False  # Track cooking state
         self.init_ui()
-        
+        self.showFullScreen()
     def load_recipes(self, flavor):
         """Load ice cream recipes from Data(3)"""
         data = Data(3)
@@ -91,7 +91,6 @@ class ClientScreen(QWidget):
         self.show_screen("main")
 
         # Ensure full-screen mode
-        self.showFullScreen()
 
     def create_main_screen(self):
         """Create the main screen with coffee and ice cream icons"""
