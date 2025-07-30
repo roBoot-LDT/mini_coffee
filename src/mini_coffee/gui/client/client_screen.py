@@ -58,13 +58,10 @@ class ClientScreen(QWidget):
                 line = self.ser.readline().decode('utf-8').strip()
                 
                 if not line:  # Пропускаем пустые строки
-                    continue
-                    
-                print(f"Serial data: {line}")
-                
+                    continue                
                 # Обработка значений
                 if line == '1':
-                    print('1')
+                    self.start_order('coffee')
                 # elif line == '0':
                 #     self.handle_serial_data(0)
                     
