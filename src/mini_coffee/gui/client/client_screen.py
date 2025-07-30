@@ -28,23 +28,48 @@ class ClientScreen(QWidget):
         self.order_path = []
         self.setStyleSheet(self._get_stylesheet())
         self.setWindowFlags(Qt.WindowType.FramelessWindowHint)
-        self.is_cooking = False  # Track cooking state
+        self.is_cooking = False
         self.init_ui()
 
-        self.ser = serial.Serial('/dev/ttyUSB0', 9600)  # Use your port
+        # Инициализация последовательного порта
+        try:
+            self.ser = serial.Serial(
+                '/dev/ttyUSB0',  # Ваш порт
+                9600,
+                timeout=0.1,  # Короткий таймаут
+                dsrdtr=False
+            )
+            self.ser.reset_input_buffer()  # Очистка буфера
+        except serial.SerialException as e:
+            print(f"Failed to open serial port: {e}")
+            self.ser = None
+
+        # Таймер для проверки порта
         self.serial_timer = QTimer(self)
         self.serial_timer.timeout.connect(self.check_serial_port)
-        self.serial_timer.start(100)  # Check every 100 ms
-
+        self.serial_timer.start(100)  # Проверка каждые 100 мс
 
     def check_serial_port(self):
+        if not self.ser or not self.ser.is_open:
+            return
+
         try:
-            print(self.ser.readline())
-            # if value == 1:
-                    # You can add any logic here (e.g., trigger an action)
+            while self.ser.in_waiting > 0:
+                line = self.ser.readline().decode('utf-8').strip()
                 
+                if not line:  # Пропускаем пустые строки
+                    continue
+                    
+                print(f"Serial data: {line}")
+                
+                # Обработка значений
+                if line == '1':
+                    print('1')
+                # elif line == '0':
+                #     self.handle_serial_data(0)
+                    
         except Exception as e:
-            print(f"Serial read error: {e}")
+            print(f"Error reading serial: {e}")
                 
     def load_recipes(self, flavor):
         """Load ice cream recipes from Data(3)"""
