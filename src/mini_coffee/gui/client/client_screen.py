@@ -31,6 +31,7 @@ class ClientScreen(QWidget):
         self.is_cooking = False  # Track cooking state
         self.init_ui()
         self.showFullScreen()
+
     def load_recipes(self, flavor):
         """Load ice cream recipes from Data(3)"""
         data = Data(3)
@@ -89,7 +90,6 @@ class ClientScreen(QWidget):
         # Show main screen initially
         self.show_screen("main")
 
-        # Ensure full-screen mode
 
     def create_main_screen(self):
         """Create the main screen with coffee and ice cream icons"""
