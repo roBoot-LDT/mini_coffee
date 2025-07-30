@@ -78,7 +78,6 @@ class ClientScreen(QWidget):
             color: #FFD166;
             letter-spacing: 1.5px;
             padding: 18px 0 8px 0;
-            text-shadow: 2px 2px 8px #00000088;
         """)
         status_layout.addStretch(1)
         status_layout.addWidget(self.status_label, 10)
@@ -108,7 +107,6 @@ class ClientScreen(QWidget):
             color: #FFD166;
             letter-spacing: 2px;
             margin-bottom: 30px;
-            text-shadow: 2px 2px 8px #00000088;
         """)
         layout.addWidget(title_label, alignment=Qt.AlignmentFlag.AlignTop | Qt.AlignmentFlag.AlignHCenter)
         
@@ -135,7 +133,6 @@ class ClientScreen(QWidget):
             color: #FFD166;
             letter-spacing: 2px;
             margin-top: 24px;
-            text-shadow: 2px 2px 8px #00000088;
         """)
         coffee_widget = self.create_icon_with_label_widget(coffee_btn, coffee_label)
         options_layout.addWidget(coffee_widget)
@@ -152,7 +149,6 @@ class ClientScreen(QWidget):
             color: #FFD166;
             letter-spacing: 2px;
             margin-top: 24px;
-            text-shadow: 2px 2px 8px #00000088;
         """)
         ice_widget = self.create_icon_with_label_widget(ice_btn, ice_label)
         options_layout.addWidget(ice_widget)
@@ -406,7 +402,6 @@ class ClientScreen(QWidget):
                     fx:0.5, fy:0.5,
                     stop:0 #23243a, stop:1 #1A1A2E
                 );
-                box-shadow: 0 12px 48px #00000044;
             }
             QPushButton:disabled {
                 border: 6px solid #555555;
