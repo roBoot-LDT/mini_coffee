@@ -161,7 +161,7 @@ class ClientScreen(QWidget):
     def create_coffee_screen(self):
         """Create the coffee selection screen"""
         screen = QWidget()
-        screen.setStyleSheet("background-color: #1A1A2E;")
+        screen.setStyleSheet("background-color: #a47351;")
         layout = QVBoxLayout()
         layout.setContentsMargins(20, 20, 20, 0)
         
@@ -257,7 +257,7 @@ class ClientScreen(QWidget):
     def create_icecream_screen(self):
         """Create the ice cream selection screen"""
         screen = QWidget()
-        screen.setStyleSheet("background-color: #1A1A2E;")
+        screen.setStyleSheet("background-color: #a47351;")
         layout = QVBoxLayout()
         layout.setContentsMargins(20, 20, 20, 0)
         
