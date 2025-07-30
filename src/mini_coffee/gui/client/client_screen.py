@@ -6,7 +6,7 @@ from PySide6.QtWidgets import (
 from PySide6.QtCore import Qt, Signal, QTimer, QPropertyAnimation, QEasingCurve
 from PySide6.QtGui import QPixmap, QIcon, QFont
 from pathlib import Path
-import json
+import serial
 import time
 from mini_coffee.utils.logger import setup_logger
 from mini_coffee.gui.operator.calibration import Data
@@ -14,6 +14,7 @@ from mini_coffee.hardware.arm.controller import XArmAPI
 from mini_coffee.hardware.relays import PLC
 
 logger = setup_logger()
+ser = serial.Serial('/dev/ttyUSB0', 9600, timeout=1)
 
 class ClientScreen(QWidget):
     order_started = Signal(str)
@@ -31,6 +32,25 @@ class ClientScreen(QWidget):
         self.is_cooking = False  # Track cooking state
         self.init_ui()
 
+        self.ser = serial.Serial('/dev/ttyUSB0', 9600, timeout=1)  # Use your port
+        self.serial_timer = QTimer(self)
+        self.serial_timer.timeout.connect(self.check_serial_port)
+        self.serial_timer.start(100)  # Check every 100 ms
+
+
+    def check_serial_port(self):
+        if self.ser.in_waiting > 0:
+            try:
+                line = self.ser.readline().decode('utf-8').strip()
+                if line in ('0', '1'):
+                    value = int(line)
+                    # if value == 1:
+                    print(f"Получено: {value}")
+                        # You can add any logic here (e.g., trigger an action)
+                    
+            except Exception as e:
+                print(f"Serial read error: {e}")
+                
     def load_recipes(self, flavor):
         """Load ice cream recipes from Data(3)"""
         data = Data(3)
@@ -600,3 +620,12 @@ class ClientScreen(QWidget):
         if event.key() == Qt.Key.Key_Escape:
             self.close()
         super().keyPressEvent(event)
+
+    def closeEvent(self, event):
+        # Properly close the serial port when the window is closed
+        try:
+            if hasattr(self, 'ser') and self.ser.is_open:
+                self.ser.close()
+        except Exception:
+            pass
+        super().closeEvent(event)
