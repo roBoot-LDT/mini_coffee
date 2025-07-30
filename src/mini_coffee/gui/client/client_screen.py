@@ -90,6 +90,9 @@ class ClientScreen(QWidget):
         # Show main screen initially
         self.show_screen("main")
 
+        # Ensure full-screen mode
+        self.showFullScreen()
+
     def create_main_screen(self):
         """Create the main screen with coffee and ice cream icons"""
         screen = QWidget()
