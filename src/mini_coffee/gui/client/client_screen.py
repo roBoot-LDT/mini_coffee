@@ -54,13 +54,13 @@ class ClientScreen(QWidget):
         main_layout.addWidget(self.screen_stack, 1)  # Takes most space
 
         # Create screens
-        self.main_screen = self.create_main_screen()
-        self.coffee_screen = self.create_coffee_screen()
+        # self.main_screen = self.create_main_screen()
+        # self.coffee_screen = self.create_coffee_screen()
         self.icecream_screen = self.create_icecream_screen()
         
         # Add screens to stack
-        self.screen_stack.addWidget(self.main_screen)
-        self.screen_stack.addWidget(self.coffee_screen)
+        # self.screen_stack.addWidget(self.main_screen)
+        # self.screen_stack.addWidget(self.coffee_screen)
         self.screen_stack.addWidget(self.icecream_screen)
         
         # Status bar at bottom
@@ -86,7 +86,7 @@ class ClientScreen(QWidget):
         main_layout.addWidget(status_bar)
         
         # Show main screen initially
-        self.show_screen("main")
+        self.screen_stack.setCurrentIndex(0)
 
 
     def create_main_screen(self):
@@ -272,20 +272,25 @@ class ClientScreen(QWidget):
         nav_bar.addWidget(home_btn)
         
         # Title
+        # Centered title at the top
         title = QLabel("МЕНЮ МОРОЖЕНОГО")
+        title.setAlignment(Qt.AlignmentFlag.AlignCenter)
         title.setStyleSheet("""
             font-size: 48px;
             font-weight: bold;
             color: #2c1f16;
-            text-align: center;
+            letter-spacing: 2px;
+            margin-bottom: 10px;
         """)
-        nav_bar.addWidget(title, 1)
+        nav_bar.addStretch(1)
+        nav_bar.addWidget(title, 10)
+        nav_bar.addStretch(1)
         
         # Coffee button - larger size
-        coffee_icon = str(icon_dir / "coffee.png")
-        coffee_btn = self.create_nav_button(coffee_icon, "Coffee", 100)  # 100px size
-        coffee_btn.clicked.connect(lambda: self.show_screen("coffee"))
-        nav_bar.addWidget(coffee_btn)
+        # coffee_icon = str(icon_dir / "coffee.png")
+        # coffee_btn = self.create_nav_button(coffee_icon, "Coffee", 100)  # 100px size
+        # coffee_btn.clicked.connect(lambda: self.show_screen("coffee"))
+        # nav_bar.addWidget(coffee_btn)
         
         layout.addLayout(nav_bar)
         
@@ -365,14 +370,14 @@ class ClientScreen(QWidget):
         """Create a clickable icon button with animation and shadow"""
         btn = QPushButton()
         btn.setToolTip(tooltip)
-        btn.setMinimumSize(250, 250)
-        btn.setMaximumSize(350, 350)
+        btn.setMinimumSize(225, 225)
+        btn.setMaximumSize(325, 325)
         btn.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding)
 
         if Path(icon_path).exists():
             pixmap = QPixmap(icon_path)
             btn.setIcon(QIcon(pixmap))
-            btn.setIconSize(pixmap.size().scaled(350, 350, Qt.AspectRatioMode.KeepAspectRatio))
+            btn.setIconSize(pixmap.size().scaled(325, 325, Qt.AspectRatioMode.KeepAspectRatio))
 
         # Add hover animation
         opacity_effect = QGraphicsOpacityEffect(btn)
