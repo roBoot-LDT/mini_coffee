@@ -41,11 +41,9 @@ class ClientScreen(QWidget):
     def check_serial_port(self):
         if self.ser.in_waiting > 0:
             try:
-                line = self.ser.readline().decode('utf-8').strip()
-                
-                value = int(line)
+                line = self.ser.readline()
                 # if value == 1:
-                print(f"Получено: {value}")
+                print(f"Получено: {line}")
                         # You can add any logic here (e.g., trigger an action)
                     
             except Exception as e:
