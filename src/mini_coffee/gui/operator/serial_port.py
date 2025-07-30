@@ -1,14 +1,6 @@
 import serial
 
-ser = serial.Serial(
-    port='/COM4',
-    baudrate=57600,
-    parity=serial.PARITY_ODD,
-    stopbits=serial.STOPBITS_TWO,
-    bytesize=serial.SEVENBITS
-)
+ser = serial.Serial('/dev/ttyUSB0', 9600)
 
-while(True):
-    print(ser.readline())
-
-ser.close()
+while True:
+    print(ser.readline().decode('utf-8').strip())
