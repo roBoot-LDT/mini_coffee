@@ -93,7 +93,7 @@ class ClientScreen(QWidget):
     def create_main_screen(self):
         """Create the main screen with coffee and ice cream icons"""
         screen = QWidget()
-        screen.setStyleSheet("background-color: #1A1A2E;")
+        screen.setStyleSheet("background-color: #a47351;")
         layout = QVBoxLayout()
         layout.setContentsMargins(0, 0, 0, 0)
         
@@ -601,7 +601,7 @@ class ClientScreen(QWidget):
     def _get_stylesheet(self):
         return """
             QWidget {
-                background-color: #6F4E37;
+                background-color: #a47351;
             }
         """
 
