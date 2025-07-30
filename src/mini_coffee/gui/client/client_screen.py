@@ -229,7 +229,7 @@ class ClientScreen(QWidget):
             }
             icon_path = str(icon_dir / coffee_icons.get(coffee, "coffee.png"))
             btn = self.create_icon_button(icon_path, coffee)
-            btn.clicked.connect(lambda _, c=coffee: self.start_coffee_order(c))
+            btn.clicked.connect(lambda: self.start_order('coffee'))
             # Add a label under the icon
             label = QLabel(coffee)
             label.setAlignment(Qt.AlignmentFlag.AlignCenter)
@@ -462,30 +462,7 @@ class ClientScreen(QWidget):
             "icecream": 2
         }
         self.screen_stack.setCurrentIndex(screens[screen_name])
-    
-    def start_coffee_order(self, coffee_type):
-        """Start processing a coffee order (simulated)"""
-        if self.is_cooking:
-            logger.warning("Already processing an order")
-            return
-            
-        self.is_cooking = True
-        self.update_button_states()
-        self.status_label.setText(f"Готовим {coffee_type}...")
-        self.order_started.emit(coffee_type)
-        
-        # Simulate coffee preparation
-        QTimer.singleShot(5000, lambda: self.complete_coffee_order(coffee_type))
-    
-    def complete_coffee_order(self, coffee_type):
-        """Complete the coffee order"""
-        self.is_cooking = False
-        self.order_completed.emit(coffee_type)
-        self.update_button_states()
-        
-        # Reset status after delay
-        QTimer.singleShot(5000, lambda: self.status_label.setText("Готов принять ваш заказ!"))
-    
+
     def start_order(self, flavor):
         """Start processing an ice cream order"""
         if self.is_cooking:
@@ -495,7 +472,7 @@ class ClientScreen(QWidget):
         self.is_cooking = True
         self.current_order = flavor  # Set current order for completion
         self.update_button_states()
-        self.status_label.setText(f"Готовим мороженное...")
+        self.status_label.setText(f"Готовим...")
         self.order_started.emit(flavor)
         
         # Get recipe path
