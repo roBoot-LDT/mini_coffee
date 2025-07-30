@@ -71,6 +71,8 @@ class ClientScreen(QWidget):
         status_layout.setSpacing(0)
         status_bar.setStyleSheet("background: transparent;")
 
+        # Add spacers to center the label without using stretch
+        status_layout.addSpacerItem(QHBoxLayout().addSpacing(0))  # Left spacer
         self.status_label = QLabel("Готовы принять ваш заказ!")
         self.status_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.status_label.setStyleSheet("""
@@ -80,8 +82,9 @@ class ClientScreen(QWidget):
             letter-spacing: 1.5px;
             padding: 18px 0 8px 0;
         """)
-        status_layout.addWidget(self.status_label, 10)
-        
+        status_layout.addWidget(self.status_label)
+        status_layout.addSpacerItem(QHBoxLayout().addSpacing(0))  # Right spacer
+
         status_bar.setLayout(status_layout)
         main_layout.addWidget(status_bar)
         
