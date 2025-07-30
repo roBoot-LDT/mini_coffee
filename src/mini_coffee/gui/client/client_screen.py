@@ -42,10 +42,10 @@ class ClientScreen(QWidget):
         if self.ser.in_waiting > 0:
             try:
                 line = self.ser.readline().decode('utf-8').strip()
-                if line in ('0', '1'):
-                    value = int(line)
-                    # if value == 1:
-                    print(f"Получено: {value}")
+                
+                value = int(line)
+                # if value == 1:
+                print(f"Получено: {value}")
                         # You can add any logic here (e.g., trigger an action)
                     
             except Exception as e:
