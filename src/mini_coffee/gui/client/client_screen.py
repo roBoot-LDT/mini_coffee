@@ -365,14 +365,14 @@ class ClientScreen(QWidget):
         """Create a clickable icon button with animation and shadow"""
         btn = QPushButton()
         btn.setToolTip(tooltip)
-        btn.setMinimumSize(420, 420)
-        btn.setMaximumSize(600, 600)
+        btn.setMinimumSize(300, 300)
+        btn.setMaximumSize(400, 400)
         btn.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding)
 
         if Path(icon_path).exists():
             pixmap = QPixmap(icon_path)
             btn.setIcon(QIcon(pixmap))
-            btn.setIconSize(pixmap.size().scaled(420, 420, Qt.AspectRatioMode.KeepAspectRatio))
+            btn.setIconSize(pixmap.size().scaled(300, 300, Qt.AspectRatioMode.KeepAspectRatio))
 
         # Add hover animation
         opacity_effect = QGraphicsOpacityEffect(btn)
