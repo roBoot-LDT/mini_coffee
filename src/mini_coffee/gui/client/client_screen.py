@@ -83,7 +83,8 @@ class ClientScreen(QWidget):
             letter-spacing: 1.5px;
             padding: 18px 0 8px 0;
         """)
-        status_layout.addWidget(self.status_label)
+        self.status_label.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Preferred)
+        status_layout.addWidget(self.status_label, stretch=1)
         status_layout.addSpacerItem(QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum))  # Right spacer
 
         status_bar.setLayout(status_layout)
