@@ -94,13 +94,13 @@ class ClientScreen(QWidget):
         screen = QWidget()
         screen.setStyleSheet("background-color: #a47351;")
         layout = QVBoxLayout()
-        layout.setContentsMargins(0, 0, 0, 0)
+        layout.setContentsMargins(20, 20, 20, 20)
         
         # Title label at the top
         title_label = QLabel("CyberCoffee Lite")
         title_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
         title_label.setStyleSheet("""
-            font-size: 56px;
+            font-size: 42px;
             font-weight: bold;
             color: #2c1f16;
             letter-spacing: 2px;
@@ -113,7 +113,7 @@ class ClientScreen(QWidget):
         
         # Main options centered
         options_layout = QHBoxLayout()
-        options_layout.setSpacing(100)
+        options_layout.setSpacing(50)
         options_layout.setContentsMargins(50, 0, 50, 0)
         
         # Load icons
@@ -126,7 +126,7 @@ class ClientScreen(QWidget):
         coffee_label = QLabel("Коффе")
         coffee_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
         coffee_label.setStyleSheet("""
-            font-size: 44px;
+            font-size: 36px;
             font-weight: bold;
             color: #2c1f16;
             letter-spacing: 2px;
@@ -142,7 +142,7 @@ class ClientScreen(QWidget):
         ice_label = QLabel("Мороженное")
         ice_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
         ice_label.setStyleSheet("""
-            font-size: 44px;
+            font-size: 36px;
             font-weight: bold;
             color: #2c1f16;
             letter-spacing: 2px;
@@ -178,7 +178,7 @@ class ClientScreen(QWidget):
         # Title
         title = QLabel("МЕНЮ КОФФЕ")
         title.setStyleSheet("""
-            font-size: 48px;
+            font-size: 36px;
             font-weight: bold;
             color: #2c1f16;
             text-align: center;
@@ -200,17 +200,17 @@ class ClientScreen(QWidget):
         ]
         
         grid = QGridLayout()
-        grid.setSpacing(30)
+        grid.setSpacing(20)
         
         for i, coffee in enumerate(coffee_options):
             btn = QPushButton(coffee)
-            btn.setFont(QFont("Arial", 24, QFont.Bold))
+            btn.setFont(QFont("Arial", 20, QFont.Bold))
             btn.setStyleSheet("""
                 QPushButton {
                     background-color: #4ECDC4;
                     color: #1A1A2E;
-                    border-radius: 20px;
-                    padding: 20px;
+                    border-radius: 15px;
+                    padding: 15px;
                 }
                 QPushButton:disabled {
                     background-color: #555555;
@@ -571,14 +571,10 @@ class ClientScreen(QWidget):
     
     def showEvent(self, event):
         """Handle show event to ensure fullscreen"""
-        screen = self.screen() if hasattr(self, "screen") else self.window().windowHandle().screen()
-        geometry = screen.geometry()
-        half_width = geometry.width() // 2
-        height = geometry.height()
-        x = geometry.x() + half_width
-        y = geometry.y()
-        self.setGeometry(x, y, half_width, height)
-        self.showNormal()  # Ensure not fullscreen
+        screen_geometry = self.screen().geometry()
+        half_width = screen_geometry.width() // 2
+        self.setFixedSize(half_width, screen_geometry.height())
+        self.move(screen_geometry.x() + half_width, screen_geometry.y())
         super().showEvent(event)
     
     def _get_stylesheet(self):
