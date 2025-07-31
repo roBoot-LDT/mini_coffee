@@ -27,9 +27,9 @@ class ClientScreen(QWidget):
         self.current_order = None
         self.order_path = []
         self.setStyleSheet(self._get_stylesheet())
+        self.setWindowFlags(Qt.WindowType.Window)
         self.is_cooking = False
         self.init_ui()
-        self.setWindowFlags(Qt.WindowType.Window)
 
         # Инициализация последовательного порта
         try:
@@ -623,7 +623,7 @@ class ClientScreen(QWidget):
         """Handle show event to ensure fullscreen"""
         screen_geometry = self.screen().geometry()
         half_width = screen_geometry.width() // 2
-        self.resize(half_width, screen_geometry.height())
+        self.setFixedSize(half_width, screen_geometry.height())
         self.move(screen_geometry.x() + half_width, screen_geometry.y())
         super().showEvent(event)
     
