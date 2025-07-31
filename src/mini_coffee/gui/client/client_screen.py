@@ -622,7 +622,7 @@ class ClientScreen(QWidget):
     def showEvent(self, event):
         """Handle show event to ensure fullscreen"""
         screen_geometry = self.screen().geometry()
-        half_width = screen_geometry.width() // 2
+        half_width = (screen_geometry.width() // 2) - 50
         self.setFixedSize(half_width, screen_geometry.height())
         self.move(screen_geometry.x() + half_width, screen_geometry.y())
         super().showEvent(event)
