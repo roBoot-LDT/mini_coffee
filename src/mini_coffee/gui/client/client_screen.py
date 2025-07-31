@@ -624,7 +624,7 @@ class ClientScreen(QWidget):
         screen_geometry = self.screen().geometry()
         half_width = (screen_geometry.width() // 2) - 50
         self.setFixedSize(half_width, screen_geometry.height())
-        self.move(screen_geometry.x() + half_width+ 150, screen_geometry.y()-50)
+        self.move(screen_geometry.x() + half_width+ 140, screen_geometry.y()-30)
         super().showEvent(event)
     
     def _get_stylesheet(self):
