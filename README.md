@@ -28,7 +28,7 @@ A Python-based GUI application to operate and calibrate an automated robotic cof
 
 ```
 
-robotic-coffee-station/
+mini_coffee/
 ├── app.py                       # App entry point
 ├── gui/                         # GUI layers
 │   ├── operator/
@@ -67,21 +67,23 @@ robotic-coffee-station/
 
 ```bash
 # Clone the repo
-git clone https://github.com/yourusername/robotic-coffee-station
-cd robotic-coffee-station
+git clone https://github.com/roBoot-LDT/mini_coffee
+cd mini_coffee
 
 # Install dependencies
+eval $(poetry env activate)
 poetry install
 
 # Create .env file
 cp .env.example .env
 # Edit .env to configure relay IPs, Vendista keys, etc.
+
 ````
 
 ### Run the App
 
 ```bash
-poetry run python app.py
+poetry run mini-coffee
 ```
 
 ---
@@ -99,7 +101,6 @@ DISPENSER_M=all00000010
 BIN=all00000100
 SHIELD=all00001000
 
-VENDISTA_API_KEY=your-secure-key
 ```
 
 ---
