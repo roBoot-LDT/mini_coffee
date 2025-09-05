@@ -1,4 +1,5 @@
 from collections import deque
+from pathlib import Path
 
 class Pathfinder:
     def __init__(self, connections):
@@ -38,3 +39,24 @@ class Pathfinder:
                     queue.append(new_path)
 
         return None
+    
+def get_env_path() -> Path:
+    """
+    Searches for a '.env' file in the current or parent directories.
+
+    Raises:
+        FileNotFoundError: If no '.env' file is found in any parent directory.
+
+    Returns:
+        pathlib.Path: The path to the found '.env' file.
+    """
+    current = Path(__file__).resolve().parent
+
+    for parent in current.parents:
+        candidate = parent / ".env"
+        if candidate.exists():
+            return candidate
+    raise FileNotFoundError(".env file not found in any parent directory")
+
+if __name__ == "__main__":
+    get_env_path()
