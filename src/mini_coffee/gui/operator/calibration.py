@@ -243,8 +243,7 @@ class Node(QGraphicsItem):
     def mouseMoveEvent(self, event):
         super().mouseMoveEvent(event)
         self.signals.moved.emit()
-
-        
+      
 class Edge(QGraphicsPathItem):
     def __init__(self, source, dest):
         super().__init__()

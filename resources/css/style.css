@@ -1,0 +1,45 @@
+QTabBar::tab {
+    border: 1px solid #444;
+    padding: 45px 12px;
+    margin: 2px;
+    border-radius: 5px;
+}
+
+QTabBar::tab:selected {
+    background: #666;
+}
+
+QTextEdit {
+    background-color: #1e1e1e;
+    color: #d4d4d4;
+    font-family: 'Consolas', monospace;
+    font-size: 20px;
+    border: 1px solid #3c3c3c;
+    border-radius: 4px;
+    padding: 8px;
+}
+
+QPushButton {
+    background-color: #4CAF50;
+    color: white;
+    border-radius: 12px;
+    min-width: 48px;
+    max-width: 250px;
+    max-height: 35px;
+    font-size: 18px;
+}
+
+QPushButton:hover {
+    background-color: #434c5e;
+}
+
+QPushButton:disabled {
+    background-color: #2d2d2d;
+    color: #6b6b6b;
+}
+
+QGroupBox { font-size: 14px; }
+
+
+
+

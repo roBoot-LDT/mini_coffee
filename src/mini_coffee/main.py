@@ -1,6 +1,6 @@
 # src/mini_coffee/gui/operator/app.py
 import sys
-from PySide6.QtWidgets import QApplication, QMainWindow, QStackedWidget, QMessageBox
+from PySide6.QtWidgets import QApplication, QMainWindow, QStackedWidget, QMessageBox, QTabWidget
 from mini_coffee.gui.operator.status_check import StatusCheckWindow
 from mini_coffee.gui.operator.calibration import CalibrationWindow
 from mini_coffee.hardware.arm.controller import MockArmController
@@ -19,40 +19,39 @@ class MainWindow(QMainWindow):
         self.arm_controller = MockArmController()
         self.init_ui()
         self.setWindowTitle("RoboCafe Control System")
-        self.resize(1350, 800)
-        self.show_status()
+        self.resize(1600, 900)
+        self.show()    
 
     def init_ui(self) -> None:
-        self.stacked_widget = QStackedWidget()
-        self.setCentralWidget(self.stacked_widget)
-
-        # Initialize windows
+        self.tabs = QTabWidget()
+        self.setCentralWidget(self.tabs)
+        self.tabs.setTabPosition(QTabWidget.TabPosition.West)
+        self.tabs.setStyleSheet("""
+            QTabBar::tab {
+                border: 1px solid #444;
+                padding: 45px 12px;
+                margin: 2px;
+                border-radius: 5px;
+            }
+            QTabBar::tab:selected {
+                background: #666;
+            }
+        """)
+        # Initialize tabs
         self.settings_window = SettingsWindow()
         self.status_window = StatusCheckWindow()
         self.calibration_window = CalibrationWindow(self.arm_controller)
 
-        # Connect signals
-        self.settings_window.save_btn.clicked.connect(self.load_environment)
-        self.status_window.all_checks_passed.connect(self.show_calibration)
-
         # Add to stack
-        self.stacked_widget.addWidget(self.settings_window)
-        self.stacked_widget.addWidget(self.status_window)
-        self.stacked_widget.addWidget(self.calibration_window)
-
-    def show_status(self) -> None:
-        self.stacked_widget.setCurrentIndex(1)
-        self.setWindowTitle("Status Check - RoboCafe")
+        self.tabs.addTab(self.settings_window, "Settings")
+        self.tabs.addTab(self.status_window, "Status Check")
+        self.tabs.addTab(self.calibration_window, "Calibration")
 
     def load_environment(self) -> None:
         # Reload environment variables after save
         load_dotenv(override=True)
         # Update other components with new settings
         self.settings_window.plc = PLC()
-    
-    def show_calibration(self) -> None:
-        self.stacked_widget.setCurrentIndex(2)
-        self.setWindowTitle("Calibration Mode - RoboCafe")
 
     def closeEvent(self, event):
         """Handle window closure safely."""
@@ -69,7 +68,7 @@ class MainWindow(QMainWindow):
 def run():
     app = QApplication(sys.argv)
     app.setStyle("Fusion")
-    
+
     # Set dark theme
     dark_palette = QPalette()
     dark_palette.setColor(QPalette.ColorRole.Window, QColor(53, 53, 53))

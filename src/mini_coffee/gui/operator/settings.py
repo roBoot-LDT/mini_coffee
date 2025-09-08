@@ -1,6 +1,4 @@
 # src/mini_coffee/gui/operator/settings.py
-# src/mini_coffee/gui/operator/settings.py
-import os
 from pathlib import Path
 from dotenv import load_dotenv, dotenv_values # type: ignore
 from PySide6.QtWidgets import (
@@ -11,6 +9,7 @@ from PySide6.QtCore import Qt, QSize
 from PySide6.QtGui import QIcon
 from mini_coffee.hardware.relays import PLC
 from mini_coffee.utils.logger import setup_logger
+from mini_coffee.utils.helpers import get_env_path
 
 logger = setup_logger()
 
@@ -18,65 +17,62 @@ class SettingsWindow(QWidget):
     def __init__(self, parent=None):
         super().__init__(parent)
         self.plc = PLC()
-        self.env_path = Path(__file__).parent.parent.parent.parent.parent / ".env"
+        self.env_path = get_env_path()
         self.init_ui()
         self.load_settings()
         self.setStyleSheet(self._get_stylesheet())
-        self.setMinimumWidth(350)
-        self.setMaximumWidth(700)
 
-    def init_ui(self) -> None:
-        main_layout = QVBoxLayout()
+    def init_ui(self):
+        main_layout = QHBoxLayout()
+        left_layout = QVBoxLayout()
+        right_layout = QVBoxLayout()
+        main_layout.addLayout(left_layout, stretch=1)
+        main_layout.addLayout(right_layout, stretch=1)
         main_layout.setContentsMargins(16, 16, 16, 16)
         
-        # Scroll area for settings
-        scroll = QScrollArea()
-        scroll.setWidgetResizable(True)
         content = QWidget()
-        layout = QVBoxLayout(content)
-        layout.setSpacing(20)
-        scroll.setMaximumWidth(700)
-        content.setMaximumWidth(700)
 
-        # Titles
-        self.ip_input = QLineEdit()
-        self.port_input = QLineEdit()
-        self.buffer_input = QLineEdit()
-        self.xarm_input = QLineEdit()
-        self.disS = QLineEdit()
-        self.disM = QLineEdit()
-        self.shield = QLineEdit()
-        self.bin = QLineEdit()
-        self.l_ice = QLineEdit()
-        self.m_ice = QLineEdit()
-        self.r_ice = QLineEdit()
+        network_fields = [
+            ("Relay IP:", "ip_input"),
+            ("Relay UDP Port:", "port_input"),
+            ("Buffer Size:", "buffer_input"),
+            ("XArm API:", "xarm_input")
+        ]
+
+        device_fields = [
+            ("Dispenser S:", "disS"),
+            ("Dispenser M:", "disM"),
+            ("Shield:", "shield"),
+            ("Bin:", "bin"),
+            ("Left Ice:", "l_ice"),
+            ("Middle Ice:", "m_ice"),
+            ("Right Ice:", "r_ice")
+        ]
+
+        # Via for loop, create QLineEdit attributes dynamically
+        for _, attr in network_fields + device_fields:
+            setattr(self, attr, QLineEdit())
         
         # Network Configuration Group
         network_group = QGroupBox("Network Configuration")
         network_layout = QVBoxLayout()
         network_layout.setSpacing(12)
         
-        self._create_input_field(network_layout, "Relay IP:", self.ip_input)
-        self._create_input_field(network_layout, "Relay UDP Port:", self.port_input)
-        self._create_input_field(network_layout, "Buffer Size:", self.buffer_input)
-        self._create_input_field(network_layout, "XArm API:", self.xarm_input)
+        for label, attr in network_fields:
+            self._create_input_field(network_layout, label, getattr(self, attr))
         network_group.setLayout(network_layout)
-        layout.addWidget(network_group)
+
+        left_layout.addWidget(network_group)
 
         # Device Mapping Group
         device_group = QGroupBox("Device Mapping")
         device_layout = QVBoxLayout()
         device_layout.setSpacing(12)
         
-        self._create_input_field(device_layout, "Dispenser S:", self.disS)
-        self._create_input_field(device_layout, "Dispenser M:", self.disM)
-        self._create_input_field(device_layout, "Shield:", self.shield)
-        self._create_input_field(device_layout, "Bin:", self.bin)
-        self._create_input_field(device_layout, "Left Ice:", self.l_ice)
-        self._create_input_field(device_layout, "Middle Ice:", self.m_ice)
-        self._create_input_field(device_layout, "Right Ice:", self.r_ice)
+        for laber, attr in device_fields:
+            self._create_input_field(device_layout, laber, getattr(self, attr))
         device_group.setLayout(device_layout)
-        layout.addWidget(device_group)
+        left_layout.addWidget(device_group)
 
         # Control Buttons
         btn_layout_top = QHBoxLayout()
@@ -97,11 +93,10 @@ class SettingsWindow(QWidget):
         btn_layout_top.addWidget(self.trigger_btn)
         btn_layout_top.addWidget(self.detect_btn)
         btn_layout_bottom.addWidget(self.save_btn)
-        layout.addLayout(btn_layout_top)
-        layout.addLayout(btn_layout_bottom)
+        device_layout.addLayout(btn_layout_top)
+        device_layout.addLayout(btn_layout_bottom)
 
-        scroll.setWidget(content)
-        main_layout.addWidget(scroll)
+        main_layout.addWidget(content)
         self.setLayout(main_layout)
 
     def _create_input_field(self, layout, label, widget):
@@ -248,8 +243,6 @@ class SettingsWindow(QWidget):
                 continue
             else:
                 break
-
-
 
 class PortConfigDialog(QDialog):
     def __init__(self, options, parent=None):

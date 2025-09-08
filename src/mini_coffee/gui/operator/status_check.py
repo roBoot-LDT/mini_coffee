@@ -26,7 +26,6 @@ class CheckResult:
     message: str
     error: Optional[Exception] = None
     
-    
 class StatusCircle(QLabel):
     """Circular status indicator widget"""
     def __init__(self, parent=None) -> None:
@@ -177,7 +176,6 @@ class StatusCheckWindow(QWidget):
         self.checks_completed = 0
         self.init_ui()
         
-    
     def init_ui(self) -> None:
         main_layout = QHBoxLayout()
         main_layout.setContentsMargins(16, 16, 16, 16)
@@ -199,10 +197,6 @@ class StatusCheckWindow(QWidget):
             }
         """)
         
-        # Right Column - Tab Widget (modified)
-        tab_widget = QTabWidget()
-        
-        # Tab 1: Status Checks
         content_widget = QWidget()
         content_layout = QVBoxLayout(content_widget)
         content_layout.setSpacing(8)
@@ -214,39 +208,12 @@ class StatusCheckWindow(QWidget):
             self.component_buttons[component] = btn
             content_layout.addWidget(btn)
         
-        # Next Button
-        self.next_button = QPushButton("Skip")
-        self.next_button.setEnabled(True)
-        self.next_button.clicked.connect(self.all_checks_passed.emit)
-        self.next_button.setStyleSheet("""
-            QPushButton {
-                background-color: #4CAF50;
-                color: white;
-                padding: 12px;
-                border-radius: 4px;
-                font-weight: bold;
-            }
-            QPushButton:disabled {
-                background-color: #a5d6a7;
-            }
-            QPushButton:hover {
-                background-color: #45a049;
-            }
-        """)
-        content_layout.addStretch()
-        content_layout.addWidget(self.next_button)
-        
         scroll_area = QScrollArea()
         scroll_area.setWidgetResizable(True)
         scroll_area.setWidget(content_widget)
-        tab_widget.addTab(scroll_area, "Status Checks")
-        
-        # Tab 2: Settings
-        settings_tab = SettingsWindow(self)
-        tab_widget.addTab(settings_tab, "Settings")
         
         main_layout.addWidget(self.terminal, 2)
-        main_layout.addWidget(tab_widget, 1)
+        main_layout.addWidget(scroll_area, 1)
         self.setLayout(main_layout)
     
     def start_component_check(self) -> None:

@@ -22,4 +22,4 @@ requires = ["poetry-core>=2.0.0,<3.0.0"]
 build-backend = "poetry.core.masonry.api"
 
 [tool.poetry.scripts]
-mini-coffee = "mini_coffee.gui.operator.app:run"
+mini-coffee = "mini_coffee.main:run"
