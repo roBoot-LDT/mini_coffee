@@ -74,6 +74,26 @@ class SettingsWindow(QWidget):
         device_group.setLayout(device_layout)
         left_layout.addWidget(device_group)
 
+        relay_group = QGroupBox("Manual Relay Trigger")
+        relay_layout = QHBoxLayout()
+        relay_layout.setSpacing(5)
+        relay_icons = [
+            ("Relay 1", "cup_S.png", os.getenv('DISPENSER_S', 'all00000001')),
+            ("Relay 2", "ice.png", os.getenv('DISPENSER_M', 'all00000010')),
+            ("Relay 3", "shield.png", os.getenv('SHIELD', 'all00000100')),
+            ("Relay 4", "l_ice.png", os.getenv('LEFT_ICE', 'all00001000')),
+            ("Relay 5", "m_ice.png", os.getenv('MIDDLE_ICE', 'all00010000')),
+            ("Relay 6", "r_ice.png", os.getenv('RIGHT_ICE', 'all00100000')),
+            ("Relay 7", "bin.png", os.getenv('BIN', 'all01000000')),
+        ]
+        self.relay_buttons = {}
+        for label, icon_name, relay_state in relay_icons:
+            btn = RelayIconButton(label, icon_name, relay_state, self.plc)
+            relay_layout.addWidget(btn)
+            self.relay_buttons[label] = btn
+        relay_group.setLayout(relay_layout)
+        layout.addWidget(relay_group)
+        
         # Control Buttons
         btn_layout_top = QHBoxLayout()
         btn_layout_bottom = QHBoxLayout()
@@ -173,20 +193,28 @@ class SettingsWindow(QWidget):
             self.l_ice.setText(config.get('LEFT_ICE') or 'all00001000')
             self.m_ice.setText(config.get('MIDDLE_ICE') or 'all00001000')
             self.r_ice.setText(config.get('RIGHT_ICE') or 'all00001000')
+            self.lTime.setText(config.get('L_TIME') or '3')
+            self.mTime.setText(config.get('M_TIME') or '2')
+            self.rTime.setText(config.get('R_TIME') or '3')
 
     def save_settings(self) -> None:
-        env_content = f"""RELAY_IP={self.ip_input.text()}
-                        RELAY_UTP_PORT={self.port_input.text()}
-                        BUFFER_SIZE={self.buffer_input.text()}
-                        XARMAPI={self.xarm_input.text()}
-                        DISPENSER_S={self.disS.text()}
-                        DISPENSER_M={self.disM.text()}
-                        BIN={self.bin.text()}
-                        SHIELD={self.shield.text()}
-                        ICE_LEFT={self.l_ice.text()}
-                        ICE_MIDDLE={self.m_ice.text()}
-                        ICE_RIGHT={self.r_ice.text()}"""
-        
+        env_content = f"""
+RELAY_IP={self.ip_input.text()}
+RELAY_UTP_PORT={self.port_input.text()}
+BUFFER_SIZE={self.buffer_input.text()}
+XARMAPI={self.xarm_input.text()}
+DISPENSER_S={self.disS.text()}
+DISPENSER_M={self.disM.text()}
+BIN={self.bin.text()}
+SHIELD={self.shield.text()}
+ICE_LEFT={self.l_ice.text()}
+ICE_MIDDLE={self.m_ice.text()}
+ICE_RIGHT={self.r_ice.text()}
+TIME_LEFT={self.lTime.text()}
+TIME_MIDDLE={self.mTime.text()}
+TIME_RIGHT={self.rTime.text()}
+"""
+
         try:
             with open(self.env_path, 'w') as f:
                 f.write(env_content)
@@ -371,3 +399,61 @@ class PortConfigDialog(QDialog):
     def skip(self):
         self.selected = "skip"
         self.done(2)
+    
+class RelayIconButton(QPushButton):
+    def __init__(self, label, icon_name, relay_state, plc, parent=None):
+        super().__init__(parent)
+        self.label = label
+        self.icon_name = icon_name
+        self.relay_state = relay_state
+        self.plc = plc
+        self.is_active = False
+
+        self.setFixedSize(40, 40)  # Reduced size for less width
+        self.setCheckable(True)
+        self.setStyleSheet(self._get_style(False))
+        self.setToolTip(label)
+
+        icon_path = Path(__file__).parent.parent.parent.parent.parent / "resources" / "icons" / icon_name
+        if icon_path.exists():
+            self.setIcon(QIcon(str(icon_path)))
+            self.setIconSize(QSize(40, 40))  # Smaller icon size
+
+        self.clicked.connect(self.toggle_relay)
+
+    def _get_style(self, active):
+        if active:
+            return """
+                QPushButton {
+                    background-color: #4CAF50;
+                    border-radius: 12px;
+                    border: 2px solid #388E3C;
+                    padding: 4px;
+                    min-width: 50px;
+                    min-height: 50px;
+                }
+            """
+        else:
+            return """
+                QPushButton {
+                    background-color: #e74c3c;
+                    border-radius: 12px;
+                    border: 2px solid #b71c1c;
+                    padding: 4px;
+                    min-width: 50px;
+                    min-height: 50px;
+                }
+                QPushButton:hover {
+                    background-color: #ff5252;
+                }
+            """
+
+    def toggle_relay(self):
+        if not self.is_active:
+            self.setStyleSheet(self._get_style(True))
+            self.is_active = True
+            self.plc.relay(self.relay_state)
+        else:
+            self.setStyleSheet(self._get_style(False))
+            self.is_active = False
+            self.plc.relay("all00000000")
